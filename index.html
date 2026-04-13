@@ -133,7 +133,6 @@
         }
         .upload-card h2 { font-size: 1.5rem; margin-bottom: 10px; }
         
-        /* UPLOAD BUTTON WITH GENTLE PULSE ANIMATION */
         .drop-zone {
             border: 2px dashed rgba(212, 175, 55, 0.3);
             background: rgba(212, 175, 55, 0.03);
@@ -151,18 +150,9 @@
             transform: scale(1.01);
         }
         @keyframes gentlePulse {
-            0% {
-                border-color: rgba(212, 175, 55, 0.3);
-                background: rgba(212, 175, 55, 0.03);
-            }
-            50% {
-                border-color: rgba(212, 175, 55, 0.8);
-                background: rgba(212, 175, 55, 0.08);
-            }
-            100% {
-                border-color: rgba(212, 175, 55, 0.3);
-                background: rgba(212, 175, 55, 0.03);
-            }
+            0% { border-color: rgba(212, 175, 55, 0.3); background: rgba(212, 175, 55, 0.03); }
+            50% { border-color: rgba(212, 175, 55, 0.8); background: rgba(212, 175, 55, 0.08); }
+            100% { border-color: rgba(212, 175, 55, 0.3); background: rgba(212, 175, 55, 0.03); }
         }
         
         .file-input { display: none; }
@@ -217,7 +207,6 @@
         }
         .report-good { background: rgba(46, 204, 113, 0.1); border-left: 3px solid #2ECC71; padding: 10px; margin: 8px 0; border-radius: 8px; }
         .report-missing { background: rgba(231, 76, 60, 0.1); border-left: 3px solid #E74C3C; padding: 10px; margin: 8px 0; border-radius: 8px; }
-        .report-warning { background: rgba(241, 196, 15, 0.1); border-left: 3px solid #F1C40F; padding: 10px; margin: 8px 0; border-radius: 8px; }
         
         .urgent-fix-btn {
             background: #e74c3c;
@@ -878,10 +867,8 @@
                 reasonText = "Critical issues found - your CV is being rejected";
             } else if (currentScore < 60) {
                 reasonText = "Major issues - employers are skipping your CV";
-            } else if (currentScore < 80) {
-                reasonText = "Room for improvement - get to 90%+";
             } else {
-                reasonText = "Small tweaks can make a big difference";
+                reasonText = "Room for improvement - get to 90%+";
             }
             
             const message = `Hi Deon Sima, my CV needs urgent fixing. Please help me revamp it for R60. My ATS score was ${currentScore}%. ${reasonText}`;
@@ -1221,130 +1208,165 @@
         function extractEmail(text) { const m = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/); return m ? m[0] : ""; }
         function extractLocation(text) { const locs = ["Johannesburg", "Cape Town", "Durban", "Pretoria", "Port Elizabeth", "Bloemfontein"]; for (let l of locs) if (text.toLowerCase().includes(l.toLowerCase())) return l; return "South Africa"; }
         
+        // STRICT ATS CHECK with Table/Column detection
         function runATSCheck(text) {
             const lower = text.toLowerCase();
             let score = 30;
+            let missingList = [];
             let goodList = [];
-            let warningList = [];
             
-            const experienceKeywords = ["experience", "work history", "employment", "work experience", "professional experience", "career history", "employment history", "work"];
-            const hasExperience = experienceKeywords.some(keyword => lower.includes(keyword));
+            // === TABLE AND COLUMN DETECTION ===
+            let hasTables = false;
+            let hasColumns = false;
             
-            const educationKeywords = ["education", "educational", "qualifications", "academic", "matric", "degree", "diploma", "certificate", "school", "university", "college", "training"];
-            const hasEducation = educationKeywords.some(keyword => lower.includes(keyword));
+            // Check for table formatting (| symbols or +---+ patterns)
+            if (text.includes('|') || text.includes('+-') || text.includes('-+')) {
+                hasTables = true;
+                missingList.push("❌ Tables detected - Most ATS cannot read tables");
+                score -= 10;
+            }
             
-            const skillsKeywords = ["skills", "competencies", "core competencies", "expertise", "abilities", "strengths", "key skills"];
-            const hasSkills = skillsKeywords.some(keyword => lower.includes(keyword));
+            // Check for column formatting (multiple spaces indicating columns)
+            const lines = text.split('\n');
+            let columnCount = 0;
+            for (let line of lines) {
+                const spaceGroups = line.match(/ {3,}/g);
+                if (spaceGroups && spaceGroups.length >= 2) {
+                    columnCount++;
+                }
+            }
+            if (columnCount > 3) {
+                hasColumns = true;
+                missingList.push("❌ Multi-column layout detected - ATS may read columns in wrong order");
+                score -= 10;
+            }
             
-            const summaryKeywords = ["summary", "profile", "professional profile", "about me", "personal statement", "career objective", "objective"];
-            const hasSummary = summaryKeywords.some(keyword => lower.includes(keyword));
+            // === STRICT SECTION CHECKS ===
             
+            // Experience section - strict keywords only
+            const hasExperience = lower.includes("experience") || lower.includes("work history");
             if (hasExperience) {
-                score += 12;
+                score += 15;
                 goodList.push("✅ Work experience section found");
             } else {
-                warningList.push("⚠️ Work experience not clearly found. Use heading 'Experience' or 'Work History'");
+                missingList.push("❌ Missing 'Experience' or 'Work History' section");
             }
             
+            // Education section - strict keywords only
+            const hasEducation = lower.includes("education") || lower.includes("matric") || lower.includes("degree") || lower.includes("diploma");
             if (hasEducation) {
-                score += 12;
+                score += 15;
                 goodList.push("✅ Education section found");
             } else {
-                warningList.push("⚠️ Education section not clearly found. Use heading 'Education' or 'Qualifications'");
+                missingList.push("❌ Missing 'Education' section");
             }
             
+            // Skills section - strict
+            const hasSkills = lower.includes("skills");
             if (hasSkills) {
                 score += 10;
                 goodList.push("✅ Skills section found");
             } else {
-                warningList.push("⚠️ Skills section not clearly found. Use heading 'Skills' or 'Core Competencies'");
+                missingList.push("❌ Missing 'Skills' section");
             }
             
+            // Professional Summary - strict
+            const hasSummary = lower.includes("summary") || lower.includes("profile");
             if (hasSummary) {
                 score += 5;
                 goodList.push("✅ Professional summary found");
             } else {
-                warningList.push("💡 Add a professional summary - helps recruiters understand your profile quickly");
+                missingList.push("❌ Missing professional summary");
             }
             
+            // Contact info check
             const hasEmail = extractEmail(text) !== "";
             const hasPhone = extractPhone(text) !== "";
-            
             if (hasEmail && hasPhone) {
                 score += 15;
-                goodList.push("✅ Complete contact information found (Email + Phone)");
+                goodList.push("✅ Complete contact information (Email + Phone)");
             } else if (hasEmail || hasPhone) {
                 score += 8;
-                warningList.push("⚠️ Phone number or email not clearly detected. Check formatting (e.g., 082 123 4567 or name@example.com)");
+                missingList.push("⚠️ Missing either email OR phone number");
             } else {
-                warningList.push("⚠️ No phone number or email detected. Add both to help recruiters contact you.");
+                missingList.push("❌ Missing contact information (email and phone)");
             }
             
-            const actionVerbs = ['managed', 'developed', 'led', 'created', 'implemented', 'achieved', 'improved', 'increased', 'organized', 'coordinated'];
+            // Action verbs check
+            const actionVerbs = ['managed', 'developed', 'led', 'created', 'implemented', 'achieved', 'improved', 'increased'];
             const verbsFound = actionVerbs.filter(v => lower.includes(v));
             if (verbsFound.length >= 3) {
                 score += 10;
-                goodList.push(`✅ Strong action verbs found (${verbsFound.slice(0,3).join(', ')})`);
+                goodList.push(`✅ Strong action verbs (${verbsFound.slice(0,3).join(', ')})`);
             } else {
-                warningList.push("💡 Add action verbs like 'Managed', 'Developed', 'Led' to strengthen your experience");
+                missingList.push("⚠️ Add action verbs like 'Managed', 'Developed', 'Led'");
             }
             
+            // Dates check
             const dates = text.match(/20\d{2}/g) || [];
             if (dates.length >= 2) {
                 score += 5;
                 goodList.push("✅ Employment dates found");
             } else {
-                warningList.push("💡 Add dates to your work experience (e.g., 2020-2024)");
+                missingList.push("⚠️ Add dates to your work experience");
             }
             
+            // Length check
             const wordCount = text.split(/\s+/).length;
             if (wordCount >= 300 && wordCount <= 800) {
                 goodList.push(`✅ Good CV length (${wordCount} words)`);
             } else if (wordCount < 200) {
-                warningList.push(`⚠️ CV is quite short (${wordCount} words). Aim for 300-800 words`);
-            } else if (wordCount > 800) {
-                warningList.push(`💡 CV is long (${wordCount} words). Consider condensing to 1-2 pages`);
+                missingList.push(`❌ CV too short (${wordCount} words) - Aim for 400-800 words`);
+                score -= 5;
+            } else if (wordCount > 1500) {
+                missingList.push(`⚠️ CV very long (${wordCount} words) - Recruiters prefer 1-2 pages`);
+                score -= 3;
             }
             
             score = Math.min(100, Math.max(0, Math.round(score)));
             currentScore = score;
             
+            // Update UI
             document.getElementById('score-circle').innerText = score + "%";
-            document.getElementById('score-circle').style.borderColor = score < 60 ? "#E74C3C" : (score < 75 ? "#F1C40F" : "#2ECC71");
-            document.getElementById('score-status').innerHTML = score < 60 ? "⚠️ Needs Improvement" : (score < 75 ? "📈 Good Start" : "🎯 Great Foundation!");
-            document.getElementById('score-text').innerHTML = score < 60 ? "Your CV needs professional attention" : "We can make it even better";
+            document.getElementById('score-circle').style.borderColor = score < 50 ? "#E74C3C" : (score < 70 ? "#F1C40F" : "#2ECC71");
+            
+            let statusText = "";
+            if (score < 40) statusText = "⚠️ CRITICAL - Needs Complete Rewrite";
+            else if (score < 60) statusText = "⚠️ HIGH REJECTION RISK";
+            else if (score < 75) statusText = "📈 Needs Improvement";
+            else statusText = "🎯 Good Foundation";
+            document.getElementById('score-status').innerHTML = statusText;
+            document.getElementById('score-text').innerHTML = score < 60 ? "Your CV will likely be rejected by ATS systems" : "Room for improvement - professional revamp recommended";
             document.getElementById('alert-score').innerText = score;
             
+            // Show urgent fix button for scores below 80
             const urgentContainer = document.getElementById('urgent-fix-container');
             const fixReasonDiv = document.getElementById('fixReason');
             if (score < 80) {
                 urgentContainer.style.display = 'block';
                 let reasonText = "";
-                if (score < 40) {
-                    reasonText = "🔴 Critical issues found - your CV is being rejected";
-                } else if (score < 60) {
-                    reasonText = "🟠 Major issues - employers are skipping your CV";
-                } else {
-                    reasonText = "🟡 Room for improvement - get to 90%+";
-                }
+                if (score < 40) reasonText = "🔴 CRITICAL - Your CV is being rejected by ATS systems";
+                else if (score < 60) reasonText = "🟠 MAJOR ISSUES - Employers are skipping your CV";
+                else reasonText = "🟡 Room for improvement - Professional revamp will help";
                 fixReasonDiv.innerText = reasonText;
             } else {
                 urgentContainer.style.display = 'none';
             }
             
+            // Build report
             let html = `<div style="margin-top: 15px;">`;
             
             if (goodList.length > 0) {
                 html += `<div style="margin-bottom: 15px;">
-                    <div style="color: #2ECC71; font-weight: bold; margin-bottom: 8px;">✅ WHAT YOU'RE DOING RIGHT (${goodList.length})</div>`;
+                    <div style="color: #2ECC71; font-weight: bold; margin-bottom: 8px;">✅ WHAT YOU HAVE (${goodList.length})</div>`;
                 goodList.forEach(item => { html += `<div class="report-good">${item}</div>`; });
                 html += `</div>`;
             }
             
-            if (warningList.length > 0) {
+            if (missingList.length > 0) {
                 html += `<div>
-                    <div style="color: #F1C40F; font-weight: bold; margin-bottom: 8px;">⚠️ SUGGESTIONS FOR IMPROVEMENT (${warningList.length})</div>`;
-                warningList.forEach(item => { html += `<div class="report-warning">${item}</div>`; });
+                    <div style="color: #E74C3C; font-weight: bold; margin-bottom: 8px;">❌ PROBLEMS FOUND (${missingList.length})</div>`;
+                missingList.forEach(item => { html += `<div class="report-missing">${item}</div>`; });
                 html += `</div>`;
             }
             
@@ -1354,12 +1376,15 @@
             
             document.getElementById('ats-detailed-report').innerHTML = html;
             
-            missingItems = warningList.map(item => item.replace('⚠️ ', '').replace('💡 ', ''));
+            // Store missing items for WhatsApp
+            missingItems = missingList.map(item => item.replace('❌ ', '').replace('⚠️ ', ''));
             
+            // Readability tips (keeping as extra value)
             const tips = getReadabilityTips(text);
             const tipsHtml = '<ul style="margin: 0; padding-left: 20px;">' + tips.map(tip => `<li>${tip}</li>`).join('') + '</ul>';
             document.getElementById('readability-tips').innerHTML = tipsHtml;
             
+            // File name check
             if (uploadedFileName) {
                 const fileNameCheck = checkFileName(uploadedFileName, extractedName);
                 let statusHtml = "";
