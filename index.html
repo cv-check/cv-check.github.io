@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Deon Sima | Fix Your CV - Get Interviews Fast</title>
+    <title>CV FIX PRO | Turn Your CV Into an Interview Magnet</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <style>
@@ -22,6 +22,20 @@
             line-height: 1.6;
         }
         
+        /* Graduation hat animation */
+        .animate-icon {
+            animation: subtleBounce 2s infinite ease-in-out;
+        }
+        
+        @keyframes subtleBounce {
+            0%, 100% { 
+                transform: translateY(0);
+            }
+            50% { 
+                transform: translateY(-3px);
+            }
+        }
+        
         .hero {
             background: linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 100%);
             padding: 30px 20px 25px;
@@ -36,16 +50,17 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 8px;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
         }
         .logo h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
         }
         .logo h2 span { color: var(--primary); }
         .hero h1 {
             font-size: clamp(1.2rem, 5vw, 1.8rem);
-            margin: 12px 0 0;
+            margin: 15px 0 0;
         }
         .hero h1 span { color: var(--primary); }
         
@@ -310,7 +325,7 @@
             .calculator-stats { flex-direction: column; }
         }
         
-        footer { text-align: center; padding: 25px; font-size: 0.65rem; color: #555; margin-top: 15px; }
+        footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
         .admin-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; }
         .admin-panel { background:#1a1a1a; border:2px solid var(--primary); border-radius:20px; padding:20px; max-width:350px; width:90%; text-align:center; }
     </style>
@@ -329,8 +344,9 @@
 
 <div class="hero">
     <div class="logo" id="logoClick">
-        <div class="logo-icon">🛡️</div>
-        <h2>DEON SIMA'S <span>DIGITAL HUB</span></h2>
+        <div class="logo-icon animate-icon">🎓</div>
+        <h2>CV <span>FIX PRO</span></h2>
+        <p style="font-size: 0.7rem; color: var(--primary); margin-top: 5px;">Turn Your CV Into an Interview Magnet</p>
     </div>
     <h1>Most CVs get rejected by ATS <span>before Recruiter sees them</span></h1>
 </div>
@@ -408,7 +424,7 @@
         <!-- TESTIMONIALS TOGETHER AT BOTTOM -->
         <div class="testimonial" id="testimonialBox" style="display:none;">
             <div>⭐ "Got 3 interviews within 2 weeks!" — Cel'mpilo</div>
-            <div style="margin-top: 8px;">⚡ "Deon Sima revamped my CV in 2 hours — got 3 interviews!" — Meagan ⚡</div>
+            <div style="margin-top: 8px;">⚡ "CV FIX PRO revamped my CV in 2 hours — got 3 interviews!" — Meagan ⚡</div>
         </div>
 
         <div class="tracker-card" id="trackerSection" style="display:none;">
@@ -430,7 +446,7 @@
 
 <button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
 
-<footer>© 2026 Deon Sima's Digital Hub | WhatsApp: +27 60 564 7937</footer>
+<footer>Created by Deon Sima | © 2026 | WhatsApp: +27 60 564 7937</footer>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
@@ -537,7 +553,7 @@ function runScan(text) {
     if (lower.includes("summary") || lower.includes("profile") || lower.includes("about me") || lower.includes("professional profile")) { score += 5; good.push("✅ Professional summary found"); } 
     else { warnings.push("💡 NO professional summary — Recruiters spend ONLY 6 SECONDS on your CV, a summary hooks them"); }
     
-    // 7. Professional Certifications (PMP, AWS, etc.)
+    // 7. Professional Certifications
     let profCerts = ['pmp', 'aws', 'microsoft', 'cisco', 'comptia', 'scrum', 'agile', 'six sigma', 'prince2', 'itil', 'ccna'];
     let hasProfCert = profCerts.some(cert => lower.includes(cert));
     if (hasProfCert) { score += 3; good.push("✅ Professional certifications found — adds credibility"); } 
@@ -591,7 +607,6 @@ function runScan(text) {
     currentScore = score;
     missingItems = [...critical, ...warnings];
     
-    // Update UI
     document.getElementById('scoreCircle').innerText = score + "%";
     document.getElementById('scoreCircle').style.borderColor = score < 60 ? "#e74c3c" : (score < 75 ? "#F1C40F" : "#2ECC71");
     document.getElementById('scoreStatus').innerHTML = score < 50 ? "❌ FAILING - WILL BE REJECTED" : (score < 60 ? "⚠️ CRITICAL - NEEDS FIX" : (score < 75 ? "📈 NEEDS WORK" : "🎯 GOOD FOUNDATION"));
