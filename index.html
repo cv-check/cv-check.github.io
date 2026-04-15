@@ -20,16 +20,11 @@
             background: var(--bg);
             color: white;
             line-height: 1.6;
+            padding-bottom: 100px;
         }
         
-        .animate-icon {
-            animation: subtleBounce 2s infinite ease-in-out;
-        }
-        
-        @keyframes subtleBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
+        .animate-icon { animation: subtleBounce 2s infinite ease-in-out; }
+        @keyframes subtleBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-3px);} }
         
         .hero {
             background: linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 100%);
@@ -37,8 +32,7 @@
             text-align: center;
         }
         .logo-icon {
-            width: 55px;
-            height: 55px;
+            width: 55px; height: 55px;
             background: linear-gradient(135deg, #D4AF37, #F3E5AB);
             border-radius: 12px;
             display: flex;
@@ -47,23 +41,12 @@
             margin: 0 auto 8px;
             font-size: 1.8rem;
         }
-        .logo h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-        }
+        .logo h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; letter-spacing: 1px; }
         .logo h2 span { color: var(--primary); }
-        .hero h1 {
-            font-size: clamp(1.2rem, 5vw, 1.8rem);
-            margin: 15px 0 0;
-        }
+        .hero h1 { font-size: clamp(1.2rem, 5vw, 1.8rem); margin: 15px 0 0; }
         .hero h1 span { color: var(--primary); }
         
-        .main-container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 0 16px 50px;
-        }
+        .main-container { max-width: 700px; margin: 0 auto; padding: 0 16px 50px; }
         
         .upload-card {
             background: var(--card);
@@ -83,149 +66,46 @@
             transition: 0.2s;
         }
         .drop-zone:active { transform: scale(0.98); }
-        .drop-zone p {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1rem;
-        }
+        .drop-zone p { font-weight: bold; color: var(--primary); font-size: 1rem; }
         .file-input { display: none; }
         
-        /* Social Proof Carousel - 2 slides only */
-        .social-proof {
-            margin: 20px 0 10px;
-            overflow: hidden;
-            position: relative;
-            border-radius: 20px;
-        }
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 16px;
-        }
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            will-change: transform;
-        }
-        .carousel-slide {
-            flex: 0 0 100%;
-            padding: 8px;
-        }
-        .carousel-slide img {
-            width: 100%;
-            border-radius: 16px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            background: #0a0a0a;
-            display: block;
-        }
+        /* Social Proof Carousel - Only Before & After */
+        .social-proof { margin: 20px 0 10px; overflow: hidden; position: relative; border-radius: 20px; }
+        .carousel-container { position: relative; width: 100%; overflow: hidden; border-radius: 16px; }
+        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+        .carousel-slide { flex: 0 0 100%; padding: 8px; }
+        .carousel-slide img { width: 100%; border-radius: 16px; border: 1px solid rgba(212,175,55,0.3); box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: block; }
         .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.6);
-            color: var(--primary);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            backdrop-filter: blur(4px);
-            transition: 0.2s;
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.6); color: var(--primary); border: none;
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+            z-index: 10; backdrop-filter: blur(4px);
         }
-        .carousel-btn:hover {
-            background: var(--primary);
-            color: #000;
-        }
+        .carousel-btn:hover { background: var(--primary); color: #000; }
         .btn-prev { left: 8px; }
         .btn-next { right: 8px; }
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #555;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .dot.active {
-            background: var(--primary);
-            width: 24px;
-            border-radius: 4px;
-        }
+        .carousel-dots { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; cursor: pointer; transition: 0.2s; }
+        .dot.active { background: var(--primary); width: 24px; border-radius: 4px; }
+        .bounce-animation { animation: carouselBounce 2s infinite ease-in-out; }
+        @keyframes carouselBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
         
-        .bounce-animation {
-            animation: carouselBounce 2s infinite ease-in-out;
-        }
-        @keyframes carouselBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 15px 0 20px;
-        }
-        .stat {
-            text-align: center;
-            padding: 8px 12px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 14px;
-            flex: 1;
-        }
-        .stat-number {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
+        .stats { display: flex; justify-content: center; gap: 15px; margin: 15px 0 20px; }
+        .stat { text-align: center; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 14px; flex: 1; }
+        .stat-number { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 0.6rem; color: #888; }
         
         #loader { text-align: center; padding: 35px; display: none; }
-        .radar {
-            width: 45px;
-            height: 45px;
-            border: 3px solid var(--primary);
-            border-top-color: transparent;
-            border-radius: 50%;
-            margin: 0 auto 12px;
-            animation: spin 1s linear infinite;
-        }
+        .radar { width: 45px; height: 45px; border: 3px solid var(--primary); border-top-color: transparent; border-radius: 50%; margin: 0 auto 12px; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
         .results { display: none; }
-        .score-card {
-            background: var(--card);
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 18px;
-        }
-        .score-circle {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 4px solid;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: 800;
-        }
-        .report-good { background: rgba(46, 204, 113, 0.1); border-left: 3px solid #2ECC71; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
-        .report-critical { background: rgba(231, 76, 60, 0.15); border-left: 3px solid #E74C3C; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
-        .report-warning { background: rgba(241, 196, 15, 0.1); border-left: 3px solid #F1C40F; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
+        .score-card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 18px; }
+        .score-circle { width: 70px; height: 70px; border-radius: 50%; border: 4px solid; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; }
+        .report-good { background: rgba(46,204,113,0.1); border-left: 3px solid #2ECC71; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
+        .report-critical { background: rgba(231,76,60,0.15); border-left: 3px solid #E74C3C; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
+        .report-warning { background: rgba(241,196,15,0.1); border-left: 3px solid #F1C40F; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
         
         .interview-calculator {
             background: linear-gradient(135deg, #1a1a2e, #0a0a0f);
@@ -235,172 +115,103 @@
             margin: 15px 0;
             text-align: center;
         }
-        .calculator-title {
-            color: var(--primary);
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-        .calculator-stats {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .calculator-stat {
-            flex: 1;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 12px;
-        }
-        .calculator-stat-label {
-            font-size: 0.65rem;
-            color: #888;
-        }
-        .calculator-stat-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        .calculator-savings {
-            background: rgba(46, 204, 113, 0.15);
-            padding: 8px;
-            border-radius: 10px;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #2ECC71;
-        }
+        .calculator-title { color: var(--primary); font-weight: bold; margin-bottom: 10px; font-size: 0.9rem; }
+        .calculator-stats { display: flex; justify-content: space-between; gap: 10px; margin: 10px 0; }
+        .calculator-stat { flex: 1; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; }
+        .calculator-stat-label { font-size: 0.65rem; color: #888; }
+        .calculator-stat-value { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        .calculator-savings { background: rgba(46,204,113,0.15); padding: 8px; border-radius: 10px; margin-top: 10px; font-size: 0.8rem; color: #2ECC71; }
         
-        .panic-btn-red {
-            background: var(--danger);
-            color: white;
-            padding: 18px;
-            border: none;
-            border-radius: 60px;
-            font-weight: 800;
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 100%;
-            margin: 15px 0 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
-            animation: panicPulse 1s infinite;
+        .missed-box {
+            background: #1a1a1a; padding: 15px; border-radius: 12px; margin: 15px 0; text-align: center;
+            border-left: 4px solid #e74c3c;
         }
+        .missed-number { font-size: 1.4rem; font-weight: bold; color: #e74c3c; }
         
-        .panic-btn-green {
-            background: var(--success);
-            color: #000;
-            padding: 18px;
-            border: none;
-            border-radius: 60px;
-            font-weight: 800;
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 100%;
-            margin: 15px 0 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
-            transition: 0.2s;
-        }
-        .panic-btn-green:hover { transform: scale(1.01); background: #27ae60; }
+        .filename-card { background: var(--card); border-radius: 16px; padding: 12px; margin: 10px 0; border: 1px solid #333; }
+        .filename-good { color: #2ECC71; }
+        .filename-bad { color: #e74c3c; }
+        .filename-suggestion { background: #1a1a1a; padding: 8px; border-radius: 8px; font-family: monospace; font-size: 0.7rem; margin-top: 8px; }
         
-        @keyframes panicPulse {
-            0% { transform: scale(1); background: var(--danger); }
-            50% { transform: scale(1.02); background: #ff4444; box-shadow: 0 0 30px rgba(231, 76, 60, 0.9); }
-            100% { transform: scale(1); background: var(--danger); }
-        }
-        
-        .fix-message { text-align: center; font-size: 0.9rem; font-weight: bold; margin: 10px 0 5px; }
-        .fix-message-red { color: #e74c3c; }
-        .fix-message-green { color: #2ECC71; }
-        
-        .urgency-box {
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid var(--danger);
-            border-radius: 12px;
-            padding: 10px;
-            text-align: center;
-            margin: 10px 0;
-        }
+        .urgency-box { background: rgba(231,76,60,0.2); border: 1px solid var(--danger); border-radius: 12px; padding: 10px; text-align: center; margin: 10px 0; }
         .spots-left { font-size: 1.2rem; font-weight: bold; color: var(--danger); }
         .timer-text { font-size: 0.8rem; color: #ffaa00; }
         
-        .price-badge {
-            background: linear-gradient(135deg, #D4AF37, #B8960F);
-            color: #000;
-            padding: 10px;
-            border-radius: 50px;
-            text-align: center;
-            font-weight: bold;
-            margin: 12px 0;
-            font-size: 0.9rem;
-        }
+        .price-badge { background: linear-gradient(135deg, #D4AF37, #B8960F); color: #000; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; margin: 12px 0; font-size: 0.9rem; }
         
-        .mobile-upload-btn {
-            display: none;
+        /* STICKY BUTTON - changes color based on score */
+        .sticky-panic-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: #000;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            bottom: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
-            cursor: pointer;
-            border: none;
+            background: linear-gradient(to top, #000000cc, transparent);
+            padding: 12px 16px 20px;
+            display: none;
         }
-        
-        .tracker-card {
-            background: var(--card);
-            border-radius: 20px;
-            padding: 18px;
-            margin-top: 20px;
-        }
-        
-        .testimonial {
-            background: rgba(46, 204, 113, 0.08);
-            border-radius: 12px;
-            padding: 12px;
-            margin: 15px 0;
+        .warning-message {
             text-align: center;
-            font-style: italic;
             font-size: 0.8rem;
+            font-weight: bold;
+            color: #ffaa00;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
-        .filename-card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #333;
+        .sticky-panic-btn {
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.1s;
         }
-        .filename-good { color: #2ECC71; }
-        .filename-bad { color: #e74c3c; }
-        .filename-suggestion {
-            background: #1a1a1a;
-            padding: 8px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.7rem;
+        .sticky-panic-btn:active { transform: scale(0.98); }
+        .sticky-panic-btn.red {
+            background: #e74c3c;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
+            animation: panicFlash 0.8s infinite;
+        }
+        .sticky-panic-btn.green {
+            background: #2ECC71;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+            animation: none;
+        }
+        @keyframes panicFlash {
+            0%, 100% { background: #e74c3c; }
+            50% { background: #ff0000; box-shadow: 0 0 25px red; }
+        }
+        .countdown-timer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #ffaa00;
             margin-top: 8px;
         }
+        .social-trust {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #2ECC71;
+            margin-top: 6px;
+        }
+        
+        .mobile-upload-btn { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; width: 55px; height: 55px; border-radius: 50%; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; cursor: pointer; border: none; }
+        
+        .tracker-card { background: var(--card); border-radius: 20px; padding: 18px; margin-top: 20px; }
+        .testimonial { background: rgba(46,204,113,0.08); border-radius: 12px; padding: 12px; margin: 15px 0; text-align: center; font-style: italic; font-size: 0.8rem; }
         
         @media (max-width: 600px) {
             .mobile-upload-btn { display: flex; }
-            .panic-btn-red, .panic-btn-green { padding: 14px; font-size: 1rem; }
+            .sticky-panic-btn { padding: 14px; font-size: 1rem; }
             .stats { gap: 10px; }
             .stat { padding: 5px 8px; }
             .stat-number { font-size: 1.1rem; }
             .hero h1 { font-size: 1.1rem; }
-            .fix-message { font-size: 0.8rem; }
-            .calculator-stats { flex-direction: column; }
             .carousel-btn { width: 28px; height: 28px; font-size: 1rem; }
         }
         
@@ -446,15 +257,12 @@
         </div>
     </div>
 
-    <!-- SOCIAL PROOF CAROUSEL - ONLY 2 IMAGES -->
+    <!-- SOCIAL PROOF CAROUSEL - ONLY BEFORE & AFTER IMAGE -->
     <div class="social-proof bounce-animation">
         <div class="carousel-container">
             <div class="carousel-track" id="carouselTrack">
                 <div class="carousel-slide"><img src="https://i.postimg.cc/Z5R2gncs/Before-After.jpg" alt="Before & After CV Transformation"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/0yFWBfr0/convo.jpg" alt="Client WhatsApp Conversation"></div>
             </div>
-            <button class="carousel-btn btn-prev" id="prevBtn">❮</button>
-            <button class="carousel-btn btn-next" id="nextBtn">❯</button>
         </div>
         <div class="carousel-dots" id="carouselDots"></div>
     </div>
@@ -479,16 +287,16 @@
         <div id="interviewCalculator" class="interview-calculator" style="display:none;">
             <div class="calculator-title">📊 INTERVIEW CALCULATOR</div>
             <div class="calculator-stats">
-                <div class="calculator-stat">
-                    <div class="calculator-stat-label">YOUR CV (Current)</div>
-                    <div class="calculator-stat-value" id="currentInterviews">1 per 65 apps</div>
-                </div>
-                <div class="calculator-stat">
-                    <div class="calculator-stat-label">AFTER REVAMP</div>
-                    <div class="calculator-stat-value" id="afterInterviews">1 per 10-12 apps</div>
-                </div>
+                <div class="calculator-stat"><div class="calculator-stat-label">YOUR CV (Current)</div><div class="calculator-stat-value" id="currentInterviews">1 per 65 apps</div></div>
+                <div class="calculator-stat"><div class="calculator-stat-label">AFTER REVAMP</div><div class="calculator-stat-value" id="afterInterviews">1 per 10-12 apps</div></div>
             </div>
             <div class="calculator-savings" id="savingsMessage">💰 R60 investment = Save yourself 50+ wasted applications</div>
+        </div>
+
+        <div id="missedBox" class="missed-box" style="display:none;">
+            <div style="font-size: 0.8rem; color: #888;">📊 Based on your ATS score:</div>
+            <div style="margin: 5px 0;"><span class="missed-number" id="missedJobs">0</span> job opportunities likely missed</div>
+            <div style="font-size: 0.7rem; color: #e74c3c;">Fix your CV today → Get interviews tomorrow</div>
         </div>
 
         <div id="filenameContainer" class="filename-card" style="display:none;">
@@ -497,18 +305,7 @@
             <div id="filenameSuggestion" class="filename-suggestion" style="display:none;"></div>
         </div>
 
-        <div id="urgencyContainer" style="display:none;">
-            <div class="urgency-box">
-                <div class="spots-left" id="spotsLeft">⚠️ ONLY 5 SPOTS LEFT TODAY ⚠️</div>
-                <div class="timer-text" id="dayTimer">⏰ Offer ends in 03h 24m</div>
-            </div>
-        </div>
-
-        <div id="fixButtonContainer" style="display:none;">
-            <div id="fixMessage" class="fix-message"></div>
-            <button id="fixActionBtn" class="panic-btn-red" onclick="panicFix()">🔴 FIX MY CV NOW 🔴</button>
-            <div class="price-badge">💰 R60 Only • 2 Hour Delivery • Free Job Tracker</div>
-        </div>
+        <div id="urgencyContainer" style="display:none;"><div class="urgency-box"><div class="spots-left" id="spotsLeft">⚠️ ONLY 5 SPOTS LEFT TODAY ⚠️</div><div class="timer-text" id="dayTimer">⏰ Offer ends in 03h 24m</div></div></div>
 
         <div class="testimonial" id="testimonialBox" style="display:none;">
             <div>⭐ "Got 3 interviews within 2 weeks!" — Cel'mpilo</div>
@@ -517,22 +314,22 @@
 
         <div class="tracker-card" id="trackerSection" style="display:none;">
             <h3 style="font-size:1rem;">📋 FREE JOB TRACKER</h3>
-            <div id="trackerLocked">
-                <p style="color:#888; font-size:0.75rem;">🔒 Unlocked after CV revamp</p>
-                <input type="text" id="unlockInput" placeholder="Enter unlock code" style="width:100%; padding:10px; background:#0a0a0a; border:1px solid var(--primary); border-radius:8px; margin:10px 0;">
-                <button onclick="verifyCode()" style="background:var(--primary); color:#000; padding:8px; border:none; border-radius:8px; width:100%;">Unlock</button>
-            </div>
-            <div id="trackerUnlocked" style="display:none;">
-                <button onclick="addJob()" style="background:#2ECC71; color:#000; padding:10px; border:none; border-radius:8px; width:100%;">+ Add Application</button>
-                <div id="jobList" style="margin-top:15px;"></div>
-            </div>
+            <div id="trackerLocked"><p style="color:#888; font-size:0.75rem;">🔒 Unlocked after CV revamp</p><input type="text" id="unlockInput" placeholder="Enter unlock code" style="width:100%; padding:10px; background:#0a0a0a; border:1px solid var(--primary); border-radius:8px; margin:10px 0;"><button onclick="verifyCode()" style="background:var(--primary); color:#000; padding:8px; border:none; border-radius:8px; width:100%;">Unlock</button></div>
+            <div id="trackerUnlocked" style="display:none;"><button onclick="addJob()" style="background:#2ECC71; color:#000; padding:10px; border:none; border-radius:8px; width:100%;">+ Add Application</button><div id="jobList" style="margin-top:15px;"></div></div>
         </div>
-
         <button onclick="location.reload()" style="width:100%; background:#222; border:1px solid #444; color:white; padding:12px; border-radius:12px; margin-top:20px;">⟳ Scan Another CV</button>
     </div>
 </div>
 
 <button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
+
+<!-- STICKY BUTTON - Color changes based on score -->
+<div id="stickyPanic" class="sticky-panic-container">
+    <div class="warning-message" id="warningMessage">⚠️ THIS IS WHY YOU'RE NOT GETTING INTERVIEWS ⚠️</div>
+    <button class="sticky-panic-btn red" id="stickyPanicBtn" onclick="panicFix()">🔴 FIX MY CV NOW 🔴</button>
+    <div class="countdown-timer">⏰ Offer expires in <span id="countdownMinutes">15</span>:<span id="countdownSeconds">00</span></div>
+    <div class="social-trust">✅ 1,104+ CVs fixed this month</div>
+</div>
 
 <footer>Created by Deon Sima | © 2026 | WhatsApp: +27 60 564 7937</footer>
 
@@ -540,6 +337,7 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 let cvText = "", currentScore = 0, missingItems = [], uploadedFileName = "";
 
+// Admin
 let clickCount = 0;
 document.getElementById('logoClick').onclick = () => { clickCount++; setTimeout(() => clickCount=0, 1000); if(clickCount===5) document.getElementById('adminOverlay').style.display='flex'; };
 function closeAdmin() { document.getElementById('adminOverlay').style.display='none'; }
@@ -553,12 +351,29 @@ function deleteJob(id) { let jobs = getJobs().filter(j=>j.id!==id); saveJobs(job
 function addJob() { let company = prompt("Company name?"); if(!company) return; let position = prompt("Job position?"); if(!position) return; let status = prompt("Status: applied/interview/offer/rejected?", "applied"); let jobs = getJobs(); jobs.unshift({id:Date.now(), company, position, date:new Date().toISOString().split('T')[0], status}); saveJobs(jobs); }
 function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;': m==='<'?'&lt;': '&gt;'); }
 
+// SHORT WHATSAPP MESSAGE
 function panicFix() {
-    let urgency = currentScore < 40 ? "CRITICAL - being rejected" : (currentScore < 60 ? "Major issues found" : (currentScore < 80 ? "Needs improvement" : "Room for perfection"));
-    let topIssues = missingItems.slice(0, 2).join(", ");
-    let message = `Hi Deon 🙏 My CV scored ${currentScore}% (${urgency}). Issues: ${topIssues || "ATS check complete"}. Please fix my CV for R60.`;
+    let message = currentScore < 80 ? `CV score ${currentScore}% - fix for R60` : `CV score ${currentScore}% - perfect for R60`;
     window.open(`https://wa.me/27605647937?text=${encodeURIComponent(message)}`, '_blank');
 }
+
+// COUNTDOWN TIMER (15 minutes)
+let timeLeft = 15 * 60;
+const minutesSpan = document.getElementById('countdownMinutes');
+const secondsSpan = document.getElementById('countdownSeconds');
+const countdownInterval = setInterval(() => {
+    if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        minutesSpan.innerText = '00';
+        secondsSpan.innerText = '00';
+    } else {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        minutesSpan.innerText = minutes.toString().padStart(2, '0');
+        secondsSpan.innerText = seconds.toString().padStart(2, '0');
+    }
+}, 1000);
 
 function updateInterviewCalculator(score) {
     let current, after, savings;
@@ -597,225 +412,94 @@ function updateDayTimer() {
 setInterval(updateDayTimer, 60000);
 updateDayTimer();
 
-// CAROUSEL LOGIC - FIXED FOR 2 SLIDES
+// CAROUSEL LOGIC - Single image (no buttons needed)
 const track = document.getElementById('carouselTrack');
 const slides = Array.from(document.querySelectorAll('.carousel-slide'));
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
 const dotsContainer = document.getElementById('carouselDots');
-let currentIndex = 0;
-const slideCount = slides.length;
-let autoInterval;
-
-function updateCarousel() {
-    const slideWidth = slides[0]?.clientWidth || 0;
-    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-    document.querySelectorAll('.dot').forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentIndex);
-    });
+if (slides.length <= 1) {
+    // Hide dots if only one image
+    if (dotsContainer) dotsContainer.style.display = 'none';
+} else {
+    // Multi-image logic (kept for future)
 }
-
-function nextSlide() {
-    currentIndex = (currentIndex + 1) % slideCount;
-    updateCarousel();
-    resetAutoSlide();
-}
-
-function prevSlide() {
-    currentIndex = (currentIndex - 1 + slideCount) % slideCount;
-    updateCarousel();
-    resetAutoSlide();
-}
-
-function resetAutoSlide() {
-    if (autoInterval) clearInterval(autoInterval);
-    autoInterval = setInterval(nextSlide, 5000);
-}
-
-function createDots() {
-    dotsContainer.innerHTML = '';
-    for (let i = 0; i < slideCount; i++) {
-        const dot = document.createElement('div');
-        dot.classList.add('dot');
-        if (i === currentIndex) dot.classList.add('active');
-        dot.addEventListener('click', () => {
-            currentIndex = i;
-            updateCarousel();
-            resetAutoSlide();
-        });
-        dotsContainer.appendChild(dot);
-    }
-}
-
-window.addEventListener('resize', () => updateCarousel());
-prevBtn.addEventListener('click', prevSlide);
-nextBtn.addEventListener('click', nextSlide);
-createDots();
-resetAutoSlide();
 
 function runScan(text) {
     let lower = text.toLowerCase();
     let score = 20;
     let good = [], critical = [], warnings = [];
-    
-    if (lower.includes("experience") || lower.includes("work history") || lower.includes("employment")) { score += 15; good.push("✅ Work experience found"); } 
-    else { critical.push("🚨 CRITICAL: NO work experience section — YOUR CV WILL BE AUTO-REJECTED by 94% of ATS systems"); }
-    
-    let hasCertificate = lower.includes("certificate") || lower.includes("certified") || lower.includes("short course") || lower.includes("coursera") || lower.includes("udemy") || lower.includes("edx");
-    let hasDiploma = lower.includes("diploma") || lower.includes("national diploma") || lower.includes("higher certificate");
-    let hasDegree = lower.includes("degree") || lower.includes("bachelor") || lower.includes("bcom") || lower.includes("ba") || lower.includes("bsc") || lower.includes("honours") || lower.includes("master") || lower.includes("mba") || lower.includes("phd") || lower.includes("doctoral");
-    let hasEducationSection = lower.includes("education") || lower.includes("qualifications") || lower.includes("academic background");
-    
-    if (hasCertificate) { score += 4; good.push("✅ Certificate / Short course found — adds credibility"); }
-    if (hasDiploma) { score += 5; good.push("✅ Diploma found — good qualification level"); }
-    if (hasDegree) { score += 6; good.push("✅ Degree found — strong educational background"); }
-    if (!hasCertificate && !hasDiploma && !hasDegree && !hasEducationSection) { critical.push("🚨 CRITICAL: NO education or qualifications found — Employers SKIP CVs without education"); }
-    else if (!hasCertificate && !hasDiploma && !hasDegree) { warnings.push("📚 Education section found but no specific certificates/diplomas/degrees listed. Add your qualifications!"); }
-    
-    if (lower.includes("skills") || lower.includes("core competencies") || lower.includes("technical skills")) { score += 12; good.push("✅ Skills section found"); } 
-    else { critical.push("⚠️ WARNING: NO skills section — ATS cannot match you to job keywords"); }
-    
-    let hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
-    let hasPhone = /(\+27|0)[0-9\s\-]{9,12}/.test(text);
-    if (hasEmail && hasPhone) { score += 15; good.push("✅ Contact info complete (Email + SA phone)"); } 
-    else if (hasEmail || hasPhone) { score += 8; warnings.push("⚠️ Missing either phone OR email — recruiters need BOTH to contact you"); } 
-    else { critical.push("🚨 CRITICAL: NO phone or email found — recruiters CANNOT REACH YOU"); }
-    
-    let actionWords = ['managed', 'developed', 'led', 'achieved', 'improved', 'created', 'implemented', 'increased', 'delivered', 'spearheaded'];
-    let found = actionWords.filter(w => lower.includes(w));
-    if (found.length >= 3) { score += 10; good.push(`✅ Strong action verbs used (${found.length})`); } 
-    else if (found.length >= 1) { score += 4; warnings.push(`⚠️ Only ${found.length} action verb(s) found. Add more like 'Managed', 'Led', 'Achieved'`); } 
-    else { critical.push("⚠️ NO action verbs detected — Your CV sounds passive and WEAK"); }
-    
-    if (lower.includes("summary") || lower.includes("profile") || lower.includes("about me") || lower.includes("professional profile")) { score += 5; good.push("✅ Professional summary found"); } 
-    else { warnings.push("💡 NO professional summary — Recruiters spend ONLY 6 SECONDS on your CV, a summary hooks them"); }
-    
-    let profCerts = ['pmp', 'aws', 'microsoft', 'cisco', 'comptia', 'scrum', 'agile', 'six sigma', 'prince2', 'itil', 'ccna'];
-    let hasProfCert = profCerts.some(cert => lower.includes(cert));
-    if (hasProfCert) { score += 3; good.push("✅ Professional certifications found — adds credibility"); } 
-    else { warnings.push("📜 No professional certifications mentioned — Adding relevant certs increases interview chances by 40%"); }
-    
-    let saCities = ['johannesburg', 'cape town', 'durban', 'pretoria', 'port elizabeth', 'bloemfontein', 'polokwane', 'nelspruit', 'kimberley'];
-    let hasLocation = saCities.some(city => lower.includes(city));
-    if (hasLocation) { score += 8; good.push("✅ Location found — recruiters see you're local"); } 
-    else { critical.push("🚨 NO location found — Recruiters FILTER BY CITY. Add your city or your CV is invisible"); }
-    
-    let languages = ['english', 'afrikaans', 'zulu', 'xhosa', 'sesotho', 'tswana', 'venda', 'tsonga'];
-    let foundLangs = languages.filter(lang => lower.includes(lang));
-    if (foundLangs.length >= 2) { score += 5; good.push(`✅ ${foundLangs.length} languages listed — BIG advantage in SA market`); } 
-    else if (foundLangs.length === 1) { score += 2; warnings.push(`🗣️ Only ${foundLangs[0]} listed — In SA, speaking multiple languages is a major advantage`); } 
-    else { warnings.push("🗣️ No languages listed — South African employers value multilingual candidates"); }
-    
-    let words = text.split(/\s+/).length;
-    if (words >= 400 && words <= 650) { score += 5; good.push(`✅ Perfect CV length (${words} words) — ATS friendly`); } 
-    else if (words >= 300 && words <= 800) { score += 2; warnings.push(`📏 CV length is ${words} words. Ideal is 400-650 words for ATS`); } 
-    else if (words < 300) { warnings.push(`📏 CV is too short (${words} words). Add more detail — Aim for 400+ words`); } 
-    else { warnings.push(`📏 CV is too long (${words} words). Recruiters SKIM, not read — cut to 650 words max`); }
-    
-    let hasBullets = /[•\-\*]\s/.test(text);
-    if (hasBullets) { score += 5; good.push("✅ Bullet points detected — ATS loves scannable content"); } 
-    else { critical.push("⚠️ NO bullet points found — Use • or - to list achievements. Paragraphs get IGNORED by ATS"); }
-    
-    let fancyFonts = ['script', 'cursive', 'comic', 'brush', 'calligraphy', 'handwriting', 'fancy', 'decorative'];
-    let hasFancyFont = fancyFonts.some(font => lower.includes(font));
-    if (hasFancyFont) { score -= 10; critical.push("🚨 Fancy/unreadable fonts detected — ATS CANNOT READ fancy fonts. Use Arial, Calibri, or Times New Roman"); }
-    
-    let hasLicense = lower.includes("driver") && (lower.includes("license") || lower.includes("licence"));
-    if (hasLicense) { score += 5; good.push("✅ Driver's License listed — Many employers require this"); } 
-    else { warnings.push("🚗 Driver's License not mentioned — If you have one, ADD IT. Many recruiters filter by this requirement"); }
-    
-    if (uploadedFileName) {
-        let fileNameCheck = checkFileName(uploadedFileName);
-        if (!fileNameCheck.isGood) {
-            score -= fileNameCheck.penalty;
-            critical.push(`📁 FILE NAME ISSUE: ${fileNameCheck.issues[0]} — ATS systems flag this as unprofessional`);
-        }
-    }
-    
-    score = Math.min(100, Math.max(0, Math.round(score)));
-    currentScore = score;
-    missingItems = [...critical, ...warnings];
-    
-    document.getElementById('scoreCircle').innerText = score + "%";
-    document.getElementById('scoreCircle').style.borderColor = score < 60 ? "#e74c3c" : (score < 75 ? "#F1C40F" : "#2ECC71");
-    document.getElementById('scoreStatus').innerHTML = score < 50 ? "❌ FAILING - WILL BE REJECTED" : (score < 60 ? "⚠️ CRITICAL - NEEDS FIX" : (score < 75 ? "📈 NEEDS WORK" : "🎯 GOOD FOUNDATION"));
-    document.getElementById('scoreDesc').innerHTML = score < 60 ? "Your CV is being REJECTED by ATS filters" : (score < 75 ? "Fix these issues to get interviews" : "Small improvements for perfection");
-    
+    if (lower.includes("experience")||lower.includes("work history")||lower.includes("employment")) { score += 15; good.push("✅ Work experience found"); } else { critical.push("🚨 CRITICAL: NO work experience section — 94% rejection rate"); }
+    let hasCert=lower.includes("certificate")||lower.includes("certified")||lower.includes("short course"), hasDip=lower.includes("diploma")||lower.includes("national diploma"), hasDeg=lower.includes("degree")||lower.includes("bachelor")||lower.includes("bcom"), hasEduSec=lower.includes("education")||lower.includes("qualifications");
+    if(hasCert){score+=4;good.push("✅ Certificate found");}
+    if(hasDip){score+=5;good.push("✅ Diploma found");}
+    if(hasDeg){score+=6;good.push("✅ Degree found");}
+    if(!hasCert&&!hasDip&&!hasDeg&&!hasEduSec){critical.push("🚨 CRITICAL: NO education found");}
+    if(lower.includes("skills")||lower.includes("core competencies")){score+=12;good.push("✅ Skills section found");}else{critical.push("⚠️ NO skills section — ATS cannot match keywords");}
+    let hasEmail=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text), hasPhone=/(\+27|0)[0-9\s\-]{9,12}/.test(text);
+    if(hasEmail&&hasPhone){score+=15;good.push("✅ Contact info complete");}else if(hasEmail||hasPhone){score+=8;warnings.push("⚠️ Missing phone OR email");}else{critical.push("🚨 NO phone or email — cannot reach you");}
+    let actionWords=['managed','developed','led','achieved','improved','created','implemented']; let found=actionWords.filter(w=>lower.includes(w));
+    if(found.length>=3){score+=10;good.push("✅ Strong action verbs");}else if(found.length>=1){score+=4;warnings.push("⚠️ Add more action verbs");}else{critical.push("⚠️ NO action verbs — CV sounds weak");}
+    if(lower.includes("summary")||lower.includes("profile")){score+=5;good.push("✅ Professional summary");}else{warnings.push("💡 Add a professional summary");}
+    let profCerts=['pmp','aws','microsoft','cisco']; let hasProf=profCerts.some(c=>lower.includes(c)); if(hasProf){score+=3;good.push("✅ Professional certs");}else{warnings.push("📜 Add relevant certifications");}
+    let saCities=['johannesburg','cape town','durban','pretoria']; let hasLoc=saCities.some(c=>lower.includes(c)); if(hasLoc){score+=8;good.push("✅ Location found");}else{critical.push("🚨 NO location — recruiters filter by city");}
+    let langs=['english','afrikaans','zulu','xhosa']; let foundLangs=langs.filter(l=>lower.includes(l)); if(foundLangs.length>=2){score+=5;good.push(`✅ ${foundLangs.length} languages`);}else if(foundLangs.length===1){score+=2;warnings.push(`🗣️ Only ${foundLangs[0]} listed`);}else{warnings.push("🗣️ Add languages — SA advantage");}
+    let words=text.split(/\s+/).length; if(words>=400&&words<=650){score+=5;good.push(`✅ Perfect length (${words} words)`);}else if(words>=300&&words<=800){score+=2;warnings.push(`📏 CV length: ${words} words`);}else if(words<300){warnings.push(`📏 CV too short (${words} words)`);}else{warnings.push(`📏 CV too long (${words} words)`);}
+    let hasBullets=/[•\-\*]\s/.test(text); if(hasBullets){score+=5;good.push("✅ Bullet points detected");}else{critical.push("⚠️ NO bullet points — use • or -");}
+    let fancyFonts=['script','cursive','comic']; let hasFancy=fancyFonts.some(f=>lower.includes(f)); if(hasFancy){score-=10;critical.push("🚨 Fancy fonts detected — ATS cannot read");}
+    let hasLicense=lower.includes("driver")&&(lower.includes("license")||lower.includes("licence")); if(hasLicense){score+=5;good.push("✅ Driver's license listed");}else{warnings.push("🚗 Add driver's license if you have one");}
+    if(uploadedFileName){let fc=checkFileName(uploadedFileName); if(!fc.isGood){score-=fc.penalty; critical.push(`📁 File name issue: ${fc.issues[0]}`);}}
+    score=Math.min(100,Math.max(0,Math.round(score))); currentScore=score; missingItems=[...critical,...warnings];
+    document.getElementById('scoreCircle').innerText=score+"%"; document.getElementById('scoreCircle').style.borderColor=score<60?"#e74c3c":score<75?"#F1C40F":"#2ECC71";
+    document.getElementById('scoreStatus').innerHTML=score<50?"❌ FAILING":score<60?"⚠️ CRITICAL":score<75?"📈 NEEDS WORK":"🎯 GOOD";
+    document.getElementById('scoreDesc').innerHTML=score<60?"Your CV is being REJECTED":score<75?"Fix these issues":"Small improvements";
     updateInterviewCalculator(score);
+    let missedJobsNum = Math.floor((100 - score) * 1.5);
+    document.getElementById('missedJobs').innerText = missedJobsNum;
+    document.getElementById('missedBox').style.display = 'block';
+    let html=`<div style="margin-top:10px;">`;
+    if(good.length){html+=`<div style="color:#2ECC71;">✅ WHAT'S RIGHT (${good.length})</div>`; good.forEach(g=>html+=`<div class="report-good">${g}</div>`);}
+    if(critical.length){html+=`<div style="color:#e74c3c;margin-top:10px;">🚨 CRITICAL (${critical.length})</div>`; critical.forEach(c=>html+=`<div class="report-critical">${c}</div>`);}
+    if(warnings.length){html+=`<div style="color:#F1C40F;margin-top:10px;">⚠️ IMPROVEMENTS (${warnings.length})</div>`; warnings.forEach(w=>html+=`<div class="report-warning">${w}</div>`);}
+    html+=`<div style="background:#e74c3c20; padding:10px; border-radius:10px; margin-top:12px; text-align:center;"><strong>🔴 CVs scoring below 60% are REJECTED 94% of the time</strong></div></div>`;
+    document.getElementById('detailedReport').innerHTML=html;
+    if(uploadedFileName){let fc=checkFileName(uploadedFileName); document.getElementById('filenameStatus').innerHTML=fc.isGood?'<div class="filename-good">✅ Professional file name</div>':'<div class="filename-bad">❌ '+fc.issues[0]+'</div>'; document.getElementById('filenameSuggestion').style.display=fc.isGood?'none':'block'; if(!fc.isGood)document.getElementById('filenameSuggestion').innerHTML=`💡 SUGGESTED: ${fc.suggestion}`; document.getElementById('filenameContainer').style.display='block';}
     
-    let html = `<div style="margin-top:10px;">`;
-    if (good.length) { html += `<div style="color:#2ECC71; margin-bottom:8px; font-size:0.8rem;">✅ WHAT'S RIGHT (${good.length})</div>`; good.forEach(g => html += `<div class="report-good">${g}</div>`); }
-    if (critical.length) { html += `<div style="color:#e74c3c; margin:12px 0 8px; font-size:0.8rem;">🚨 CRITICAL — FIX THESE OR YOUR CV WILL BE REJECTED (${critical.length})</div>`; critical.forEach(c => html += `<div class="report-critical">${c}</div>`); }
-    if (warnings.length) { html += `<div style="color:#F1C40F; margin:12px 0 8px; font-size:0.8rem;">⚠️ WEAKNESSES TO FIX (${warnings.length})</div>`; warnings.forEach(w => html += `<div class="report-warning">${w}</div>`); }
-    html += `<div style="background:#e74c3c20; padding:10px; border-radius:10px; margin-top:12px; text-align:center; font-size:0.75rem;"><strong>🔴 CVs scoring below 60% are REJECTED 94% of the time before interview</strong></div>`;
-    html += `</div>`;
-    document.getElementById('detailedReport').innerHTML = html;
+    // STICKY BUTTON LOGIC: Change color, text, and warning message based on score
+    const stickyContainer = document.getElementById('stickyPanic');
+    const stickyBtn = document.getElementById('stickyPanicBtn');
+    const warningMsg = document.getElementById('warningMessage');
     
-    if (uploadedFileName) {
-        let fileNameCheck = checkFileName(uploadedFileName);
-        let statusHtml = fileNameCheck.isGood ? '<div class="filename-good">✅ Professional file name! Good job.</div>' : `<div class="filename-bad">❌ ${fileNameCheck.issues[0] || "File name needs improvement"}</div>`;
-        document.getElementById('filenameStatus').innerHTML = statusHtml;
-        document.getElementById('filenameSuggestion').style.display = fileNameCheck.isGood ? 'none' : 'block';
-        if (!fileNameCheck.isGood) document.getElementById('filenameSuggestion').innerHTML = `💡 SUGGESTED: ${fileNameCheck.suggestion}`;
-        document.getElementById('filenameContainer').style.display = 'block';
-    }
-    
-    let fixContainer = document.getElementById('fixButtonContainer');
-    let fixMessage = document.getElementById('fixMessage');
-    let fixBtn = document.getElementById('fixActionBtn');
-    fixContainer.style.display = 'block';
-    if (score < 80) {
-        fixMessage.innerHTML = '<span class="fix-message-red">⚠️ THIS IS WHY YOU\'RE NOT GETTING INTERVIEWS. CLICK BELOW TO FIX YOUR CV NOW ⚠️</span>';
-        fixBtn.className = 'panic-btn-red';
-        fixBtn.innerHTML = '🔴 FIX MY CV NOW 🔴';
+    if(score < 80){
+        stickyContainer.style.display = 'block';
+        stickyBtn.className = 'sticky-panic-btn red';
+        stickyBtn.innerHTML = '🔴 FIX MY CV NOW 🔴';
+        warningMsg.innerHTML = '⚠️ THIS IS WHY YOU\'RE NOT GETTING INTERVIEWS ⚠️';
+        warningMsg.style.color = '#ffaa00';
     } else {
-        fixMessage.innerHTML = '<span class="fix-message-green">✅ Great foundation! Still room for improvement. Click below to perfect your CV ✅</span>';
-        fixBtn.className = 'panic-btn-green';
-        fixBtn.innerHTML = '🟢 PERFECT MY CV 🟢';
+        stickyContainer.style.display = 'block';
+        stickyBtn.className = 'sticky-panic-btn green';
+        stickyBtn.innerHTML = '🟢 PERFECT MY CV 🟢';
+        warningMsg.innerHTML = '✅ Great foundation! Still room for improvement.';
+        warningMsg.style.color = '#2ECC71';
     }
     
-    document.getElementById('interviewCalculator').style.display = 'block';
-    document.getElementById('urgencyContainer').style.display = 'block';
-    document.getElementById('testimonialBox').style.display = 'block';
-    document.getElementById('trackerSection').style.display = 'block';
-    updateSpotsLeft();
-    
-    if (isTrackerUnlocked()) {
-        document.getElementById('trackerLocked').style.display = 'none';
-        document.getElementById('trackerUnlocked').style.display = 'block';
-        renderJobs();
-    } else {
-        document.getElementById('trackerLocked').style.display = 'block';
-        document.getElementById('trackerUnlocked').style.display = 'none';
-    }
+    document.getElementById('interviewCalculator').style.display='block'; document.getElementById('urgencyContainer').style.display='block'; document.getElementById('testimonialBox').style.display='block'; document.getElementById('trackerSection').style.display='block'; updateSpotsLeft();
+    if(isTrackerUnlocked()){document.getElementById('trackerLocked').style.display='none'; document.getElementById('trackerUnlocked').style.display='block'; renderJobs();}else{document.getElementById('trackerLocked').style.display='block'; document.getElementById('trackerUnlocked').style.display='none';}
 }
 
 document.getElementById('cvFile').addEventListener('change', async function(e) {
-    let file = e.target.files[0];
-    if (!file) return;
+    let file = e.target.files[0]; if (!file) return;
     uploadedFileName = file.name;
     document.getElementById('progressBar').style.display = 'block';
-    let prog = 0, interval = setInterval(() => { prog += 20; document.getElementById('progressFill').style.width = prog + '%'; if(prog>=100) clearInterval(interval); }, 150);
-    document.querySelector('.drop-zone').style.display = 'none';
-    document.getElementById('loader').style.display = 'block';
-    let ab = await file.arrayBuffer();
-    let pdf = await pdfjsLib.getDocument(ab).promise;
-    let text = "";
-    for (let i = 1; i <= pdf.numPages; i++) {
-        let page = await pdf.getPage(i);
-        let content = await page.getTextContent();
-        text += content.items.map(item => item.str).join(" ");
-    }
-    cvText = text;
-    runScan(cvText);
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('resultsBox').style.display = 'block';
-    document.getElementById('progressBar').style.display = 'none';
-    setTimeout(() => document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}), 100);
+    let prog=0, interval=setInterval(()=>{prog+=20; document.getElementById('progressFill').style.width=prog+'%'; if(prog>=100)clearInterval(interval);},150);
+    document.querySelector('.drop-zone').style.display='none'; document.getElementById('loader').style.display='block';
+    let ab=await file.arrayBuffer(); let pdf=await pdfjsLib.getDocument(ab).promise; let text="";
+    for(let i=1;i<=pdf.numPages;i++){let page=await pdf.getPage(i); let content=await page.getTextContent(); text+=content.items.map(item=>item.str).join(" ");}
+    cvText=text; runScan(cvText);
+    document.getElementById('loader').style.display='none'; document.getElementById('resultsBox').style.display='block'; document.getElementById('progressBar').style.display='none';
+    setTimeout(()=>document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}),100);
 });
 
-let mins = 0;
-setInterval(() => { mins = Math.min(mins+1, 120); let h = Math.floor(mins/60), m = mins%60; document.getElementById('deliveryTimer').innerText = `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m`; }, 60000);
+let mins=0; setInterval(()=>{mins=Math.min(mins+1,120); let h=Math.floor(mins/60),m=mins%60; document.getElementById('deliveryTimer').innerText=`${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m`;},60000);
 </script>
 </body>
 </html>
