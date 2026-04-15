@@ -1,3 +1,5 @@
+Here is your updated **CV FIX PRO** website code with the carousel changed to show only the **Before & After** and **Conversation** images. The **Proof of Payment** picture has been removed as requested.
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -448,13 +450,12 @@
         </div>
     </div>
 
-    <!-- SOCIAL PROOF SECTION (animated carousel with bounce) -->
+    <!-- SOCIAL PROOF SECTION (animated carousel with bounce - only 2 images) -->
     <div class="social-proof bounce-animation">
         <div class="carousel-container">
             <div class="carousel-track" id="carouselTrack">
                 <div class="carousel-slide"><img src="https://i.postimg.cc/Z5R2gncs/Before-After.jpg" alt="Before & After CV Transformation"></div>
                 <div class="carousel-slide"><img src="https://i.postimg.cc/0yFWBfr0/convo.jpg" alt="Client WhatsApp Conversation"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/s25c0Ct9/Proof-of-pay.jpg" alt="Proof of Payment"></div>
             </div>
             <button class="carousel-btn btn-prev" id="prevBtn">❮</button>
             <button class="carousel-btn btn-next" id="nextBtn">❯</button>
@@ -605,7 +606,7 @@ function updateDayTimer() {
 setInterval(updateDayTimer, 60000);
 updateDayTimer();
 
-// CAROUSEL LOGIC
+// CAROUSEL LOGIC (updated for 2 slides)
 const track = document.getElementById('carouselTrack');
 const slides = Array.from(document.querySelectorAll('.carousel-slide'));
 const prevBtn = document.getElementById('prevBtn');
@@ -618,7 +619,6 @@ let autoInterval;
 function updateCarousel() {
     const slideWidth = slides[0].clientWidth;
     track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-    // update dots
     document.querySelectorAll('.dot').forEach((dot, idx) => {
         if (idx === currentIndex) dot.classList.add('active');
         else dot.classList.remove('active');
@@ -657,7 +657,6 @@ function createDots() {
     });
 }
 
-// init carousel
 window.addEventListener('resize', () => updateCarousel());
 prevBtn.addEventListener('click', prevSlide);
 nextBtn.addEventListener('click', nextSlide);
@@ -844,3 +843,4 @@ setInterval(() => { mins = Math.min(mins+1, 120); let h = Math.floor(mins/60), m
 </script>
 </body>
 </html>
+```
