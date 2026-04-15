@@ -139,7 +139,7 @@
         
         .price-badge { background: linear-gradient(135deg, #D4AF37, #B8960F); color: #000; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; margin: 12px 0; font-size: 0.9rem; }
         
-        /* STICKY BUTTON - changes color based on score */
+        /* STICKY BUTTON */
         .sticky-panic-container {
             position: fixed;
             bottom: 0;
@@ -169,7 +169,7 @@
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             transition: 0.1s;
         }
         .sticky-panic-btn:active { transform: scale(0.98); }
@@ -323,10 +323,10 @@
 
 <button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
 
-<!-- STICKY BUTTON - Color changes based on score -->
+<!-- STICKY BUTTON - NEW TEXT -->
 <div id="stickyPanic" class="sticky-panic-container">
     <div class="warning-message" id="warningMessage">⚠️ THIS IS WHY YOU'RE NOT GETTING INTERVIEWS ⚠️</div>
-    <button class="sticky-panic-btn red" id="stickyPanicBtn" onclick="panicFix()">🔴 FIX MY CV NOW 🔴</button>
+    <button class="sticky-panic-btn red" id="stickyPanicBtn" onclick="panicFix()">👉 CLICK TO FIX YOUR CV</button>
     <div class="countdown-timer">⏰ Offer expires in <span id="countdownMinutes">15</span>:<span id="countdownSeconds">00</span></div>
     <div class="social-trust">✅ 1,104+ CVs fixed this month</div>
 </div>
@@ -412,15 +412,12 @@ function updateDayTimer() {
 setInterval(updateDayTimer, 60000);
 updateDayTimer();
 
-// CAROUSEL LOGIC - Single image (no buttons needed)
+// CAROUSEL LOGIC - Single image
 const track = document.getElementById('carouselTrack');
 const slides = Array.from(document.querySelectorAll('.carousel-slide'));
 const dotsContainer = document.getElementById('carouselDots');
 if (slides.length <= 1) {
-    // Hide dots if only one image
     if (dotsContainer) dotsContainer.style.display = 'none';
-} else {
-    // Multi-image logic (kept for future)
 }
 
 function runScan(text) {
@@ -471,13 +468,13 @@ function runScan(text) {
     if(score < 80){
         stickyContainer.style.display = 'block';
         stickyBtn.className = 'sticky-panic-btn red';
-        stickyBtn.innerHTML = '🔴 FIX MY CV NOW 🔴';
+        stickyBtn.innerHTML = '👉 CLICK TO FIX YOUR CV';
         warningMsg.innerHTML = '⚠️ THIS IS WHY YOU\'RE NOT GETTING INTERVIEWS ⚠️';
         warningMsg.style.color = '#ffaa00';
     } else {
         stickyContainer.style.display = 'block';
         stickyBtn.className = 'sticky-panic-btn green';
-        stickyBtn.innerHTML = '🟢 PERFECT MY CV 🟢';
+        stickyBtn.innerHTML = '👉 CLICK TO PERFECT YOUR CV';
         warningMsg.innerHTML = '✅ Great foundation! Still room for improvement.';
         warningMsg.style.color = '#2ECC71';
     }
