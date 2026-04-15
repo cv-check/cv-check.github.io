@@ -28,12 +28,8 @@
         }
         
         @keyframes subtleBounce {
-            0%, 100% { 
-                transform: translateY(0);
-            }
-            50% { 
-                transform: translateY(-3px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
         
         .hero {
@@ -94,6 +90,90 @@
             font-size: 1rem;
         }
         .file-input { display: none; }
+        
+        /* Social Proof Carousel */
+        .social-proof {
+            margin: 20px 0 10px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 20px;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            will-change: transform;
+        }
+        .carousel-slide {
+            flex: 0 0 100%;
+            padding: 8px;
+        }
+        .carousel-slide img {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: #0a0a0a;
+            display: block;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: var(--primary);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .carousel-btn:hover {
+            background: var(--primary);
+            color: #000;
+        }
+        .btn-prev { left: 8px; }
+        .btn-next { right: 8px; }
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #555;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .dot.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        /* Bounce animation for the whole carousel section (gentle) */
+        .bounce-animation {
+            animation: carouselBounce 2s infinite ease-in-out;
+        }
+        @keyframes carouselBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
         
         .stats {
             display: flex;
@@ -323,6 +403,7 @@
             .hero h1 { font-size: 1.1rem; }
             .fix-message { font-size: 0.8rem; }
             .calculator-stats { flex-direction: column; }
+            .carousel-btn { width: 28px; height: 28px; font-size: 1rem; }
         }
         
         footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
@@ -365,6 +446,20 @@
         <div id="progressBar" style="display:none; margin-top:10px;">
             <div style="background:#333; border-radius:10px; height:5px;"><div id="progressFill" style="width:0%; background:var(--primary); height:5px; border-radius:10px;"></div></div>
         </div>
+    </div>
+
+    <!-- SOCIAL PROOF SECTION (animated carousel with bounce) -->
+    <div class="social-proof bounce-animation">
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide"><img src="https://i.postimg.cc/Z5R2gncs/Before-After.jpg" alt="Before & After CV Transformation"></div>
+                <div class="carousel-slide"><img src="https://i.postimg.cc/0yFWBfr0/convo.jpg" alt="Client WhatsApp Conversation"></div>
+                <div class="carousel-slide"><img src="https://i.postimg.cc/s25c0Ct9/Proof-of-pay.jpg" alt="Proof of Payment"></div>
+            </div>
+            <button class="carousel-btn btn-prev" id="prevBtn">❮</button>
+            <button class="carousel-btn btn-next" id="nextBtn">❯</button>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
     </div>
 
     <div class="stats">
@@ -509,6 +604,65 @@ function updateDayTimer() {
 }
 setInterval(updateDayTimer, 60000);
 updateDayTimer();
+
+// CAROUSEL LOGIC
+const track = document.getElementById('carouselTrack');
+const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const dotsContainer = document.getElementById('carouselDots');
+let currentIndex = 0;
+let slideCount = slides.length;
+let autoInterval;
+
+function updateCarousel() {
+    const slideWidth = slides[0].clientWidth;
+    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    // update dots
+    document.querySelectorAll('.dot').forEach((dot, idx) => {
+        if (idx === currentIndex) dot.classList.add('active');
+        else dot.classList.remove('active');
+    });
+}
+
+function nextSlide() {
+    currentIndex = (currentIndex + 1) % slideCount;
+    updateCarousel();
+    resetAutoSlide();
+}
+
+function prevSlide() {
+    currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+    updateCarousel();
+    resetAutoSlide();
+}
+
+function resetAutoSlide() {
+    if (autoInterval) clearInterval(autoInterval);
+    autoInterval = setInterval(nextSlide, 5000);
+}
+
+function createDots() {
+    dotsContainer.innerHTML = '';
+    slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (i === currentIndex) dot.classList.add('active');
+        dot.addEventListener('click', () => {
+            currentIndex = i;
+            updateCarousel();
+            resetAutoSlide();
+        });
+        dotsContainer.appendChild(dot);
+    });
+}
+
+// init carousel
+window.addEventListener('resize', () => updateCarousel());
+prevBtn.addEventListener('click', prevSlide);
+nextBtn.addEventListener('click', nextSlide);
+createDots();
+resetAutoSlide();
 
 function runScan(text) {
     let lower = text.toLowerCase();
