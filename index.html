@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +22,6 @@
             line-height: 1.6;
         }
         
-        /* Graduation hat animation */
         .animate-icon {
             animation: subtleBounce 2s infinite ease-in-out;
         }
@@ -92,7 +90,7 @@
         }
         .file-input { display: none; }
         
-        /* Social Proof Carousel */
+        /* Social Proof Carousel - 2 slides only */
         .social-proof {
             margin: 20px 0 10px;
             overflow: hidden;
@@ -167,7 +165,6 @@
             border-radius: 4px;
         }
         
-        /* Bounce animation for the whole carousel section (gentle) */
         .bounce-animation {
             animation: carouselBounce 2s infinite ease-in-out;
         }
@@ -449,7 +446,7 @@
         </div>
     </div>
 
-    <!-- SOCIAL PROOF SECTION (animated carousel with bounce - only 2 images) -->
+    <!-- SOCIAL PROOF CAROUSEL - ONLY 2 IMAGES -->
     <div class="social-proof bounce-animation">
         <div class="carousel-container">
             <div class="carousel-track" id="carouselTrack">
@@ -479,7 +476,6 @@
             <div id="detailedReport" style="margin-top:12px;"></div>
         </div>
 
-        <!-- INTERVIEW CALCULATOR -->
         <div id="interviewCalculator" class="interview-calculator" style="display:none;">
             <div class="calculator-title">📊 INTERVIEW CALCULATOR</div>
             <div class="calculator-stats">
@@ -495,7 +491,6 @@
             <div class="calculator-savings" id="savingsMessage">💰 R60 investment = Save yourself 50+ wasted applications</div>
         </div>
 
-        <!-- FILE NAME CHECK SECTION -->
         <div id="filenameContainer" class="filename-card" style="display:none;">
             <h4 style="font-size:0.8rem; margin-bottom:8px;">📁 File Name Check</h4>
             <div id="filenameStatus"></div>
@@ -509,14 +504,12 @@
             </div>
         </div>
 
-        <!-- FIX BUTTON CONTAINER -->
         <div id="fixButtonContainer" style="display:none;">
             <div id="fixMessage" class="fix-message"></div>
             <button id="fixActionBtn" class="panic-btn-red" onclick="panicFix()">🔴 FIX MY CV NOW 🔴</button>
             <div class="price-badge">💰 R60 Only • 2 Hour Delivery • Free Job Tracker</div>
         </div>
 
-        <!-- TESTIMONIALS TOGETHER AT BOTTOM -->
         <div class="testimonial" id="testimonialBox" style="display:none;">
             <div>⭐ "Got 3 interviews within 2 weeks!" — Cel'mpilo</div>
             <div style="margin-top: 8px;">⚡ "CV FIX PRO revamped my CV in 2 hours — got 3 interviews!" — Meagan ⚡</div>
@@ -547,7 +540,6 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 let cvText = "", currentScore = 0, missingItems = [], uploadedFileName = "";
 
-// Admin
 let clickCount = 0;
 document.getElementById('logoClick').onclick = () => { clickCount++; setTimeout(() => clickCount=0, 1000); if(clickCount===5) document.getElementById('adminOverlay').style.display='flex'; };
 function closeAdmin() { document.getElementById('adminOverlay').style.display='none'; }
@@ -605,22 +597,21 @@ function updateDayTimer() {
 setInterval(updateDayTimer, 60000);
 updateDayTimer();
 
-// CAROUSEL LOGIC (updated for 2 slides)
+// CAROUSEL LOGIC - FIXED FOR 2 SLIDES
 const track = document.getElementById('carouselTrack');
 const slides = Array.from(document.querySelectorAll('.carousel-slide'));
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const dotsContainer = document.getElementById('carouselDots');
 let currentIndex = 0;
-let slideCount = slides.length;
+const slideCount = slides.length;
 let autoInterval;
 
 function updateCarousel() {
-    const slideWidth = slides[0].clientWidth;
+    const slideWidth = slides[0]?.clientWidth || 0;
     track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
     document.querySelectorAll('.dot').forEach((dot, idx) => {
-        if (idx === currentIndex) dot.classList.add('active');
-        else dot.classList.remove('active');
+        dot.classList.toggle('active', idx === currentIndex);
     });
 }
 
@@ -643,7 +634,7 @@ function resetAutoSlide() {
 
 function createDots() {
     dotsContainer.innerHTML = '';
-    slides.forEach((_, i) => {
+    for (let i = 0; i < slideCount; i++) {
         const dot = document.createElement('div');
         dot.classList.add('dot');
         if (i === currentIndex) dot.classList.add('active');
@@ -653,7 +644,7 @@ function createDots() {
             resetAutoSlide();
         });
         dotsContainer.appendChild(dot);
-    });
+    }
 }
 
 window.addEventListener('resize', () => updateCarousel());
@@ -667,11 +658,9 @@ function runScan(text) {
     let score = 20;
     let good = [], critical = [], warnings = [];
     
-    // 1. Work Experience
     if (lower.includes("experience") || lower.includes("work history") || lower.includes("employment")) { score += 15; good.push("✅ Work experience found"); } 
     else { critical.push("🚨 CRITICAL: NO work experience section — YOUR CV WILL BE AUTO-REJECTED by 94% of ATS systems"); }
     
-    // 2. EDUCATION - Separate checks for Certificate, Diploma, Degree
     let hasCertificate = lower.includes("certificate") || lower.includes("certified") || lower.includes("short course") || lower.includes("coursera") || lower.includes("udemy") || lower.includes("edx");
     let hasDiploma = lower.includes("diploma") || lower.includes("national diploma") || lower.includes("higher certificate");
     let hasDegree = lower.includes("degree") || lower.includes("bachelor") || lower.includes("bcom") || lower.includes("ba") || lower.includes("bsc") || lower.includes("honours") || lower.includes("master") || lower.includes("mba") || lower.includes("phd") || lower.includes("doctoral");
@@ -683,70 +672,58 @@ function runScan(text) {
     if (!hasCertificate && !hasDiploma && !hasDegree && !hasEducationSection) { critical.push("🚨 CRITICAL: NO education or qualifications found — Employers SKIP CVs without education"); }
     else if (!hasCertificate && !hasDiploma && !hasDegree) { warnings.push("📚 Education section found but no specific certificates/diplomas/degrees listed. Add your qualifications!"); }
     
-    // 3. Skills Section
     if (lower.includes("skills") || lower.includes("core competencies") || lower.includes("technical skills")) { score += 12; good.push("✅ Skills section found"); } 
     else { critical.push("⚠️ WARNING: NO skills section — ATS cannot match you to job keywords"); }
     
-    // 4. Contact Info
     let hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
     let hasPhone = /(\+27|0)[0-9\s\-]{9,12}/.test(text);
     if (hasEmail && hasPhone) { score += 15; good.push("✅ Contact info complete (Email + SA phone)"); } 
     else if (hasEmail || hasPhone) { score += 8; warnings.push("⚠️ Missing either phone OR email — recruiters need BOTH to contact you"); } 
     else { critical.push("🚨 CRITICAL: NO phone or email found — recruiters CANNOT REACH YOU"); }
     
-    // 5. Action Verbs
     let actionWords = ['managed', 'developed', 'led', 'achieved', 'improved', 'created', 'implemented', 'increased', 'delivered', 'spearheaded'];
     let found = actionWords.filter(w => lower.includes(w));
     if (found.length >= 3) { score += 10; good.push(`✅ Strong action verbs used (${found.length})`); } 
     else if (found.length >= 1) { score += 4; warnings.push(`⚠️ Only ${found.length} action verb(s) found. Add more like 'Managed', 'Led', 'Achieved'`); } 
     else { critical.push("⚠️ NO action verbs detected — Your CV sounds passive and WEAK"); }
     
-    // 6. Professional Summary
     if (lower.includes("summary") || lower.includes("profile") || lower.includes("about me") || lower.includes("professional profile")) { score += 5; good.push("✅ Professional summary found"); } 
     else { warnings.push("💡 NO professional summary — Recruiters spend ONLY 6 SECONDS on your CV, a summary hooks them"); }
     
-    // 7. Professional Certifications
     let profCerts = ['pmp', 'aws', 'microsoft', 'cisco', 'comptia', 'scrum', 'agile', 'six sigma', 'prince2', 'itil', 'ccna'];
     let hasProfCert = profCerts.some(cert => lower.includes(cert));
     if (hasProfCert) { score += 3; good.push("✅ Professional certifications found — adds credibility"); } 
     else { warnings.push("📜 No professional certifications mentioned — Adding relevant certs increases interview chances by 40%"); }
     
-    // 8. Location
     let saCities = ['johannesburg', 'cape town', 'durban', 'pretoria', 'port elizabeth', 'bloemfontein', 'polokwane', 'nelspruit', 'kimberley'];
     let hasLocation = saCities.some(city => lower.includes(city));
     if (hasLocation) { score += 8; good.push("✅ Location found — recruiters see you're local"); } 
     else { critical.push("🚨 NO location found — Recruiters FILTER BY CITY. Add your city or your CV is invisible"); }
     
-    // 9. Languages
     let languages = ['english', 'afrikaans', 'zulu', 'xhosa', 'sesotho', 'tswana', 'venda', 'tsonga'];
     let foundLangs = languages.filter(lang => lower.includes(lang));
     if (foundLangs.length >= 2) { score += 5; good.push(`✅ ${foundLangs.length} languages listed — BIG advantage in SA market`); } 
     else if (foundLangs.length === 1) { score += 2; warnings.push(`🗣️ Only ${foundLangs[0]} listed — In SA, speaking multiple languages is a major advantage`); } 
     else { warnings.push("🗣️ No languages listed — South African employers value multilingual candidates"); }
     
-    // 10. Word Count
     let words = text.split(/\s+/).length;
     if (words >= 400 && words <= 650) { score += 5; good.push(`✅ Perfect CV length (${words} words) — ATS friendly`); } 
     else if (words >= 300 && words <= 800) { score += 2; warnings.push(`📏 CV length is ${words} words. Ideal is 400-650 words for ATS`); } 
     else if (words < 300) { warnings.push(`📏 CV is too short (${words} words). Add more detail — Aim for 400+ words`); } 
     else { warnings.push(`📏 CV is too long (${words} words). Recruiters SKIM, not read — cut to 650 words max`); }
     
-    // 11. Bullet Points
     let hasBullets = /[•\-\*]\s/.test(text);
     if (hasBullets) { score += 5; good.push("✅ Bullet points detected — ATS loves scannable content"); } 
     else { critical.push("⚠️ NO bullet points found — Use • or - to list achievements. Paragraphs get IGNORED by ATS"); }
     
-    // 12. Font Check
     let fancyFonts = ['script', 'cursive', 'comic', 'brush', 'calligraphy', 'handwriting', 'fancy', 'decorative'];
     let hasFancyFont = fancyFonts.some(font => lower.includes(font));
     if (hasFancyFont) { score -= 10; critical.push("🚨 Fancy/unreadable fonts detected — ATS CANNOT READ fancy fonts. Use Arial, Calibri, or Times New Roman"); }
     
-    // 13. Driver's License
     let hasLicense = lower.includes("driver") && (lower.includes("license") || lower.includes("licence"));
     if (hasLicense) { score += 5; good.push("✅ Driver's License listed — Many employers require this"); } 
     else { warnings.push("🚗 Driver's License not mentioned — If you have one, ADD IT. Many recruiters filter by this requirement"); }
     
-    // File name penalty
     if (uploadedFileName) {
         let fileNameCheck = checkFileName(uploadedFileName);
         if (!fileNameCheck.isGood) {
@@ -842,4 +819,3 @@ setInterval(() => { mins = Math.min(mins+1, 120); let h = Math.floor(mins/60), m
 </script>
 </body>
 </html>
-```
