@@ -148,7 +148,8 @@
         
         .price-badge { background: linear-gradient(135deg, #D4AF37, #B8960F); color: #000; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; margin: 12px 0; font-size: 0.9rem; }
         
-        .sticky-panic-container {
+        /* SINGLE PANIC BUTTON - changes color based on score */
+        .panic-button-container {
             position: fixed;
             bottom: 0;
             left: 0;
@@ -167,7 +168,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .sticky-panic-btn {
+        .panic-btn {
             color: white;
             border: none;
             border-radius: 60px;
@@ -180,13 +181,13 @@
             letter-spacing: 1px;
             transition: 0.1s;
         }
-        .sticky-panic-btn:active { transform: scale(0.98); }
-        .sticky-panic-btn.red {
+        .panic-btn:active { transform: scale(0.98); }
+        .panic-btn.red {
             background: #e74c3c;
             box-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
             animation: panicFlash 0.8s infinite;
         }
-        .sticky-panic-btn.green {
+        .panic-btn.green {
             background: #2ECC71;
             box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
             animation: none;
@@ -208,7 +209,7 @@
             margin-top: 6px;
         }
         
-        /* Admin Panel CV Form Styles */
+        /* Admin Panel Styles */
         .admin-cv-form {
             background: var(--card);
             border-radius: 24px;
@@ -262,7 +263,7 @@
         .center-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 42px; font-weight: 900; color: rgba(0,0,0,0.12); white-space: nowrap; pointer-events: none; z-index: 10; font-family: 'Plus Jakarta Sans', monospace; letter-spacing: 5px; text-transform: uppercase; }
         .bottom-watermark { position: absolute; bottom: 10px; right: 10px; font-size: 10px; color: rgba(0,0,0,0.1); pointer-events: none; z-index: 10; }
         
-        /* NEW PROFESSIONAL CV LAYOUT */
+        /* CV Preview Layout */
         .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; letter-spacing: 1px; }
         .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
         .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; letter-spacing: 1px; }
@@ -280,65 +281,13 @@
         .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
         .skill-tag-new { background: white; color: #111; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; display: inline-block; margin: 0; border: 1px solid #ccc; }
         
-        /* USER ACTION SECTION - FIXED */
-        .user-action-box {
-            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
-            text-align: center;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 20px rgba(212,175,55,0.2);
-        }
-        .instruction-text {
-            font-size: 0.85rem;
-            color: #ddd;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-        .two-buttons {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .btn-cv-only {
-            flex: 1;
-            background: #2563EB;
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-        .btn-cv-only:hover { background: #1d4ed8; transform: scale(1.02); }
-        .btn-both {
-            flex: 1;
-            background: #2ECC71;
-            color: #000;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-        .btn-both:hover { background: #27ae60; transform: scale(1.02); }
-        .btn-home {
-            background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 50px;
-            font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px;
-        }
-        
         .mobile-upload-btn { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; width: 55px; height: 55px; border-radius: 50%; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; cursor: pointer; border: none; }
         
         .testimonial { background: rgba(46,204,113,0.08); border-radius: 12px; padding: 12px; margin: 15px 0; text-align: center; font-style: italic; font-size: 0.8rem; }
         
         @media (max-width: 600px) {
             .mobile-upload-btn { display: flex; }
-            .sticky-panic-btn { padding: 14px; font-size: 1rem; }
+            .panic-btn { padding: 14px; font-size: 1rem; }
             .stats { gap: 10px; }
             .stat { padding: 5px 8px; }
             .stat-number { font-size: 1.1rem; }
@@ -347,18 +296,14 @@
             .cv-preview, .cl-preview { padding: 15px; }
             .cv-name-large { font-size: 22px; }
             .details-grid { grid-template-columns: 1fr; gap: 5px; }
-            .two-buttons { flex-direction: column; gap: 10px; }
             .skills-container { gap: 6px; }
             .skill-tag-new { padding: 4px 10px; font-size: 10px; }
-            .user-action-box { padding: 15px; }
-            .btn-cv-only, .btn-both { padding: 12px; font-size: 0.9rem; }
         }
         
         footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
         .admin-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; overflow-y: auto; }
         .admin-panel { background:#1a1a1a; border:2px solid var(--primary); border-radius:20px; padding:20px; max-width: 90%; width: 700px; max-height: 85vh; overflow-y: auto; margin: 20px; }
         .admin-panel h3 { color: var(--primary); margin-bottom: 10px; }
-        .admin-panel h4 { color: var(--primary); margin-top: 15px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -541,30 +486,16 @@
             <div style="margin-top: 8px;">⚡ "CV FIX PRO revamped my CV in 2 hours — got 3 interviews!" — Meagan ⚡</div>
         </div>
 
-        <!-- USER ACTION SECTION - FIXED - ALWAYS VISIBLE AFTER SCAN -->
-        <div id="userActionSection" class="user-action-box">
-            <div class="instruction-text">
-                📋 <strong>Your CV has been scanned!</strong><br><br>
-                👇 <strong>Click the button below to request your professional CV revamp</strong> 👇
-            </div>
-            <div class="two-buttons">
-                <button class="btn-cv-only" onclick="requestRevamp('CV')">🔵 CV Only - R60</button>
-                <button class="btn-both" onclick="requestRevamp('BOTH')">🟢 CV + Cover Letter - R80</button>
-            </div>
-            <div class="instruction-text" style="font-size:0.7rem; margin-top:10px;">
-                💡 After clicking, WhatsApp will open. Send me your current CV file and I will revamp it for you!
-            </div>
-        </div>
-
         <button onclick="location.reload()" style="width:100%; background:#222; border:1px solid #444; color:white; padding:12px; border-radius:12px; margin-top:20px;">⟳ Scan Another CV</button>
     </div>
 </div>
 
 <button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
 
-<div id="stickyPanic" class="sticky-panic-container">
+<!-- SINGLE PANIC BUTTON - Color changes based on score -->
+<div id="panicButtonContainer" class="panic-button-container">
     <div class="warning-message" id="warningMessage">⚠️ THIS IS WHY YOU'RE NOT GETTING INTERVIEWS ⚠️</div>
-    <button class="sticky-panic-btn red" id="stickyPanicBtn" onclick="scrollToUserAction()">👉 CLICK TO FIX YOUR CV</button>
+    <button class="panic-btn red" id="panicBtn" onclick="sendWhatsApp()">🔴 FIX MY CV NOW 🔴</button>
     <div class="countdown-timer">⏰ Offer expires in <span id="countdownMinutes">15</span>:<span id="countdownSeconds">00</span></div>
     <div class="social-trust">✅ 1,104+ CVs fixed this month</div>
 </div>
@@ -835,17 +766,10 @@ function adminDownloadCleanCV() {
     alert("✅ Clean CV opened! Save as PDF or screenshot and send to customer.");
 }
 
-// USER FUNCTION - REQUEST REVAMP VIA WHATSAPP
-function requestRevamp(type) {
-    const price = type === 'CV' ? '60' : '80';
-    const message = `Hi Deon, my CV scored ${currentScore}%. PLEASE REVAMP MY CV for R${price}. ${type === 'BOTH' ? 'I also need a cover letter.' : ''}`;
+// SINGLE WHATSAPP FUNCTION
+function sendWhatsApp() {
+    const message = `Hi Deon, my CV scored ${currentScore}%. PLEASE REVAMP MY CV for R60.`;
     window.open(`https://wa.me/27605647937?text=${encodeURIComponent(message)}`, '_blank');
-}
-
-function scrollToUserAction() {
-    // Scroll to the user action section
-    const userAction = document.getElementById('userActionSection');
-    userAction.scrollIntoView({ behavior: 'smooth' });
 }
 
 function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;': m==='<'?'&lt;': '&gt;'); }
@@ -945,19 +869,20 @@ function runScan(text) {
     document.getElementById('detailedReport').innerHTML=html;
     if(uploadedFileName){let fc=checkFileName(uploadedFileName); document.getElementById('filenameStatus').innerHTML=fc.isGood?'<div class="filename-good">✅ Professional file name</div>':'<div class="filename-bad">❌ '+fc.issues[0]+'</div>'; document.getElementById('filenameSuggestion').style.display=fc.isGood?'none':'block'; if(!fc.isGood)document.getElementById('filenameSuggestion').innerHTML=`💡 SUGGESTED: ${fc.suggestion}`; document.getElementById('filenameContainer').style.display='block';}
     
-    const stickyContainer = document.getElementById('stickyPanic');
-    const stickyBtn = document.getElementById('stickyPanicBtn');
+    const panicContainer = document.getElementById('panicButtonContainer');
+    const panicBtn = document.getElementById('panicBtn');
     const warningMsg = document.getElementById('warningMessage');
+    
     if(score < 80){
-        stickyContainer.style.display = 'block';
-        stickyBtn.className = 'sticky-panic-btn red';
-        stickyBtn.innerHTML = '👉 CLICK TO FIX YOUR CV';
+        panicContainer.style.display = 'block';
+        panicBtn.className = 'panic-btn red';
+        panicBtn.innerHTML = '🔴 FIX MY CV NOW 🔴';
         warningMsg.innerHTML = '⚠️ THIS IS WHY YOU\'RE NOT GETTING INTERVIEWS ⚠️';
         warningMsg.style.color = '#ffaa00';
     } else {
-        stickyContainer.style.display = 'block';
-        stickyBtn.className = 'sticky-panic-btn green';
-        stickyBtn.innerHTML = '👉 CLICK TO PERFECT YOUR CV';
+        panicContainer.style.display = 'block';
+        panicBtn.className = 'panic-btn green';
+        panicBtn.innerHTML = '🟢 PERFECT MY CV 🟢';
         warningMsg.innerHTML = '✅ Great foundation! Still room for improvement.';
         warningMsg.style.color = '#2ECC71';
     }
@@ -988,6 +913,25 @@ document.getElementById('cvFile').addEventListener('change', async function(e) {
     document.getElementById('loader').style.display='none'; document.getElementById('resultsBox').style.display='block'; document.getElementById('progressBar').style.display='none';
     setTimeout(()=>document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}),100);
 });
+
+// Countdown timer (15 minutes)
+let timeLeft = 15 * 60;
+const minutesSpan = document.getElementById('countdownMinutes');
+const secondsSpan = document.getElementById('countdownSeconds');
+const countdownInterval = setInterval(() => {
+    if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        minutesSpan.innerText = '00';
+        secondsSpan.innerText = '00';
+    } else {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        minutesSpan.innerText = minutes.toString().padStart(2, '0');
+        secondsSpan.innerText = seconds.toString().padStart(2, '0');
+    }
+}, 1000);
+allIntervals.push(countdownInterval);
 </script>
 </body>
 </html>
