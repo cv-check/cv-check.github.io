@@ -79,7 +79,6 @@
         .drop-zone p { font-weight: bold; color: var(--primary); font-size: 1rem; }
         .file-input { display: none; }
         
-        /* Social Proof Carousel - Only Before & After */
         .social-proof { margin: 20px 0 10px; overflow: hidden; position: relative; border-radius: 20px; }
         .carousel-container { position: relative; width: 100%; overflow: hidden; border-radius: 16px; }
         .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
@@ -149,7 +148,6 @@
         
         .price-badge { background: linear-gradient(135deg, #D4AF37, #B8960F); color: #000; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; margin: 12px 0; font-size: 0.9rem; }
         
-        /* STICKY BUTTON */
         .sticky-panic-container {
             position: fixed;
             bottom: 0;
@@ -210,9 +208,303 @@
             margin-top: 6px;
         }
         
+        /* CV FORM STYLES */
+        .cv-form-container {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            display: none;
+        }
+        .cv-form-container h3 { color: var(--primary); margin-bottom: 5px; }
+        .cv-form-container h3 span { color: #e74c3c; font-size: 12px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: var(--primary); }
+        .form-group label .required { color: #e74c3c; margin-left: 3px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 10px; background: #0a0a0a; border: 1px solid #333; color: white; border-radius: 8px;
+            font-family: inherit;
+        }
+        .section-title { font-size: 0.9rem; margin: 20px 0 10px; color: var(--primary); border-left: 3px solid var(--primary); padding-left: 10px; }
+        .btn-generate {
+            background: var(--primary); color: #000; border: none; padding: 14px; border-radius: 50px;
+            font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 10px;
+        }
+        .add-btn {
+            background: transparent; border: 1px dashed var(--primary); color: var(--primary);
+            padding: 8px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 5px; font-size: 0.8rem;
+        }
+        .remove-btn {
+            background: #e74c3c; border: none; color: white; padding: 4px 8px; border-radius: 5px;
+            cursor: pointer; font-size: 0.7rem; margin-top: 5px;
+        }
+        
+        /* Summary Templates */
+        .summary-templates {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .template-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .template-option:hover { background: #1a1a1a; }
+        .template-radio { margin-top: 2px; }
+        .template-text { font-size: 0.75rem; color: #ccc; line-height: 1.4; flex: 1; }
+        
+        /* Optional Note */
+        .optional-note {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--primary);
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            color: #ccc;
+            text-align: center;
+        }
+        
+        /* Preview Styles */
+        .preview-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+        .preview-pane {
+            display: none;
+        }
+        .preview-pane.active-pane {
+            display: block;
+        }
+        .cv-preview-container, .cl-preview-container {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 20px 0;
+            display: block;
+        }
+        .cv-preview, .cl-preview {
+            background: white; color: #000; padding: 30px; border-radius: 16px;
+            position: relative;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            min-height: 400px;
+        }
+        .center-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-20deg);
+            font-size: 42px;
+            font-weight: 900;
+            color: rgba(0,0,0,0.12);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+            font-family: 'Plus Jakarta Sans', monospace;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+        .bottom-watermark {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            color: rgba(0,0,0,0.1);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        /* Flashing Instruction Box */
+        .instruction-box {
+            background: #1a1a2e;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            animation: flashBorder 1.5s infinite;
+        }
+        @keyframes flashBorder {
+            0%, 100% { border-color: var(--primary); box-shadow: 0 0 0 0 rgba(212,175,55,0.4); }
+            50% { border-color: #ffaa00; box-shadow: 0 0 0 5px rgba(212,175,55,0.2); }
+        }
+        .instruction-text {
+            font-size: 0.75rem;
+            color: #ccc;
+            line-height: 1.4;
+        }
+        .instruction-text strong {
+            color: var(--primary);
+        }
+        
+        /* NEW PROFESSIONAL CV LAYOUT - Printer Friendly */
+        .cv-name-large {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0a0a0a;
+            letter-spacing: 1px;
+        }
+        .personal-details-section {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .personal-details-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1E3A8A;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 15px;
+            font-size: 12px;
+        }
+        .detail-item {
+            display: flex;
+            gap: 5px;
+        }
+        .detail-label {
+            font-weight: 700;
+            color: #111;
+            min-width: 70px;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: #111;
+        }
+        .cv-section-title-new {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1E3A8A;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 5px;
+            margin: 20px 0 12px;
+        }
+        .cv-item-desc-new {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        .cv-item-new {
+            margin-bottom: 12px;
+        }
+        .cv-item-title-new {
+            font-weight: 700;
+            font-size: 14px;
+            color: #111;
+        }
+        .cv-item-sub-new {
+            font-size: 12px;
+            color: #444;
+            margin-bottom: 5px;
+        }
+        .bullet-list {
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        .bullet-list li {
+            font-size: 13px;
+            color: #222;
+            margin-bottom: 3px;
+        }
+        /* Printer Friendly Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .skill-tag-new {
+            background: white;
+            color: #111;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0;
+            border: 1px solid #ccc;
+        }
+        
+        .btn-download {
+            background: #25D366; color: #000; border: none; padding: 12px; border-radius: 50px;
+            font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px;
+            display: none;
+        }
+        .btn-download-cl {
+            background: #25D366; color: #000; border: none; padding: 12px; border-radius: 50px;
+            font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px;
+            display: none;
+        }
+        .unlock-section { margin-top: 15px; text-align: center; }
+        .unlock-input {
+            padding: 10px; width: 100%; background: #0a0a0a; border: 1px solid var(--primary);
+            color: white; border-radius: 8px; text-align: center; margin-bottom: 10px;
+        }
+        .btn-home {
+            background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 50px;
+            font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px;
+        }
+        .two-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-cv-only {
+            flex: 1;
+            background: #2563EB;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-both {
+            flex: 1;
+            background: #2ECC71;
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
         .mobile-upload-btn { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; width: 55px; height: 55px; border-radius: 50%; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; cursor: pointer; border: none; }
         
-        .tracker-card { background: var(--card); border-radius: 20px; padding: 18px; margin-top: 20px; }
         .testimonial { background: rgba(46,204,113,0.08); border-radius: 12px; padding: 12px; margin: 15px 0; text-align: center; font-style: italic; font-size: 0.8rem; }
         
         @media (max-width: 600px) {
@@ -223,6 +515,12 @@
             .stat-number { font-size: 1.1rem; }
             .hero h1 { font-size: 1.1rem; }
             .carousel-btn { width: 28px; height: 28px; font-size: 1rem; }
+            .cv-preview, .cl-preview { padding: 15px; }
+            .cv-name-large { font-size: 22px; }
+            .details-grid { grid-template-columns: 1fr; gap: 5px; }
+            .two-buttons { flex-direction: column; }
+            .skills-container { gap: 6px; }
+            .skill-tag-new { padding: 4px 10px; font-size: 10px; }
         }
         
         footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
@@ -235,8 +533,12 @@
 <div id="adminOverlay" class="admin-overlay">
     <div class="admin-panel">
         <h3>🔧 ADMIN</h3>
-        <input type="text" id="adminPhone" placeholder="Customer Phone">
-        <button onclick="genCode()" style="background:var(--primary); color:#000; padding:10px; margin:10px 0; border:none; border-radius:8px;">Generate Code</button>
+        <select id="codeType" style="width:100%; padding:10px; margin-bottom:10px; background:#0a0a0a; color:white; border:1px solid var(--primary); border-radius:8px;">
+            <option value="CV">CV Only (R60)</option>
+            <option value="CL">CV + Cover Letter (R80)</option>
+        </select>
+        <input type="text" id="adminPhone" placeholder="Customer Name">
+        <button onclick="genCode()" style="background:var(--primary); color:#000; padding:10px; margin:10px 0; border:none; border-radius:8px;">Generate Unlock Code</button>
         <div id="codeResult" style="background:#0a0a0a; padding:10px; border-radius:8px; display:none;"></div>
         <button onclick="closeAdmin()" style="background:#333; color:white; padding:8px; border:none; border-radius:8px;">Close</button>
     </div>
@@ -263,11 +565,10 @@
             <input type="file" id="cvFile" accept=".pdf" class="file-input">
         </label>
         <div id="progressBar" style="display:none; margin-top:10px;">
-            <div style="background:#333; border-radius:10px; height:5px;"><div id="progressFill" style="width:0%; background:var(--primary); height:5px; border-radius:10px;"></div></div>
+            <div style="background:#333; border-radius:10px; height:5px;"><div id="progressFill" style="width:0%; background:var(--primary); height:5px;"></div></div>
         </div>
     </div>
 
-    <!-- SOCIAL PROOF CAROUSEL - ONLY BEFORE & AFTER IMAGE -->
     <div class="social-proof bounce-animation">
         <div class="carousel-container">
             <div class="carousel-track" id="carouselTrack">
@@ -322,21 +623,135 @@
             <div style="margin-top: 8px;">⚡ "CV FIX PRO revamped my CV in 2 hours — got 3 interviews!" — Meagan ⚡</div>
         </div>
 
-        <div class="tracker-card" id="trackerSection" style="display:none;">
-            <h3 style="font-size:1rem;">📋 FREE JOB TRACKER</h3>
-            <div id="trackerLocked"><p style="color:#888; font-size:0.75rem;">🔒 Unlocked after CV revamp</p><input type="text" id="unlockInput" placeholder="Enter unlock code" style="width:100%; padding:10px; background:#0a0a0a; border:1px solid var(--primary); border-radius:8px; margin:10px 0;"><button onclick="verifyCode()" style="background:var(--primary); color:#000; padding:8px; border:none; border-radius:8px; width:100%;">Unlock</button></div>
-            <div id="trackerUnlocked" style="display:none;"><button onclick="addJob()" style="background:#2ECC71; color:#000; padding:10px; border:none; border-radius:8px; width:100%;">+ Add Application</button><div id="jobList" style="margin-top:15px;"></div></div>
-        </div>
         <button onclick="location.reload()" style="width:100%; background:#222; border:1px solid #444; color:white; padding:12px; border-radius:12px; margin-top:20px;">⟳ Scan Another CV</button>
+    </div>
+
+    <!-- CV FORM SECTION -->
+    <div id="cvFormContainer" class="cv-form-container">
+        <h3>📝 Create Your Professional CV</h3>
+        <p style="font-size:0.7rem; color:#888; margin-bottom:15px;">Fill in your details below. <span style="color:#e74c3c;">*</span> = Required</p>
+        
+        <div class="form-group"><label>Full Name <span class="required">*</span></label><input type="text" id="fullName" placeholder="e.g., Thabo Mkhize"></div>
+        <div class="form-group"><label>Email Address <span class="required">*</span></label><input type="email" id="email" placeholder="youremail@example.com"></div>
+        <div class="form-group"><label>Phone Number <span class="required">*</span></label><input type="text" id="phone" placeholder="082 123 4567"></div>
+        <div class="form-group"><label>Date of Birth</label><input type="date" id="dob"></div>
+        <div class="form-group"><label>Gender</label>
+            <select id="gender" style="width:100%; padding:10px; background:#0a0a0a; border:1px solid #333; color:white; border-radius:8px;">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Location / Address</label><input type="text" id="location" placeholder="e.g., Durban, Pinetown"></div>
+        <div class="form-group"><label>Driver's License</label><input type="text" id="driversLicense" placeholder="e.g., Code 8, Code 10, None"></div>
+        
+        <div class="form-group"><label>Professional Summary <span class="required">*</span></label>
+            <div class="summary-templates">
+                <div class="template-option" onclick="selectSummaryTemplate('general')">
+                    <input type="radio" name="summaryTemplate" id="templateGeneral" class="template-radio" style="width:16px; margin:0;">
+                    <div class="template-text"><strong>Option 1 - General Professional</strong><br>"Dedicated and hardworking professional with strong communication and problem-solving skills. Reliable, punctual, and eager to contribute to team success."</div>
+                </div>
+                <div class="template-option" onclick="selectSummaryTemplate('entry')">
+                    <input type="radio" name="summaryTemplate" id="templateEntry" class="template-radio" style="width:16px; margin:0;">
+                    <div class="template-text"><strong>Option 2 - Entry Level / No Experience</strong><br>"Motivated and quick-learning individual ready to gain experience. Honest, responsible, and committed to delivering quality work."</div>
+                </div>
+            </div>
+            <textarea id="summary" rows="3" placeholder="Write your professional summary here... or select an option above" style="margin-top:5px;"></textarea>
+        </div>
+        
+        <div class="section-title">🎓 Education</div>
+        <div id="eduContainer"><div class="form-group"><input type="text" class="edu-input" placeholder="e.g., Matric, Mlonde High School (2020)"></div></div>
+        <button class="add-btn" onclick="addEducation()">➕ Add Another Education</button>
+        
+        <div class="section-title">💼 Work Experience</div>
+        <div id="expContainer">
+            <div class="exp-item">
+                <div class="form-group"><input type="text" class="exp-company" placeholder="Company Name"></div>
+                <div class="form-group"><input type="text" class="exp-date" placeholder="Dates (e.g., 2021-2022)"></div>
+                <div class="form-group"><input type="text" class="exp-position" placeholder="Position"></div>
+                <div class="form-group"><input type="text" class="exp-duty1" placeholder="• Duty 1 (e.g., Managed cash register)"></div>
+                <div class="form-group"><input type="text" class="exp-duty2" placeholder="• Duty 2 (e.g., Assisted customers)"></div>
+                <div class="form-group"><input type="text" class="exp-duty3" placeholder="• Duty 3 (e.g., Stock replenishment)"></div>
+                <button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>
+            </div>
+        </div>
+        <button class="add-btn" onclick="addExperience()">➕ Add Another Work Experience</button>
+        
+        <div class="section-title">🔧 Skills</div>
+        <div class="form-group"><input type="text" id="skills" placeholder="e.g., Microsoft Office, Customer Service, Communication"></div>
+        
+        <div class="section-title">🗣️ Languages</div>
+        <div class="form-group"><input type="text" id="languages" placeholder="e.g., English, Zulu, Afrikaans"></div>
+        
+        <div class="section-title">📞 References</div>
+        <div id="refContainer"><div class="form-group"><input type="text" class="ref-input" placeholder="e.g., Mr. Smith, Manager at KFC - 074 343 4444"></div></div>
+        <button class="add-btn" onclick="addReference()">➕ Add Another Reference</button>
+        
+        <!-- OPTIONAL JOB FIELDS FOR COVER LETTER -->
+        <div class="optional-note">
+            ✨ <strong>OPTIONAL:</strong> Fill these if you want a personalized Cover Letter ✨
+        </div>
+        
+        <div class="form-group"><label>Job Title (for cover letter)</label><input type="text" id="jobTitle" placeholder="e.g., IT Support Technician, Cashier, Admin Clerk"></div>
+        <div class="form-group"><label>Company Name (for cover letter)</label><input type="text" id="companyName" placeholder="e.g., MTN, Shoprite, Standard Bank"></div>
+        <div class="form-group"><label>Company Address (for cover letter)</label><input type="text" id="companyAddress" placeholder="e.g., 14 Long Street, Cape Town"></div>
+        
+        <button class="btn-generate" onclick="generateCV()">✨ Generate My Professional CV</button>
+    </div>
+    
+    <!-- PREVIEW SECTION -->
+    <div id="previewContainer" style="display: none;">
+        <!-- Flashing Instruction Box -->
+        <div class="instruction-box">
+            <div class="instruction-text">
+                💡 <strong>HOW TO GET YOUR CLEAN CV</strong> 💡<br>
+                👉 Click the <strong style="color:#2563EB;">BLUE button</strong> (CV Only - R60) OR<br>
+                👉 Click the <strong style="color:#2ECC71;">GREEN button</strong> (CV + Cover Letter - R80)<br>
+                → WhatsApp opens → Pay R60/R80 → We send unlock code → Download your clean CV!
+            </div>
+        </div>
+        
+        <div class="preview-tabs">
+            <button class="tab-btn active" onclick="showTab('cv')">📄 CV Preview</button>
+            <button class="tab-btn" onclick="showTab('cl')">✉️ Cover Letter Preview</button>
+        </div>
+        <div id="cvPreviewPane" class="preview-pane active-pane">
+            <div class="cv-preview-container">
+                <div id="cvPreview" class="cv-preview">
+                    <div class="center-watermark">DEON SIMA</div>
+                    <div class="bottom-watermark">CV FIX PRO</div>
+                </div>
+            </div>
+        </div>
+        <div id="clPreviewPane" class="preview-pane">
+            <div class="cl-preview-container">
+                <div id="clPreview" class="cl-preview">
+                    <div class="center-watermark">DEON SIMA</div>
+                    <div class="bottom-watermark">CV FIX PRO</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="two-buttons">
+            <button class="btn-cv-only" onclick="requestUnlock('CV')">🔵 CV Only - R60</button>
+            <button class="btn-both" onclick="requestUnlock('BOTH')">🟢 CV + Cover Letter - R80</button>
+        </div>
+        
+        <div class="unlock-section">
+            <input type="text" id="unlockCodeInput" class="unlock-input" placeholder="Enter unlock code">
+            <button id="downloadBtn" class="btn-download" onclick="downloadCleanCV()">📥 Download Clean CV</button>
+            <button id="downloadClBtn" class="btn-download-cl" onclick="downloadCleanCL()">📥 Download Clean Cover Letter</button>
+            <button class="btn-home" onclick="goHome()">🏠 Scan Another CV</button>
+        </div>
     </div>
 </div>
 
 <button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
 
-<!-- STICKY BUTTON -->
 <div id="stickyPanic" class="sticky-panic-container">
     <div class="warning-message" id="warningMessage">⚠️ THIS IS WHY YOU'RE NOT GETTING INTERVIEWS ⚠️</div>
-    <button class="sticky-panic-btn red" id="stickyPanicBtn" onclick="panicFix()">👉 CLICK TO FIX YOUR CV</button>
+    <button class="sticky-panic-btn red" id="stickyPanicBtn" onclick="openCVForm()">👉 CLICK TO FIX YOUR CV</button>
     <div class="countdown-timer">⏰ Offer expires in <span id="countdownMinutes">15</span>:<span id="countdownSeconds">00</span></div>
     <div class="social-trust">✅ 1,104+ CVs fixed this month</div>
 </div>
@@ -346,45 +761,366 @@
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 let cvText = "", currentScore = 0, missingItems = [], uploadedFileName = "";
+let generatedCVData = {};
+let generatedCLData = {};
+let allIntervals = [];
+
+function clearAllIntervals() {
+    for (let i = 0; i < allIntervals.length; i++) {
+        clearInterval(allIntervals[i]);
+    }
+    allIntervals = [];
+}
+
+function goHome() { 
+    clearAllIntervals();
+    location.reload(); 
+}
+
+// Summary template selector
+function selectSummaryTemplate(type) {
+    const summaryField = document.getElementById('summary');
+    if (type === 'general') {
+        summaryField.value = "Dedicated and hardworking professional with strong communication and problem-solving skills. Reliable, punctual, and eager to contribute to team success.";
+        document.getElementById('templateGeneral').checked = true;
+        document.getElementById('templateEntry').checked = false;
+    } else if (type === 'entry') {
+        summaryField.value = "Motivated and quick-learning individual ready to gain experience. Honest, responsible, and committed to delivering quality work.";
+        document.getElementById('templateEntry').checked = true;
+        document.getElementById('templateGeneral').checked = false;
+    }
+}
 
 // Admin
 let clickCount = 0;
 document.getElementById('logoClick').onclick = () => { clickCount++; setTimeout(() => clickCount=0, 1000); if(clickCount===5) document.getElementById('adminOverlay').style.display='flex'; };
 function closeAdmin() { document.getElementById('adminOverlay').style.display='none'; }
-function genCode() { let phone = document.getElementById('adminPhone').value; if(!phone) return; let code = "DEON-"+Math.random().toString(36).substring(2,6).toUpperCase(); let codes = JSON.parse(localStorage.getItem('unlockCodes')||'{}'); codes[code] = {phone, used:false}; localStorage.setItem('unlockCodes', JSON.stringify(codes)); document.getElementById('codeResult').innerHTML = `Code: <strong>${code}</strong>`; document.getElementById('codeResult').style.display='block'; navigator.clipboard.writeText(code); }
-function verifyCode() { let code = document.getElementById('unlockInput').value.trim().toUpperCase(); let codes = JSON.parse(localStorage.getItem('unlockCodes')||'{}'); if(codes[code] && !codes[code].used) { codes[code].used=true; localStorage.setItem('unlockCodes',JSON.stringify(codes)); localStorage.setItem('trackerUnlocked','true'); document.getElementById('trackerLocked').style.display='none'; document.getElementById('trackerUnlocked').style.display='block'; renderJobs(); alert("✅ Tracker Unlocked!"); } else alert("Invalid code"); }
-function isTrackerUnlocked() { return localStorage.getItem('trackerUnlocked') === 'true'; }
-function getJobs() { return JSON.parse(localStorage.getItem('jobApps')||'[]'); }
-function saveJobs(jobs) { localStorage.setItem('jobApps', JSON.stringify(jobs)); renderJobs(); }
-function renderJobs() { let container = document.getElementById('jobList'); if(!container) return; let jobs = getJobs(); if(jobs.length===0) { container.innerHTML='<p style="color:#888; text-align:center;">No applications yet.</p>'; return; } container.innerHTML = jobs.map(job => `<div style="background:#1a1a1a; padding:10px; border-radius:10px; margin-bottom:8px;"><strong>${escapeHtml(job.company)}</strong> - ${job.position}<br><small>${job.date} | ${job.status}</small> <button onclick="deleteJob(${job.id})" style="background:#e74c3c; border:none; color:white; padding:2px 8px; border-radius:5px; float:right;">X</button></div>`).join(''); }
-function deleteJob(id) { let jobs = getJobs().filter(j=>j.id!==id); saveJobs(jobs); }
-function addJob() { let company = prompt("Company name?"); if(!company) return; let position = prompt("Job position?"); if(!position) return; let status = prompt("Status: applied/interview/offer/rejected?", "applied"); let jobs = getJobs(); jobs.unshift({id:Date.now(), company, position, date:new Date().toISOString().split('T')[0], status}); saveJobs(jobs); }
+function genCode() { 
+    let phone = document.getElementById('adminPhone').value; 
+    let codeType = document.getElementById('codeType').value;
+    if(!phone) { alert("Enter customer name"); return; } 
+    let prefix = codeType === 'CV' ? 'CV' : 'CL';
+    let code = prefix + Math.random().toString(36).substring(2, 8).toUpperCase(); 
+    let codes = JSON.parse(localStorage.getItem('unlockCodes') || '{}'); 
+    codes[code] = { phone: phone, used: false, type: codeType, created: new Date().toISOString() }; 
+    localStorage.setItem('unlockCodes', JSON.stringify(codes)); 
+    document.getElementById('codeResult').innerHTML = `🔑 Code: <strong style="font-size:1.3rem;">${code}</strong><br>Type: ${codeType === 'CV' ? 'CV Only (R60)' : 'CV + Cover Letter (R80)'}<br>Customer: ${phone}`; 
+    document.getElementById('codeResult').style.display = 'block'; 
+    navigator.clipboard.writeText(code); 
+    alert(`Code ${code} copied! Send to customer.`); 
+}
 function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;': m==='<'?'&lt;': '&gt;'); }
 
-// SHORT WHATSAPP MESSAGE
-function panicFix() {
-    let message = currentScore < 80 ? `CV score ${currentScore}% - fix for R60` : `CV score ${currentScore}% - perfect for R60`;
+// Dynamic form functions
+function addEducation() {
+    const container = document.getElementById('eduContainer');
+    const div = document.createElement('div');
+    div.className = 'form-group';
+    div.innerHTML = `<input type="text" class="edu-input" placeholder="e.g., Diploma in IT - TUT (2023)"><button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>`;
+    container.appendChild(div);
+}
+function addExperience() {
+    const container = document.getElementById('expContainer');
+    const div = document.createElement('div');
+    div.className = 'exp-item';
+    div.innerHTML = `<div class="form-group"><input type="text" class="exp-company" placeholder="Company Name"></div>
+                     <div class="form-group"><input type="text" class="exp-date" placeholder="Dates (e.g., 2021-2022)"></div>
+                     <div class="form-group"><input type="text" class="exp-position" placeholder="Position"></div>
+                     <div class="form-group"><input type="text" class="exp-duty1" placeholder="• Duty 1 (e.g., Managed cash register)"></div>
+                     <div class="form-group"><input type="text" class="exp-duty2" placeholder="• Duty 2 (e.g., Assisted customers)"></div>
+                     <div class="form-group"><input type="text" class="exp-duty3" placeholder="• Duty 3 (e.g., Stock replenishment)"></div>
+                     <button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>`;
+    container.appendChild(div);
+}
+function addReference() {
+    const container = document.getElementById('refContainer');
+    const div = document.createElement('div');
+    div.className = 'form-group';
+    div.innerHTML = `<input type="text" class="ref-input" placeholder="e.g., Mrs. Jones, HR Manager - 0839876543"><button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>`;
+    container.appendChild(div);
+}
+
+function openCVForm() {
+    document.getElementById('resultsBox').style.display = 'none';
+    document.getElementById('stickyPanic').style.display = 'none';
+    document.getElementById('cvFormContainer').style.display = 'block';
+    document.getElementById('cvFormContainer').scrollIntoView({ behavior: 'smooth' });
+}
+
+function requestUnlock(type) {
+    let message = type === 'CV' ? "Hi Deon 🙏 I want CV only for R60" : "Hi Deon 🙏 I want CV + Cover Letter for R80";
     window.open(`https://wa.me/27605647937?text=${encodeURIComponent(message)}`, '_blank');
 }
 
-// COUNTDOWN TIMER (15 minutes)
-let timeLeft = 15 * 60;
-const minutesSpan = document.getElementById('countdownMinutes');
-const secondsSpan = document.getElementById('countdownSeconds');
-const countdownInterval = setInterval(() => {
-    if (timeLeft <= 0) {
-        clearInterval(countdownInterval);
-        minutesSpan.innerText = '00';
-        secondsSpan.innerText = '00';
+function showTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('cvPreviewPane').classList.remove('active-pane');
+    document.getElementById('clPreviewPane').classList.remove('active-pane');
+    if (tab === 'cv') {
+        document.querySelector('.tab-btn:first-child').classList.add('active');
+        document.getElementById('cvPreviewPane').classList.add('active-pane');
     } else {
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        minutesSpan.innerText = minutes.toString().padStart(2, '0');
-        secondsSpan.innerText = seconds.toString().padStart(2, '0');
+        document.querySelector('.tab-btn:last-child').classList.add('active');
+        document.getElementById('clPreviewPane').classList.add('active-pane');
     }
-}, 1000);
+}
 
+function checkUnlockCode() {
+    const enteredCode = document.getElementById('unlockCodeInput').value.trim().toUpperCase();
+    const storedCodes = JSON.parse(localStorage.getItem('unlockCodes') || '{}');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadClBtn = document.getElementById('downloadClBtn');
+    if (enteredCode.length === 0) { downloadBtn.style.display = 'none'; downloadClBtn.style.display = 'none'; return; }
+    if (storedCodes[enteredCode] && !storedCodes[enteredCode].used) {
+        const codeType = storedCodes[enteredCode].type;
+        if (codeType === 'CV') { downloadBtn.style.display = 'block'; downloadClBtn.style.display = 'none'; }
+        else { downloadBtn.style.display = 'block'; downloadClBtn.style.display = 'block'; }
+    } else { downloadBtn.style.display = 'none'; downloadClBtn.style.display = 'none'; }
+}
+
+function getCurrentDate() {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.toLocaleString('default', { month: 'long' });
+    const year = today.getFullYear();
+    return `${day} ${month} ${year}`;
+}
+
+function generateCoverLetter(data) {
+    const name = data.name;
+    const email = data.email;
+    const phone = data.phone;
+    const location = data.location;
+    const skills = data.skills;
+    const jobTitle = data.jobTitle;
+    const companyName = data.companyName;
+    const companyAddress = data.companyAddress;
+    const latestJob = data.experiences.length > 0 ? data.experiences[0] : null;
+    const currentDate = getCurrentDate();
+    
+    // Build experience paragraph
+    let experienceText = "";
+    if (latestJob && latestJob.position && latestJob.company) {
+        experienceText = `<p>With my experience as <strong>${escapeHtml(latestJob.position)}</strong> at <strong>${escapeHtml(latestJob.company)}</strong>, I have developed strong skills that align with this role.</p>`;
+    } else if (latestJob && latestJob.position) {
+        experienceText = `<p>With my experience as <strong>${escapeHtml(latestJob.position)}</strong>, I have developed strong skills that align with this role.</p>`;
+    }
+    
+    // Build skills paragraph
+    let skillsText = "";
+    if (skills) {
+        const skillList = skills.split(',').slice(0, 4).map(s => s.trim());
+        if (skillList.length > 0) {
+            skillsText = `<p><strong>My key skills include:</strong> ${skillList.join(', ')}.</p>`;
+        }
+    }
+    
+    // Opening line
+    let openingLine = "";
+    if (companyName && jobTitle) {
+        openingLine = `I am writing this letter to apply for the <strong>${escapeHtml(jobTitle)}</strong> position at <strong>${escapeHtml(companyName)}</strong>.`;
+        if (companyAddress) {
+            openingLine += ` I understand that your company is located at ${escapeHtml(companyAddress)}.`;
+        }
+    } else if (jobTitle) {
+        openingLine = `I am writing this letter to apply for the <strong>${escapeHtml(jobTitle)}</strong> position at your company.`;
+    } else if (companyName) {
+        openingLine = `I am writing this letter to express my interest in joining <strong>${escapeHtml(companyName)}</strong>.`;
+    } else {
+        openingLine = `I am writing this letter to express my interest in the position at your company.`;
+    }
+    
+    let greeting = companyName ? `Dear Hiring Manager at ${escapeHtml(companyName)}` : `Dear Hiring Manager`;
+    
+    // Build user address section
+    let userAddressHtml = "";
+    if (location || email || phone) {
+        userAddressHtml = `<div style="margin-bottom: 20px; text-align: right;">
+            <div><strong>${escapeHtml(name)}</strong></div>
+            ${location ? `<div>${escapeHtml(location)}</div>` : ''}
+            ${phone ? `<div>${escapeHtml(phone)}</div>` : ''}
+            ${email ? `<div>${escapeHtml(email)}</div>` : ''}
+            <div>${currentDate}</div>
+        </div>`;
+    }
+    
+    // Build company address section
+    let companyAddressHtml = "";
+    if (companyName || companyAddress) {
+        companyAddressHtml = `<div style="margin-bottom: 20px;">
+            ${companyName ? `<div><strong>${escapeHtml(companyName)}</strong></div>` : ''}
+            ${companyAddress ? `<div>${escapeHtml(companyAddress)}</div>` : ''}
+        </div>`;
+    }
+    
+    return `
+        ${userAddressHtml}
+        ${companyAddressHtml}
+        <div style="margin-bottom: 15px;">${greeting},</div>
+        <div style="font-size:13px; line-height:1.4; color:#222; margin-bottom:12px;">${openingLine}</div>
+        ${experienceText}
+        ${skillsText}
+        <div style="font-size:13px; line-height:1.4; color:#222; margin-bottom:12px;">I am confident that my skills and experience make me a strong candidate for this role. I look forward to the opportunity to discuss how I can contribute to your team.</div>
+        <div style="font-size:13px; line-height:1.4; color:#222; margin-top:20px;">Yours sincerely,<br>${escapeHtml(name)}</div>
+    `;
+}
+
+function generateCV() {
+    const name = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const dob = document.getElementById('dob').value;
+    const gender = document.getElementById('gender').value;
+    const location = document.getElementById('location').value;
+    const driversLicense = document.getElementById('driversLicense').value;
+    const summary = document.getElementById('summary').value;
+    const languagesForm = document.getElementById('languages').value;
+    const jobTitle = document.getElementById('jobTitle').value;
+    const companyName = document.getElementById('companyName').value;
+    const companyAddress = document.getElementById('companyAddress').value;
+    
+    if (!name || !email || !phone || !summary) { alert("Please fill in all required fields (*)"); return; }
+    
+    const eduInputs = document.querySelectorAll('#eduContainer .edu-input');
+    const education = Array.from(eduInputs).map(i => i.value).filter(e => e);
+    const skills = document.getElementById('skills').value;
+    const refInputs = document.querySelectorAll('#refContainer .ref-input');
+    const references = Array.from(refInputs).map(r => r.value).filter(r => r);
+    
+    const experiences = [];
+    const expItems = document.querySelectorAll('#expContainer .exp-item');
+    expItems.forEach(item => {
+        const company = item.querySelector('.exp-company')?.value || '';
+        const date = item.querySelector('.exp-date')?.value || '';
+        const position = item.querySelector('.exp-position')?.value || '';
+        const duty1 = item.querySelector('.exp-duty1')?.value || '';
+        const duty2 = item.querySelector('.exp-duty2')?.value || '';
+        const duty3 = item.querySelector('.exp-duty3')?.value || '';
+        if (company || date || position || duty1 || duty2 || duty3) {
+            experiences.push({ company, date, position, duties: [duty1, duty2, duty3].filter(d => d) });
+        }
+    });
+    
+    // Build the professional CV layout
+    let cvHtml = `<div class="cv-name-large">${escapeHtml(name)}</div>`;
+    
+    cvHtml += `<div class="personal-details-section">
+        <div class="personal-details-title">PERSONAL DETAILS</div>
+        <div class="details-grid">
+            <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${escapeHtml(phone)}</span></div>
+            <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${escapeHtml(email)}</span></div>
+            ${gender ? `<div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${escapeHtml(gender)}</span></div>` : ''}
+            ${dob ? `<div class="detail-item"><span class="detail-label">DOB:</span><span class="detail-value">${escapeHtml(dob)}</span></div>` : ''}
+            ${location ? `<div class="detail-item"><span class="detail-label">Location:</span><span class="detail-value">${escapeHtml(location)}</span></div>` : ''}
+            ${driversLicense ? `<div class="detail-item"><span class="detail-label">Driver's License:</span><span class="detail-value">${escapeHtml(driversLicense)}</span></div>` : ''}
+            ${languagesForm ? `<div class="detail-item"><span class="detail-label">Languages:</span><span class="detail-value">${escapeHtml(languagesForm)}</span></div>` : ''}
+        </div>
+    </div>`;
+    
+    cvHtml += `<div class="cv-section-title-new">PROFILE SUMMARY</div>
+               <div class="cv-item-desc-new">${escapeHtml(summary)}</div>`;
+    
+    if (education.length) {
+        cvHtml += `<div class="cv-section-title-new">EDUCATION</div>`;
+        education.forEach(e => { cvHtml += `<div class="cv-item-new">${escapeHtml(e)}</div>`; });
+    }
+    
+    if (experiences.length) {
+        cvHtml += `<div class="cv-section-title-new">WORK EXPERIENCE</div>`;
+        experiences.forEach(exp => {
+            cvHtml += `<div class="cv-item-new">
+                <div class="cv-item-title-new">${exp.position ? escapeHtml(exp.position) : ''}${exp.company ? ' at ' + escapeHtml(exp.company) : ''}</div>
+                <div class="cv-item-sub-new">${exp.date ? escapeHtml(exp.date) : ''}</div>
+                <ul class="bullet-list">`;
+            exp.duties.forEach(d => { if(d) cvHtml += `<li>${escapeHtml(d)}</li>`; });
+            cvHtml += `</ul></div>`;
+        });
+    }
+    
+    if (skills) {
+        cvHtml += `<div class="cv-section-title-new">SKILLS</div><div class="skills-container">`;
+        skills.split(',').forEach(s => {
+            const skill = s.trim();
+            if (skill) cvHtml += `<span class="skill-tag-new">${escapeHtml(skill)}</span>`;
+        });
+        cvHtml += `</div>`;
+    }
+    
+    if (references.length) {
+        cvHtml += `<div class="cv-section-title-new">REFERENCES</div>`;
+        references.forEach(r => cvHtml += `<div class="cv-item-new">${escapeHtml(r)}</div>`);
+    }
+    
+    const clHtml = generateCoverLetter({ name, email, phone, location, skills, experiences, jobTitle, companyName, companyAddress });
+    
+    generatedCVData = { html: cvHtml };
+    generatedCLData = { html: clHtml };
+    
+    document.getElementById('cvPreview').innerHTML = cvHtml + `<div class="center-watermark">DEON SIMA</div><div class="bottom-watermark">CV FIX PRO</div>`;
+    document.getElementById('clPreview').innerHTML = clHtml + `<div class="center-watermark">DEON SIMA</div><div class="bottom-watermark">CV FIX PRO</div>`;
+    
+    document.getElementById('cvFormContainer').style.display = 'none';
+    document.getElementById('previewContainer').style.display = 'block';
+    document.getElementById('downloadBtn').style.display = 'none';
+    document.getElementById('downloadClBtn').style.display = 'none';
+    document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
+    
+    const unlockInput = document.getElementById('unlockCodeInput');
+    if (unlockInput) { 
+        unlockInput.oninput = function() { checkUnlockCode(); }; 
+    }
+}
+
+function downloadCleanCV() {
+    const cleanHTML = generatedCVData.html;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`<html><head><title>My Professional CV</title>
+        <style>body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+        .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; }
+        .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; }
+        .details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 15px; font-size: 12px; }
+        .detail-item { display: flex; gap: 5px; }
+        .detail-label { font-weight: 700; color: #111; min-width: 70px; }
+        .detail-value { font-weight: 600; color: #111; }
+        .cv-section-title-new { font-size: 16px; font-weight: 700; color: #1E3A8A; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; }
+        .cv-item-desc-new { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 10px; }
+        .cv-item-new { margin-bottom: 12px; }
+        .cv-item-title-new { font-weight: 700; font-size: 14px; color: #111; }
+        .cv-item-sub-new { font-size: 12px; color: #444; margin-bottom: 5px; }
+        .bullet-list { margin-left: 20px; padding-left: 0; }
+        .bullet-list li { font-size: 13px; color: #222; margin-bottom: 3px; }
+        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+        .skill-tag-new { background: white; color: #111; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; border: 1px solid #ccc; }
+        @media print { body { margin: 0; padding: 20px; } .personal-details-section { background: #f5f5f5; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+        @media (max-width: 600px) { .details-grid { grid-template-columns: 1fr; gap: 5px; } .cv-name-large { font-size: 22px; } .skills-container { gap: 6px; } .skill-tag-new { padding: 4px 10px; font-size: 10px; } }</style>
+        </head><body>${cleanHTML}</body></html>`);
+    printWindow.document.close();
+    printWindow.print();
+    setTimeout(() => { 
+        printWindow.close();
+    }, 500);
+}
+
+function downloadCleanCL() {
+    const cleanHTML = generatedCLData.html;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`<html><head><title>My Cover Letter</title>
+        <style>body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+        .cv-name { font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 5px; color: #0a0a0a; }
+        .cv-contact { font-size: 13px; color: #333; font-weight: 500; text-align: center; margin-bottom: 20px; }
+        .cv-section-title { font-size: 17px; font-weight: 800; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; color: #1E3A8A; }
+        .cv-item-desc { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 12px; }
+        @media print { body { margin: 0; padding: 20px; } }</style>
+        </head><body>${cleanHTML}</body></html>`);
+    printWindow.document.close();
+    printWindow.print();
+    setTimeout(() => { 
+        printWindow.close();
+    }, 500);
+}
+
+// ATS Scan Functions
 function updateInterviewCalculator(score) {
     let current, after, savings;
     if (score < 40) { current = "1 per 100+ apps"; after = "1 per 10-12 apps"; savings = "Save yourself 90+ wasted applications"; }
@@ -419,16 +1155,25 @@ function updateDayTimer() {
     let diff = end - now, hours = Math.floor(diff/3600000), minutes = Math.floor((diff%3600000)/60000);
     document.getElementById('dayTimer').innerHTML = `⏰ Offer ends in ${hours.toString().padStart(2,'0')}h ${minutes.toString().padStart(2,'0')}m`;
 }
-setInterval(updateDayTimer, 60000);
+let dayTimerInterval = setInterval(updateDayTimer, 60000);
+allIntervals.push(dayTimerInterval);
 updateDayTimer();
 
-// CAROUSEL LOGIC - Single image
+// Carousel - single image
 const track = document.getElementById('carouselTrack');
 const slides = Array.from(document.querySelectorAll('.carousel-slide'));
 const dotsContainer = document.getElementById('carouselDots');
-if (slides.length <= 1) {
-    if (dotsContainer) dotsContainer.style.display = 'none';
-}
+if (slides.length <= 1 && dotsContainer) dotsContainer.style.display = 'none';
+
+// Delivery timer
+let mins = 0;
+let deliveryInterval = setInterval(() => {
+    mins = Math.min(mins + 1, 120);
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    document.getElementById('deliveryTimer').innerText = `${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m`;
+}, 60000);
+allIntervals.push(deliveryInterval);
 
 function runScan(text) {
     let lower = text.toLowerCase();
@@ -470,11 +1215,9 @@ function runScan(text) {
     document.getElementById('detailedReport').innerHTML=html;
     if(uploadedFileName){let fc=checkFileName(uploadedFileName); document.getElementById('filenameStatus').innerHTML=fc.isGood?'<div class="filename-good">✅ Professional file name</div>':'<div class="filename-bad">❌ '+fc.issues[0]+'</div>'; document.getElementById('filenameSuggestion').style.display=fc.isGood?'none':'block'; if(!fc.isGood)document.getElementById('filenameSuggestion').innerHTML=`💡 SUGGESTED: ${fc.suggestion}`; document.getElementById('filenameContainer').style.display='block';}
     
-    // STICKY BUTTON LOGIC: Change color, text, and warning message based on score
     const stickyContainer = document.getElementById('stickyPanic');
     const stickyBtn = document.getElementById('stickyPanicBtn');
     const warningMsg = document.getElementById('warningMessage');
-    
     if(score < 80){
         stickyContainer.style.display = 'block';
         stickyBtn.className = 'sticky-panic-btn red';
@@ -488,9 +1231,7 @@ function runScan(text) {
         warningMsg.innerHTML = '✅ Great foundation! Still room for improvement.';
         warningMsg.style.color = '#2ECC71';
     }
-    
-    document.getElementById('interviewCalculator').style.display='block'; document.getElementById('urgencyContainer').style.display='block'; document.getElementById('testimonialBox').style.display='block'; document.getElementById('trackerSection').style.display='block'; updateSpotsLeft();
-    if(isTrackerUnlocked()){document.getElementById('trackerLocked').style.display='none'; document.getElementById('trackerUnlocked').style.display='block'; renderJobs();}else{document.getElementById('trackerLocked').style.display='block'; document.getElementById('trackerUnlocked').style.display='none';}
+    document.getElementById('interviewCalculator').style.display='block'; document.getElementById('urgencyContainer').style.display='block'; document.getElementById('testimonialBox').style.display='block'; updateSpotsLeft();
 }
 
 document.getElementById('cvFile').addEventListener('change', async function(e) {
@@ -498,6 +1239,7 @@ document.getElementById('cvFile').addEventListener('change', async function(e) {
     uploadedFileName = file.name;
     document.getElementById('progressBar').style.display = 'block';
     let prog=0, interval=setInterval(()=>{prog+=20; document.getElementById('progressFill').style.width=prog+'%'; if(prog>=100)clearInterval(interval);},150);
+    allIntervals.push(interval);
     document.querySelector('.drop-zone').style.display='none'; document.getElementById('loader').style.display='block';
     let ab=await file.arrayBuffer(); let pdf=await pdfjsLib.getDocument(ab).promise; let text="";
     for(let i=1;i<=pdf.numPages;i++){let page=await pdf.getPage(i); let content=await page.getTextContent(); text+=content.items.map(item=>item.str).join(" ");}
@@ -505,8 +1247,6 @@ document.getElementById('cvFile').addEventListener('change', async function(e) {
     document.getElementById('loader').style.display='none'; document.getElementById('resultsBox').style.display='block'; document.getElementById('progressBar').style.display='none';
     setTimeout(()=>document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}),100);
 });
-
-let mins=0; setInterval(()=>{mins=Math.min(mins+1,120); let h=Math.floor(mins/60),m=mins%60; document.getElementById('deliveryTimer').innerText=`${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m`;},60000);
 </script>
 </body>
 </html>
