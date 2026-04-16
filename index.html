@@ -362,6 +362,27 @@
             color: var(--primary);
         }
         
+        /* Unlock Code Display */
+        .code-display-box {
+            background: #1a1a2e;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .code-number {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: monospace;
+            letter-spacing: 3px;
+            color: var(--primary);
+            background: #0a0a0a;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
         /* NEW PROFESSIONAL CV LAYOUT - Printer Friendly */
         .cv-name-large {
             font-size: 28px;
@@ -469,10 +490,6 @@
             display: none;
         }
         .unlock-section { margin-top: 15px; text-align: center; }
-        .unlock-input {
-            padding: 10px; width: 100%; background: #0a0a0a; border: 1px solid var(--primary);
-            color: white; border-radius: 8px; text-align: center; margin-bottom: 10px;
-        }
         .btn-home {
             background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 50px;
             font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px;
@@ -521,26 +538,24 @@
             .two-buttons { flex-direction: column; }
             .skills-container { gap: 6px; }
             .skill-tag-new { padding: 4px 10px; font-size: 10px; }
+            .code-number { font-size: 18px; }
         }
         
         footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
         .admin-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; }
         .admin-panel { background:#1a1a1a; border:2px solid var(--primary); border-radius:20px; padding:20px; max-width:350px; width:90%; text-align:center; }
+        .admin-code-input { width: 100%; padding: 10px; margin-bottom: 10px; background: #0a0a0a; border: 1px solid var(--primary); color: white; border-radius: 8px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div id="adminOverlay" class="admin-overlay">
     <div class="admin-panel">
-        <h3>🔧 ADMIN</h3>
-        <select id="codeType" style="width:100%; padding:10px; margin-bottom:10px; background:#0a0a0a; color:white; border:1px solid var(--primary); border-radius:8px;">
-            <option value="CV">CV Only (R60)</option>
-            <option value="CL">CV + Cover Letter (R80)</option>
-        </select>
-        <input type="text" id="adminPhone" placeholder="Customer Name">
-        <button onclick="genCode()" style="background:var(--primary); color:#000; padding:10px; margin:10px 0; border:none; border-radius:8px;">Generate Unlock Code</button>
-        <div id="codeResult" style="background:#0a0a0a; padding:10px; border-radius:8px; display:none;"></div>
-        <button onclick="closeAdmin()" style="background:#333; color:white; padding:8px; border:none; border-radius:8px;">Close</button>
+        <h3>🔧 ADMIN PANEL - GET CLEAN PDF</h3>
+        <p style="font-size:0.7rem; margin-bottom:10px;">Enter customer code to generate clean PDF</p>
+        <input type="text" id="adminCodeInput" class="admin-code-input" placeholder="Enter code (e.g., CV-ABC123)">
+        <button onclick="getCleanPDF()" style="background:var(--primary); color:#000; padding:10px; margin:10px 0; border:none; border-radius:8px; width:100%;">📄 GET CLEAN PDF</button>
+        <button onclick="closeAdmin()" style="background:#333; color:white; padding:8px; border:none; border-radius:8px; width:100%;">Close</button>
     </div>
 </div>
 
@@ -738,10 +753,14 @@
             <button class="btn-both" onclick="requestUnlock('BOTH')">🟢 CV + Cover Letter - R80</button>
         </div>
         
+        <!-- UNLOCK CODE DISPLAY -->
+        <div class="code-display-box" id="codeDisplayBox">
+            <div style="font-size:0.8rem;">📋 YOUR UNLOCK CODE</div>
+            <div class="code-number" id="userCode">CV-XXXXXX</div>
+            <div style="font-size:0.7rem; color:#ccc;">👇 Send this code to Deon on WhatsApp after payment 👇</div>
+        </div>
+        
         <div class="unlock-section">
-            <input type="text" id="unlockCodeInput" class="unlock-input" placeholder="Enter unlock code">
-            <button id="downloadBtn" class="btn-download" onclick="downloadCleanCV()">📥 Download Clean CV</button>
-            <button id="downloadClBtn" class="btn-download-cl" onclick="downloadCleanCL()">📥 Download Clean Cover Letter</button>
             <button class="btn-home" onclick="goHome()">🏠 Scan Another CV</button>
         </div>
     </div>
@@ -764,6 +783,7 @@ let cvText = "", currentScore = 0, missingItems = [], uploadedFileName = "";
 let generatedCVData = {};
 let generatedCLData = {};
 let allIntervals = [];
+let currentUserCode = "";
 
 function clearAllIntervals() {
     for (let i = 0; i < allIntervals.length; i++) {
@@ -775,6 +795,49 @@ function clearAllIntervals() {
 function goHome() { 
     clearAllIntervals();
     location.reload(); 
+}
+
+// ADMIN PANEL - GET CLEAN PDF
+function closeAdmin() { document.getElementById('adminOverlay').style.display = 'none'; }
+function getCleanPDF() {
+    const enteredCode = document.getElementById('adminCodeInput').value.trim().toUpperCase();
+    if (!enteredCode) {
+        alert("Enter the customer code");
+        return;
+    }
+    
+    // Check if this code matches the stored user code
+    if (currentUserCode && currentUserCode === enteredCode) {
+        // Show the clean CV in a new window for you to save/screenshot
+        const cleanHTML = generatedCVData.html;
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`<html><head><title>Clean CV - ${generatedCVData.name || 'Customer'}</title>
+            <style>body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+            .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; }
+            .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+            .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; }
+            .details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 15px; font-size: 12px; }
+            .detail-item { display: flex; gap: 5px; }
+            .detail-label { font-weight: 700; color: #111; min-width: 70px; }
+            .detail-value { font-weight: 600; color: #111; }
+            .cv-section-title-new { font-size: 16px; font-weight: 700; color: #1E3A8A; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; }
+            .cv-item-desc-new { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 10px; }
+            .cv-item-new { margin-bottom: 12px; }
+            .cv-item-title-new { font-weight: 700; font-size: 14px; color: #111; }
+            .cv-item-sub-new { font-size: 12px; color: #444; margin-bottom: 5px; }
+            .bullet-list { margin-left: 20px; padding-left: 0; }
+            .bullet-list li { font-size: 13px; color: #222; margin-bottom: 3px; }
+            .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+            .skill-tag-new { background: white; color: #111; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; border: 1px solid #ccc; }
+            @media print { body { margin: 0; padding: 20px; } .personal-details-section { background: #f5f5f5; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+            @media (max-width: 600px) { .details-grid { grid-template-columns: 1fr; gap: 5px; } .cv-name-large { font-size: 22px; } .skills-container { gap: 6px; } .skill-tag-new { padding: 4px 10px; font-size: 10px; } }</style>
+            </head><body>${cleanHTML}</body></html>`);
+        printWindow.document.close();
+        printWindow.print();
+        alert("Clean CV opened. Take screenshot or save as PDF and send to customer.");
+    } else {
+        alert("Invalid code. Please check and try again.");
+    }
 }
 
 // Summary template selector
@@ -791,24 +854,18 @@ function selectSummaryTemplate(type) {
     }
 }
 
-// Admin
+// Admin panel access - triple click logo
 let clickCount = 0;
-document.getElementById('logoClick').onclick = () => { clickCount++; setTimeout(() => clickCount=0, 1000); if(clickCount===5) document.getElementById('adminOverlay').style.display='flex'; };
-function closeAdmin() { document.getElementById('adminOverlay').style.display='none'; }
-function genCode() { 
-    let phone = document.getElementById('adminPhone').value; 
-    let codeType = document.getElementById('codeType').value;
-    if(!phone) { alert("Enter customer name"); return; } 
-    let prefix = codeType === 'CV' ? 'CV' : 'CL';
-    let code = prefix + Math.random().toString(36).substring(2, 8).toUpperCase(); 
-    let codes = JSON.parse(localStorage.getItem('unlockCodes') || '{}'); 
-    codes[code] = { phone: phone, used: false, type: codeType, created: new Date().toISOString() }; 
-    localStorage.setItem('unlockCodes', JSON.stringify(codes)); 
-    document.getElementById('codeResult').innerHTML = `🔑 Code: <strong style="font-size:1.3rem;">${code}</strong><br>Type: ${codeType === 'CV' ? 'CV Only (R60)' : 'CV + Cover Letter (R80)'}<br>Customer: ${phone}`; 
-    document.getElementById('codeResult').style.display = 'block'; 
-    navigator.clipboard.writeText(code); 
-    alert(`Code ${code} copied! Send to customer.`); 
-}
+document.getElementById('logoClick').onclick = () => { 
+    clickCount++; 
+    setTimeout(() => clickCount = 0, 1000); 
+    if (clickCount === 5) { 
+        document.getElementById('adminOverlay').style.display = 'flex'; 
+        document.getElementById('adminCodeInput').value = '';
+        clickCount = 0; 
+    } 
+};
+
 function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;': m==='<'?'&lt;': '&gt;'); }
 
 // Dynamic form functions
@@ -848,7 +905,7 @@ function openCVForm() {
 }
 
 function requestUnlock(type) {
-    let message = type === 'CV' ? "Hi Deon 🙏 I want CV only for R60" : "Hi Deon 🙏 I want CV + Cover Letter for R80";
+    const message = `Hi Deon, my code is ${currentUserCode}, I will pay R${type === 'CV' ? '60' : '80'}`;
     window.open(`https://wa.me/27605647937?text=${encodeURIComponent(message)}`, '_blank');
 }
 
@@ -863,19 +920,6 @@ function showTab(tab) {
         document.querySelector('.tab-btn:last-child').classList.add('active');
         document.getElementById('clPreviewPane').classList.add('active-pane');
     }
-}
-
-function checkUnlockCode() {
-    const enteredCode = document.getElementById('unlockCodeInput').value.trim().toUpperCase();
-    const storedCodes = JSON.parse(localStorage.getItem('unlockCodes') || '{}');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const downloadClBtn = document.getElementById('downloadClBtn');
-    if (enteredCode.length === 0) { downloadBtn.style.display = 'none'; downloadClBtn.style.display = 'none'; return; }
-    if (storedCodes[enteredCode] && !storedCodes[enteredCode].used) {
-        const codeType = storedCodes[enteredCode].type;
-        if (codeType === 'CV') { downloadBtn.style.display = 'block'; downloadClBtn.style.display = 'none'; }
-        else { downloadBtn.style.display = 'block'; downloadClBtn.style.display = 'block'; }
-    } else { downloadBtn.style.display = 'none'; downloadClBtn.style.display = 'none'; }
 }
 
 function getCurrentDate() {
@@ -898,7 +942,6 @@ function generateCoverLetter(data) {
     const latestJob = data.experiences.length > 0 ? data.experiences[0] : null;
     const currentDate = getCurrentDate();
     
-    // Build experience paragraph
     let experienceText = "";
     if (latestJob && latestJob.position && latestJob.company) {
         experienceText = `<p>With my experience as <strong>${escapeHtml(latestJob.position)}</strong> at <strong>${escapeHtml(latestJob.company)}</strong>, I have developed strong skills that align with this role.</p>`;
@@ -906,7 +949,6 @@ function generateCoverLetter(data) {
         experienceText = `<p>With my experience as <strong>${escapeHtml(latestJob.position)}</strong>, I have developed strong skills that align with this role.</p>`;
     }
     
-    // Build skills paragraph
     let skillsText = "";
     if (skills) {
         const skillList = skills.split(',').slice(0, 4).map(s => s.trim());
@@ -915,7 +957,6 @@ function generateCoverLetter(data) {
         }
     }
     
-    // Opening line
     let openingLine = "";
     if (companyName && jobTitle) {
         openingLine = `I am writing this letter to apply for the <strong>${escapeHtml(jobTitle)}</strong> position at <strong>${escapeHtml(companyName)}</strong>.`;
@@ -932,7 +973,6 @@ function generateCoverLetter(data) {
     
     let greeting = companyName ? `Dear Hiring Manager at ${escapeHtml(companyName)}` : `Dear Hiring Manager`;
     
-    // Build user address section
     let userAddressHtml = "";
     if (location || email || phone) {
         userAddressHtml = `<div style="margin-bottom: 20px; text-align: right;">
@@ -944,7 +984,6 @@ function generateCoverLetter(data) {
         </div>`;
     }
     
-    // Build company address section
     let companyAddressHtml = "";
     if (companyName || companyAddress) {
         companyAddressHtml = `<div style="margin-bottom: 20px;">
@@ -1001,6 +1040,10 @@ function generateCV() {
         }
     });
     
+    // Generate unique code for this CV session
+    currentUserCode = "CV-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    document.getElementById('userCode').innerText = currentUserCode;
+    
     // Build the professional CV layout
     let cvHtml = `<div class="cv-name-large">${escapeHtml(name)}</div>`;
     
@@ -1053,7 +1096,7 @@ function generateCV() {
     
     const clHtml = generateCoverLetter({ name, email, phone, location, skills, experiences, jobTitle, companyName, companyAddress });
     
-    generatedCVData = { html: cvHtml };
+    generatedCVData = { html: cvHtml, name: name };
     generatedCLData = { html: clHtml };
     
     document.getElementById('cvPreview').innerHTML = cvHtml + `<div class="center-watermark">DEON SIMA</div><div class="bottom-watermark">CV FIX PRO</div>`;
@@ -1061,63 +1104,7 @@ function generateCV() {
     
     document.getElementById('cvFormContainer').style.display = 'none';
     document.getElementById('previewContainer').style.display = 'block';
-    document.getElementById('downloadBtn').style.display = 'none';
-    document.getElementById('downloadClBtn').style.display = 'none';
     document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
-    
-    const unlockInput = document.getElementById('unlockCodeInput');
-    if (unlockInput) { 
-        unlockInput.oninput = function() { checkUnlockCode(); }; 
-    }
-}
-
-function downloadCleanCV() {
-    const cleanHTML = generatedCVData.html;
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`<html><head><title>My Professional CV</title>
-        <style>body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; }
-        .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; }
-        .details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 15px; font-size: 12px; }
-        .detail-item { display: flex; gap: 5px; }
-        .detail-label { font-weight: 700; color: #111; min-width: 70px; }
-        .detail-value { font-weight: 600; color: #111; }
-        .cv-section-title-new { font-size: 16px; font-weight: 700; color: #1E3A8A; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; }
-        .cv-item-desc-new { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 10px; }
-        .cv-item-new { margin-bottom: 12px; }
-        .cv-item-title-new { font-weight: 700; font-size: 14px; color: #111; }
-        .cv-item-sub-new { font-size: 12px; color: #444; margin-bottom: 5px; }
-        .bullet-list { margin-left: 20px; padding-left: 0; }
-        .bullet-list li { font-size: 13px; color: #222; margin-bottom: 3px; }
-        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-        .skill-tag-new { background: white; color: #111; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; border: 1px solid #ccc; }
-        @media print { body { margin: 0; padding: 20px; } .personal-details-section { background: #f5f5f5; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-        @media (max-width: 600px) { .details-grid { grid-template-columns: 1fr; gap: 5px; } .cv-name-large { font-size: 22px; } .skills-container { gap: 6px; } .skill-tag-new { padding: 4px 10px; font-size: 10px; } }</style>
-        </head><body>${cleanHTML}</body></html>`);
-    printWindow.document.close();
-    printWindow.print();
-    setTimeout(() => { 
-        printWindow.close();
-    }, 500);
-}
-
-function downloadCleanCL() {
-    const cleanHTML = generatedCLData.html;
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`<html><head><title>My Cover Letter</title>
-        <style>body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .cv-name { font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 5px; color: #0a0a0a; }
-        .cv-contact { font-size: 13px; color: #333; font-weight: 500; text-align: center; margin-bottom: 20px; }
-        .cv-section-title { font-size: 17px; font-weight: 800; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; color: #1E3A8A; }
-        .cv-item-desc { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 12px; }
-        @media print { body { margin: 0; padding: 20px; } }</style>
-        </head><body>${cleanHTML}</body></html>`);
-    printWindow.document.close();
-    printWindow.print();
-    setTimeout(() => { 
-        printWindow.close();
-    }, 500);
 }
 
 // ATS Scan Functions
