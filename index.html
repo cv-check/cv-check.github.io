@@ -79,6 +79,51 @@
         .drop-zone p { font-weight: bold; color: var(--primary); font-size: 1rem; }
         .file-input { display: none; }
         
+        /* LIVE SCAN STYLES */
+        .live-scan {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            text-align: center;
+            display: none;
+        }
+        .scan-progress-bar {
+            background: #333;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .scan-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .scan-status {
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-top: 10px;
+        }
+        .scan-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 8px 0;
+            font-size: 0.75rem;
+            color: #888;
+        }
+        .scan-step.active {
+            color: var(--primary);
+        }
+        .scan-step.completed {
+            color: #2ECC71;
+        }
+        
         .social-proof { margin: 20px 0 10px; overflow: hidden; position: relative; border-radius: 20px; }
         .carousel-container { position: relative; width: 100%; overflow: hidden; border-radius: 16px; }
         .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
@@ -104,10 +149,6 @@
         .stat { text-align: center; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 14px; flex: 1; }
         .stat-number { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 0.6rem; color: #888; }
-        
-        #loader { text-align: center; padding: 35px; display: none; }
-        .radar { width: 45px; height: 45px; border: 3px solid var(--primary); border-top-color: transparent; border-radius: 50%; margin: 0 auto 12px; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
         
         .results { display: none; }
         .score-card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 18px; }
@@ -148,7 +189,6 @@
         
         .price-badge { background: linear-gradient(135deg, #D4AF37, #B8960F); color: #000; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; margin: 12px 0; font-size: 0.9rem; }
         
-        /* SINGLE PANIC BUTTON - changes color based on score */
         .panic-button-container {
             position: fixed;
             bottom: 0;
@@ -263,7 +303,6 @@
         .center-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 42px; font-weight: 900; color: rgba(0,0,0,0.12); white-space: nowrap; pointer-events: none; z-index: 10; font-family: 'Plus Jakarta Sans', monospace; letter-spacing: 5px; text-transform: uppercase; }
         .bottom-watermark { position: absolute; bottom: 10px; right: 10px; font-size: 10px; color: rgba(0,0,0,0.1); pointer-events: none; z-index: 10; }
         
-        /* CV Preview Layout */
         .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; letter-spacing: 1px; }
         .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
         .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; letter-spacing: 1px; }
@@ -303,7 +342,6 @@
         footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
         .admin-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; overflow-y: auto; }
         .admin-panel { background:#1a1a1a; border:2px solid var(--primary); border-radius:20px; padding:20px; max-width: 90%; width: 700px; max-height: 85vh; overflow-y: auto; margin: 20px; }
-        .admin-panel h3 { color: var(--primary); margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -432,6 +470,22 @@
         </div>
     </div>
 
+    <!-- LIVE SCAN SECTION -->
+    <div id="liveScan" class="live-scan">
+        <div style="font-size: 1.2rem; margin-bottom: 10px;">🔍 ANALYSING YOUR CV...</div>
+        <div class="scan-progress-bar">
+            <div class="scan-progress-fill" id="scanProgressFill"></div>
+        </div>
+        <div class="scan-status" id="scanStatus">Initialising scanner...</div>
+        <div id="scanSteps">
+            <div class="scan-step" id="step1">📄 Extracting text from CV</div>
+            <div class="scan-step" id="step2">👤 Scanning personal details</div>
+            <div class="scan-step" id="step3">💼 Checking work experience</div>
+            <div class="scan-step" id="step4">🔧 Analyzing skills & keywords</div>
+            <div class="scan-step" id="step5">📊 Calculating ATS score</div>
+        </div>
+    </div>
+
     <div class="social-proof bounce-animation">
         <div class="carousel-container">
             <div class="carousel-track" id="carouselTrack">
@@ -492,7 +546,7 @@
 
 <button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
 
-<!-- SINGLE PANIC BUTTON - Color changes based on score -->
+<!-- SINGLE PANIC BUTTON -->
 <div id="panicButtonContainer" class="panic-button-container">
     <div class="warning-message" id="warningMessage">⚠️ THIS IS WHY YOU'RE NOT GETTING INTERVIEWS ⚠️</div>
     <button class="panic-btn red" id="panicBtn" onclick="sendWhatsApp()">🔴 FIX MY CV NOW 🔴</button>
@@ -772,6 +826,74 @@ function sendWhatsApp() {
     window.open(`https://wa.me/27605647937?text=${encodeURIComponent(message)}`, '_blank');
 }
 
+// LIVE SCAN FUNCTION
+function runLiveScan(callback) {
+    const scanDiv = document.getElementById('liveScan');
+    const progressFill = document.getElementById('scanProgressFill');
+    const statusDiv = document.getElementById('scanStatus');
+    const steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
+    const stepMessages = [
+        "Extracting text from PDF...",
+        "Scanning personal details... ✓ Found name, email, phone",
+        "Checking work experience... ✓ Found experience entries",
+        "Analyzing skills & keywords... ✓ Matching ATS keywords",
+        "Calculating ATS score..."
+    ];
+    
+    // Reset all steps
+    steps.forEach(step => {
+        const el = document.getElementById(step);
+        el.classList.remove('active', 'completed');
+        el.style.color = '#888';
+    });
+    
+    scanDiv.style.display = 'block';
+    let progress = 0;
+    let stepIndex = 0;
+    
+    // Animate progress bar
+    const progressInterval = setInterval(() => {
+        progress += 4;
+        if (progress > 100) {
+            clearInterval(progressInterval);
+            progress = 100;
+        }
+        progressFill.style.width = progress + '%';
+    }, 120);
+    
+    // Update steps one by one
+    const stepInterval = setInterval(() => {
+        if (stepIndex > 0) {
+            const prevStep = document.getElementById(steps[stepIndex - 1]);
+            prevStep.classList.remove('active');
+            prevStep.classList.add('completed');
+            prevStep.style.color = '#2ECC71';
+        }
+        
+        if (stepIndex < steps.length) {
+            const currentStep = document.getElementById(steps[stepIndex]);
+            currentStep.classList.add('active');
+            currentStep.style.color = '#D4AF37';
+            statusDiv.innerHTML = stepMessages[stepIndex];
+            stepIndex++;
+        }
+        
+        if (stepIndex === steps.length) {
+            clearInterval(stepInterval);
+            setTimeout(() => {
+                statusDiv.innerHTML = "✅ Scan complete! Your results are ready.";
+                setTimeout(() => {
+                    callback();
+                }, 500);
+            }, 800);
+        }
+    }, 700);
+    
+    // Store intervals to clear if needed
+    allIntervals.push(progressInterval);
+    allIntervals.push(stepInterval);
+}
+
 function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;': m==='<'?'&lt;': '&gt;'); }
 
 // ATS Scan Functions
@@ -903,15 +1025,31 @@ document.getElementById('logoClick').onclick = () => {
 document.getElementById('cvFile').addEventListener('change', async function(e) {
     let file = e.target.files[0]; if (!file) return;
     uploadedFileName = file.name;
-    document.getElementById('progressBar').style.display = 'block';
-    let prog=0, interval=setInterval(()=>{prog+=20; document.getElementById('progressFill').style.width=prog+'%'; if(prog>=100)clearInterval(interval);},150);
-    allIntervals.push(interval);
-    document.querySelector('.drop-zone').style.display='none'; document.getElementById('loader').style.display='block';
-    let ab=await file.arrayBuffer(); let pdf=await pdfjsLib.getDocument(ab).promise; let text="";
-    for(let i=1;i<=pdf.numPages;i++){let page=await pdf.getPage(i); let content=await page.getTextContent(); text+=content.items.map(item=>item.str).join(" ");}
-    cvText=text; runScan(cvText);
-    document.getElementById('loader').style.display='none'; document.getElementById('resultsBox').style.display='block'; document.getElementById('progressBar').style.display='none';
-    setTimeout(()=>document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}),100);
+    
+    // Show live scan
+    runLiveScan(async () => {
+        // Actual PDF processing
+        document.getElementById('progressBar').style.display = 'block';
+        let prog=0, interval=setInterval(()=>{prog+=20; document.getElementById('progressFill').style.width=prog+'%'; if(prog>=100)clearInterval(interval);},150);
+        allIntervals.push(interval);
+        document.querySelector('.drop-zone').style.display='none';
+        document.getElementById('loader').style.display='block';
+        let ab=await file.arrayBuffer();
+        let pdf=await pdfjsLib.getDocument(ab).promise;
+        let text="";
+        for(let i=1;i<=pdf.numPages;i++){
+            let page=await pdf.getPage(i);
+            let content=await page.getTextContent();
+            text+=content.items.map(item=>item.str).join(" ");
+        }
+        cvText=text;
+        runScan(cvText);
+        document.getElementById('loader').style.display='none';
+        document.getElementById('resultsBox').style.display='block';
+        document.getElementById('progressBar').style.display='none';
+        document.getElementById('liveScan').style.display = 'none';
+        setTimeout(()=>document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}),100);
+    });
 });
 
 // Countdown timer (15 minutes)
