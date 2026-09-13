@@ -1,12 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>CV FIX PRO | Turn Your CV Into an Interview Magnet</title>
+    <title>CV FIX PRO | Scan Your CV or Match It to a Job</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZY7HTYJXC"></script>
     <script>
@@ -15,7 +15,6 @@
       gtag('js', new Date());
       gtag('config', 'G-2ZY7HTYJXC');
     </script>
-    
     <style>
         :root {
             --primary: #D4AF37;
@@ -23,6 +22,7 @@
             --card: #111115;
             --danger: #e74c3c;
             --success: #2ECC71;
+            --warning: #F1C40F;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -32,7 +32,6 @@
             line-height: 1.6;
             padding-bottom: 100px;
         }
-        
         .animate-icon { animation: subtleBounce 2s infinite ease-in-out; }
         @keyframes subtleBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-3px);} }
         
@@ -58,13 +57,48 @@
         
         .main-container { max-width: 700px; margin: 0 auto; padding: 0 16px 50px; }
         
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            background: var(--card);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 16px;
+            padding: 6px;
+            margin: 20px 0 18px;
+        }
+        .mode-tab {
+            flex: 1;
+            padding: 12px 8px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: #888;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .mode-tab.active {
+            background: linear-gradient(135deg, #D4AF37, #B8960F);
+            color: #000;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+        .mode-tab:active { transform: scale(0.98); }
+        .mode-tab small { display: block; font-size: 0.65rem; font-weight: 500; opacity: 0.75; margin-top: 2px; }
+        
+        .mode-panel { display: none; }
+        .mode-panel.active-panel { display: block; }
+        
         .upload-card {
             background: var(--card);
             border-radius: 24px;
             padding: 20px 16px;
             text-align: center;
             border: 1px solid rgba(212, 175, 55, 0.2);
-            margin: 15 0 20px;
+            margin: 15px 0 20px;
         }
         .drop-zone {
             border: 2px solid var(--primary);
@@ -79,7 +113,11 @@
         .drop-zone p { font-weight: bold; color: var(--primary); font-size: 1rem; }
         .file-input { display: none; }
         
-        /* LIVE SCAN STYLES */
+        .job-inputs { background: #0a0a0a; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid #333; }
+        .job-inputs label { font-size: 0.8rem; color: var(--primary); display: block; margin-bottom: 5px; font-weight: bold; }
+        .job-inputs textarea { width: 100%; background: #111; border: 1px solid #333; color: white; border-radius: 8px; padding: 10px; font-family: inherit; resize: vertical; }
+        .step-badge { display: inline-block; background: var(--primary); color: #000; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; margin-right: 6px; font-size: 0.75rem; }
+        
         .live-scan {
             background: var(--card);
             border-radius: 20px;
@@ -89,53 +127,19 @@
             text-align: center;
             display: none;
         }
-        .scan-progress-bar {
-            background: #333;
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-        .scan-progress-fill {
-            width: 0%;
-            height: 100%;
-            background: var(--primary);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        .scan-status {
-            font-size: 0.85rem;
-            color: #ccc;
-            margin-top: 10px;
-        }
-        .scan-step {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: 8px 0;
-            font-size: 0.75rem;
-            color: #888;
-        }
-        .scan-step.active {
-            color: var(--primary);
-        }
-        .scan-step.completed {
-            color: #2ECC71;
-        }
+        .scan-progress-bar { background: #333; border-radius: 10px; height: 8px; overflow: hidden; margin: 15px 0; }
+        .scan-progress-fill { width: 0%; height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.3s ease; }
+        .scan-status { font-size: 0.85rem; color: #ccc; margin-top: 10px; }
+        .scan-step { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 8px 0; font-size: 0.75rem; color: #888; }
+        .scan-step.active { color: var(--primary); }
+        .scan-step.completed { color: #2ECC71; }
         
         .social-proof { margin: 20px 0 10px; overflow: hidden; position: relative; border-radius: 20px; }
         .carousel-container { position: relative; width: 100%; overflow: hidden; border-radius: 16px; }
         .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
         .carousel-slide { flex: 0 0 100%; padding: 8px; }
         .carousel-slide img { width: 100%; border-radius: 16px; border: 1px solid rgba(212,175,55,0.3); box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: block; }
-        .carousel-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(0,0,0,0.6); color: var(--primary); border: none;
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
-            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
-            z-index: 10; backdrop-filter: blur(4px);
-        }
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: var(--primary); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; z-index: 10; backdrop-filter: blur(4px); }
         .carousel-btn:hover { background: var(--primary); color: #000; }
         .btn-prev { left: 8px; }
         .btn-next { right: 8px; }
@@ -157,14 +161,7 @@
         .report-critical { background: rgba(231,76,60,0.15); border-left: 3px solid #E74C3C; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
         .report-warning { background: rgba(241,196,15,0.1); border-left: 3px solid #F1C40F; padding: 8px; margin: 6px 0; border-radius: 8px; font-size: 0.85rem; }
         
-        .interview-calculator {
-            background: linear-gradient(135deg, #1a1a2e, #0a0a0f);
-            border: 1px solid var(--primary);
-            border-radius: 16px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: center;
-        }
+        .interview-calculator { background: linear-gradient(135deg, #1a1a2e, #0a0a0f); border: 1px solid var(--primary); border-radius: 16px; padding: 15px; margin: 15px 0; text-align: center; }
         .calculator-title { color: var(--primary); font-weight: bold; margin-bottom: 10px; font-size: 0.9rem; }
         .calculator-stats { display: flex; justify-content: space-between; gap: 10px; margin: 10px 0; }
         .calculator-stat { flex: 1; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; }
@@ -172,10 +169,7 @@
         .calculator-stat-value { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
         .calculator-savings { background: rgba(46,204,113,0.15); padding: 8px; border-radius: 10px; margin-top: 10px; font-size: 0.8rem; color: #2ECC71; }
         
-        .missed-box {
-            background: #1a1a1a; padding: 15px; border-radius: 12px; margin: 15px 0; text-align: center;
-            border-left: 4px solid #e74c3c;
-        }
+        .missed-box { background: #1a1a1a; padding: 15px; border-radius: 12px; margin: 15px 0; text-align: center; border-left: 4px solid #e74c3c; }
         .missed-number { font-size: 1.4rem; font-weight: bold; color: #e74c3c; }
         
         .filename-card { background: var(--card); border-radius: 16px; padding: 12px; margin: 10px 0; border: 1px solid #333; }
@@ -187,8 +181,6 @@
         .spots-left { font-size: 1.2rem; font-weight: bold; color: var(--danger); }
         .timer-text { font-size: 0.8rem; color: #ffaa00; }
         
-        .price-badge { background: linear-gradient(135deg, #D4AF37, #B8960F); color: #000; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; margin: 12px 0; font-size: 0.9rem; }
-        
         .panic-button-container {
             position: fixed;
             bottom: 0;
@@ -199,129 +191,16 @@
             padding: 12px 16px 20px;
             display: none;
         }
-        .warning-message {
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #ffaa00;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .panic-btn {
-            color: white;
-            border: none;
-            border-radius: 60px;
-            padding: 16px;
-            font-weight: 800;
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.1s;
-        }
+        .warning-message { text-align: center; font-size: 0.8rem; font-weight: bold; color: #ffaa00; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .panic-btn { color: white; border: none; border-radius: 60px; padding: 16px; font-weight: 800; font-size: 1.2rem; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: 0.1s; }
         .panic-btn:active { transform: scale(0.98); }
-        .panic-btn.red {
-            background: #e74c3c;
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
-            animation: panicFlash 0.8s infinite;
-        }
-        .panic-btn.green {
-            background: #2ECC71;
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
-            animation: none;
-        }
-        @keyframes panicFlash {
-            0%, 100% { background: #e74c3c; }
-            50% { background: #ff0000; box-shadow: 0 0 25px red; }
-        }
-        .countdown-timer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #ffaa00;
-            margin-top: 8px;
-        }
-        .social-trust {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #2ECC71;
-            margin-top: 6px;
-        }
-        
-        /* Admin Panel Styles */
-        .admin-cv-form {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-        .admin-cv-form h3 { color: var(--primary); margin-bottom: 5px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: var(--primary); }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 10px; background: #0a0a0a; border: 1px solid #333; color: white; border-radius: 8px;
-            font-family: inherit;
-        }
-        .section-title { font-size: 0.9rem; margin: 20px 0 10px; color: var(--primary); border-left: 3px solid var(--primary); padding-left: 10px; }
-        .btn-admin-generate {
-            background: var(--primary); color: #000; border: none; padding: 14px; border-radius: 50px;
-            font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 10px;
-        }
-        .btn-admin-download {
-            background: #25D366; color: #000; border: none; padding: 14px; border-radius: 50px;
-            font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 10px;
-        }
-        .add-btn {
-            background: transparent; border: 1px dashed var(--primary); color: var(--primary);
-            padding: 8px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 5px; font-size: 0.8rem;
-        }
-        .remove-btn {
-            background: #e74c3c; border: none; color: white; padding: 4px 8px; border-radius: 5px;
-            cursor: pointer; font-size: 0.7rem; margin-top: 5px;
-        }
-        
-        .optional-note {
-            background: rgba(212, 175, 55, 0.1);
-            border-left: 3px solid var(--primary);
-            padding: 10px;
-            margin: 15px 0;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            color: #ccc;
-            text-align: center;
-        }
-        
-        .preview-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 10px; background: #1a1a1a; border: 1px solid #333; border-radius: 12px; cursor: pointer; text-align: center; font-weight: bold; }
-        .tab-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
-        .preview-pane { display: none; }
-        .preview-pane.active-pane { display: block; }
-        .cv-preview-container, .cl-preview-container { background: var(--card); border-radius: 24px; padding: 20px; margin: 20px 0; display: block; }
-        .cv-preview, .cl-preview { background: white; color: #000; padding: 30px; border-radius: 16px; position: relative; font-family: 'Segoe UI', Arial, sans-serif; overflow: hidden; min-height: 400px; }
-        .center-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 42px; font-weight: 900; color: rgba(0,0,0,0.12); white-space: nowrap; pointer-events: none; z-index: 10; font-family: 'Plus Jakarta Sans', monospace; letter-spacing: 5px; text-transform: uppercase; }
-        .bottom-watermark { position: absolute; bottom: 10px; right: 10px; font-size: 10px; color: rgba(0,0,0,0.1); pointer-events: none; z-index: 10; }
-        
-        .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; letter-spacing: 1px; }
-        .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; letter-spacing: 1px; }
-        .details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 15px; font-size: 12px; }
-        .detail-item { display: flex; gap: 5px; }
-        .detail-label { font-weight: 700; color: #111; min-width: 70px; }
-        .detail-value { font-weight: 600; color: #111; }
-        .cv-section-title-new { font-size: 16px; font-weight: 700; color: #1E3A8A; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; }
-        .cv-item-desc-new { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 10px; }
-        .cv-item-new { margin-bottom: 12px; }
-        .cv-item-title-new { font-weight: 700; font-size: 14px; color: #111; }
-        .cv-item-sub-new { font-size: 12px; color: #444; margin-bottom: 5px; }
-        .bullet-list { margin-left: 20px; padding-left: 0; }
-        .bullet-list li { font-size: 13px; color: #222; margin-bottom: 3px; }
-        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-        .skill-tag-new { background: white; color: #111; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; display: inline-block; margin: 0; border: 1px solid #ccc; }
+        .panic-btn.red { background: #e74c3c; box-shadow: 0 0 20px rgba(231, 76, 60, 0.6); animation: panicFlash 0.8s infinite; }
+        .panic-btn.green { background: #2ECC71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); animation: none; }
+        @keyframes panicFlash { 0%, 100% { background: #e74c3c; } 50% { background: #ff0000; box-shadow: 0 0 25px red; } }
+        .countdown-timer { text-align: center; font-size: 0.75rem; color: #ffaa00; margin-top: 8px; }
+        .social-trust { text-align: center; font-size: 0.7rem; color: #2ECC71; margin-top: 6px; }
         
         .mobile-upload-btn { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #000; width: 55px; height: 55px; border-radius: 50%; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; cursor: pointer; border: none; }
-        
         .testimonial { background: rgba(46,204,113,0.08); border-radius: 12px; padding: 12px; margin: 15px 0; text-align: center; font-style: italic; font-size: 0.8rem; }
         
         @media (max-width: 600px) {
@@ -332,118 +211,13 @@
             .stat-number { font-size: 1.1rem; }
             .hero h1 { font-size: 1.1rem; }
             .carousel-btn { width: 28px; height: 28px; font-size: 1rem; }
-            .cv-preview, .cl-preview { padding: 15px; }
-            .cv-name-large { font-size: 22px; }
-            .details-grid { grid-template-columns: 1fr; gap: 5px; }
-            .skills-container { gap: 6px; }
-            .skill-tag-new { padding: 4px 10px; font-size: 10px; }
+            .mode-tab { font-size: 0.75rem; padding: 10px 4px; }
         }
         
         footer { text-align: center; padding: 25px; font-size: 0.7rem; color: #555; margin-top: 15px; }
-        .admin-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; overflow-y: auto; }
-        .admin-panel { background:#1a1a1a; border:2px solid var(--primary); border-radius:20px; padding:20px; max-width: 90%; width: 700px; max-height: 85vh; overflow-y: auto; margin: 20px; }
     </style>
 </head>
 <body>
-
-<div id="adminOverlay" class="admin-overlay">
-    <div class="admin-panel">
-        <h3>🔧 ADMIN PANEL - CREATE CV FOR CUSTOMER</h3>
-        <p style="font-size:0.7rem; margin-bottom:15px;">Fill in customer details from their CV, then generate and download</p>
-        
-        <div class="admin-cv-form">
-            <div class="form-group"><label>Full Name *</label><input type="text" id="adminFullName" placeholder="e.g., Thabo Mkhize"></div>
-            <div class="form-group"><label>Email Address *</label><input type="email" id="adminEmail" placeholder="youremail@example.com"></div>
-            <div class="form-group"><label>Phone Number *</label><input type="text" id="adminPhone" placeholder="082 123 4567"></div>
-            <div class="form-group"><label>Date of Birth</label><input type="date" id="adminDob"></div>
-            <div class="form-group"><label>Gender</label>
-                <select id="adminGender">
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div class="form-group"><label>Race</label>
-                <select id="adminRace">
-                    <option value="">Select Race</option>
-                    <option value="African">African</option>
-                    <option value="White">White</option>
-                    <option value="Coloured">Coloured</option>
-                    <option value="Indian">Indian</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div class="form-group"><label>Location / Address</label><input type="text" id="adminLocation" placeholder="e.g., Durban, Pinetown"></div>
-            <div class="form-group"><label>Driver's License</label><input type="text" id="adminDriversLicense" placeholder="e.g., Code 8, Code 10, None"></div>
-            
-            <div class="form-group"><label>Professional Summary *</label><textarea id="adminSummary" rows="3" placeholder="Write a professional summary..."></textarea></div>
-            
-            <div class="section-title">🎓 Education</div>
-            <div id="adminEduContainer"><div class="form-group"><input type="text" class="admin-edu-input" placeholder="e.g., Matric, Mlonde High School (2020)"></div></div>
-            <button class="add-btn" onclick="adminAddEducation()">➕ Add Another Education</button>
-            
-            <div class="section-title">💼 Work Experience</div>
-            <div id="adminExpContainer">
-                <div class="admin-exp-item">
-                    <div class="form-group"><input type="text" class="admin-exp-company" placeholder="Company Name"></div>
-                    <div class="form-group"><input type="text" class="admin-exp-date" placeholder="Dates (e.g., 2021-2022)"></div>
-                    <div class="form-group"><input type="text" class="admin-exp-position" placeholder="Position"></div>
-                    <div class="form-group"><input type="text" class="admin-exp-duty1" placeholder="• Duty 1 (e.g., Managed cash register)"></div>
-                    <div class="form-group"><input type="text" class="admin-exp-duty2" placeholder="• Duty 2 (e.g., Assisted customers)"></div>
-                    <div class="form-group"><input type="text" class="admin-exp-duty3" placeholder="• Duty 3 (e.g., Stock replenishment)"></div>
-                </div>
-            </div>
-            <button class="add-btn" onclick="adminAddExperience()">➕ Add Another Work Experience</button>
-            
-            <div class="section-title">🔧 Skills</div>
-            <div class="form-group"><input type="text" id="adminSkills" placeholder="e.g., Microsoft Office, Customer Service, Communication"></div>
-            
-            <div class="section-title">🗣️ Languages</div>
-            <div class="form-group"><input type="text" id="adminLanguages" placeholder="e.g., English, Zulu, Afrikaans"></div>
-            
-            <div class="section-title">📞 References</div>
-            <div id="adminRefContainer"><div class="form-group"><input type="text" class="admin-ref-input" placeholder="e.g., Mr. Smith, Manager at KFC - 074 343 4444"></div></div>
-            <button class="add-btn" onclick="adminAddReference()">➕ Add Another Reference</button>
-            
-            <div class="optional-note">
-                ✨ <strong>OPTIONAL:</strong> Fill these if customer wants a personalized Cover Letter ✨
-            </div>
-            
-            <div class="form-group"><label>Job Title (for cover letter)</label><input type="text" id="adminJobTitle" placeholder="e.g., IT Support Technician, Cashier"></div>
-            <div class="form-group"><label>Company Name (for cover letter)</label><input type="text" id="adminCompanyName" placeholder="e.g., MTN, Shoprite"></div>
-            <div class="form-group"><label>Company Address (for cover letter)</label><input type="text" id="adminCompanyAddress" placeholder="e.g., 14 Long Street, Cape Town"></div>
-            
-            <button class="btn-admin-generate" onclick="adminGenerateCV()">✨ Generate Professional CV</button>
-            <button class="btn-admin-download" id="adminDownloadBtn" onclick="adminDownloadCleanCV()" style="display: none;">📥 Download Clean PDF</button>
-        </div>
-        
-        <div id="adminPreviewContainer" style="display: none; margin-top: 20px;">
-            <div class="preview-tabs">
-                <button class="tab-btn active" onclick="adminShowTab('cv')">📄 CV Preview</button>
-                <button class="tab-btn" onclick="adminShowTab('cl')">✉️ Cover Letter Preview</button>
-            </div>
-            <div id="adminCvPreviewPane" class="preview-pane active-pane">
-                <div class="cv-preview-container">
-                    <div id="adminCvPreview" class="cv-preview">
-                        <div class="center-watermark">DEON SIMA</div>
-                        <div class="bottom-watermark">CV FIX PRO</div>
-                    </div>
-                </div>
-            </div>
-            <div id="adminClPreviewPane" class="preview-pane">
-                <div class="cl-preview-container">
-                    <div id="adminClPreview" class="cl-preview">
-                        <div class="center-watermark">DEON SIMA</div>
-                        <div class="bottom-watermark">CV FIX PRO</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <button onclick="closeAdmin()" style="background:#333; color:white; padding:10px; margin-top:15px; border:none; border-radius:8px; width:100%;">Close</button>
-    </div>
-</div>
 
 <div class="hero">
     <div class="logo" id="logoClick">
@@ -451,28 +225,68 @@
         <h2>CV <span>FIX PRO</span></h2>
         <p style="font-size: 0.7rem; color: var(--primary); margin-top: 5px;">Turn Your CV Into an Interview Magnet</p>
     </div>
-    <h1>Most CVs get rejected by ATS <span>before Recruiter sees them</span></h1>
+    <h1 id="heroHeadline">Scan your CV or <span>match it to a specific job</span></h1>
 </div>
 
 <div class="main-container">
-    <div class="upload-card">
-        <div style="font-size: 1.8rem;">📄</div>
-        <h2>Upload Your CV</h2>
-        <p style="color:#888; margin-bottom:12px; font-size:0.8rem;">Free ATS scan + instant diagnosis</p>
-        <label for="cvFile" class="drop-zone">
-            <div style="font-size:1.8rem;">📂</div>
-            <p>📱 TAP TO UPLOAD</p>
-            <p style="font-size:0.65rem;">PDF only</p>
-            <input type="file" id="cvFile" accept=".pdf" class="file-input">
-        </label>
-        <div id="progressBar" style="display:none; margin-top:10px;">
-            <div style="background:#333; border-radius:10px; height:5px;"><div id="progressFill" style="width:0%; background:var(--primary); height:5px;"></div></div>
+
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+        <button class="mode-tab active" id="tabCvScan" onclick="switchMode('cvscan')">📄 CV SCAN<small>Get your ATS score</small></button>
+        <button class="mode-tab" id="tabJobMatch" onclick="switchMode('jobmatch')">🎯 JOB MATCH<small>Match to a job ad</small></button>
+    </div>
+
+    <!-- MODE A: CV SCAN -->
+    <div class="mode-panel active-panel" id="panelCvScan">
+        <div class="upload-card">
+            <div style="font-size: 1.8rem;">📄</div>
+            <h2>Upload Your CV</h2>
+            <p style="color:#888; margin-bottom:12px; font-size:0.8rem;">Free ATS scan + instant diagnosis</p>
+            <label for="cvFileScan" class="drop-zone">
+                <div style="font-size:1.8rem;">📂</div>
+                <p>📱 TAP TO UPLOAD</p>
+                <p style="font-size:0.65rem;">PDF only</p>
+                <input type="file" id="cvFileScan" accept=".pdf" class="file-input">
+            </label>
+            <div id="progressBarScan" style="display:none; margin-top:10px;">
+                <div style="background:#333; border-radius:10px; height:5px;"><div id="progressFillScan" style="width:0%; background:var(--primary); height:5px;"></div></div>
+            </div>
         </div>
     </div>
 
-    <!-- LIVE SCAN SECTION -->
+    <!-- MODE B: JOB MATCH -->
+    <div class="mode-panel" id="panelJobMatch">
+        <div class="job-inputs">
+            <div style="margin-bottom: 18px;">
+                <label><span class="step-badge">1</span> Paste Job Description</label>
+                <textarea id="jobDescription" rows="4" placeholder="Paste the full job description here (duties, responsibilities, about the role)..."></textarea>
+            </div>
+            <div>
+                <label><span class="step-badge">2</span> Paste Job Requirements</label>
+                <textarea id="jobRequirements" rows="4" placeholder="Paste the required skills, qualifications, experience, certifications..."></textarea>
+            </div>
+        </div>
+
+        <div class="upload-card">
+            <div style="font-size: 1.8rem;">📄</div>
+            <h2><span class="step-badge">3</span> Upload Your CV</h2>
+            <p style="color:#888; margin-bottom:12px; font-size:0.8rem;">PDF only — processed locally in your browser</p>
+            <label for="cvFileMatch" class="drop-zone">
+                <div style="font-size:1.8rem;">📂</div>
+                <p>📱 TAP TO UPLOAD CV</p>
+                <p style="font-size:0.65rem;">PDF only</p>
+                <input type="file" id="cvFileMatch" accept=".pdf" class="file-input">
+            </label>
+            <div id="fileNameDisplayMatch" style="display:none; margin-top:10px; color:var(--primary); font-size:0.8rem;"></div>
+            <div id="progressBarMatch" style="display:none; margin-top:10px;">
+                <div style="background:#333; border-radius:10px; height:5px;"><div id="progressFillMatch" style="width:0%; background:var(--primary); height:5px;"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE SCAN -->
     <div id="liveScan" class="live-scan">
-        <div style="font-size: 1.2rem; margin-bottom: 10px;">🔍 ANALYSING YOUR CV...</div>
+        <div style="font-size: 1.2rem; margin-bottom: 10px;" id="scanTitle">🔍 ANALYSING YOUR CV...</div>
         <div class="scan-progress-bar">
             <div class="scan-progress-fill" id="scanProgressFill"></div>
         </div>
@@ -482,7 +296,7 @@
             <div class="scan-step" id="step2">👤 Scanning personal details</div>
             <div class="scan-step" id="step3">💼 Checking work experience</div>
             <div class="scan-step" id="step4">🔧 Analyzing skills & keywords</div>
-            <div class="scan-step" id="step5">📊 Calculating ATS score</div>
+            <div class="scan-step" id="step5">📊 Calculating score</div>
         </div>
     </div>
 
@@ -501,8 +315,7 @@
         <div class="stat"><div class="stat-number">R60</div><div class="stat-label">Fix Your CV</div></div>
     </div>
 
-    <div id="loader"><div class="radar"></div><p>ANALYSING YOUR CV...</p></div>
-
+    <!-- RESULTS -->
     <div class="results" id="resultsBox">
         <div class="score-card">
             <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
@@ -522,7 +335,7 @@
         </div>
 
         <div id="missedBox" class="missed-box" style="display:none;">
-            <div style="font-size: 0.8rem; color: #888;">📊 Based on your ATS score:</div>
+            <div style="font-size: 0.8rem; color: #888;">📊 Based on your score:</div>
             <div style="margin: 5px 0;"><span class="missed-number" id="missedJobs">0</span> job opportunities likely missed</div>
             <div style="font-size: 0.7rem; color: #e74c3c;">Fix your CV today → Get interviews tomorrow</div>
         </div>
@@ -544,9 +357,8 @@
     </div>
 </div>
 
-<button class="mobile-upload-btn" id="mobileUpload" onclick="document.getElementById('cvFile').click();">📄</button>
+<button class="mobile-upload-btn" id="mobileUpload" onclick="triggerUpload()">📄</button>
 
-<!-- SINGLE PANIC BUTTON -->
 <div id="panicButtonContainer" class="panic-button-container">
     <div class="warning-message" id="warningMessage">⚠️ THIS IS WHY YOU'RE NOT GETTING INTERVIEWS ⚠️</div>
     <button class="panic-btn red" id="panicBtn" onclick="sendWhatsApp()">🔴 FIX MY CV NOW 🔴</button>
@@ -557,519 +369,834 @@
 <footer>Created by Deon Sima | © 2026 | WhatsApp: +27 60 564 7937</footer>
 
 <script>
+// ==================== PDF.JS WORKER ====================
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
-let cvText = "", currentScore = 0, missingItems = [], uploadedFileName = "";
-let adminGeneratedCVData = {};
-let adminGeneratedCLData = {};
+
+// ==================== STATE ====================
+let cvText = "";
+let currentScore = 0;
+let uploadedFileName = "";
+let currentMode = 'cvscan';
 let allIntervals = [];
 
 function clearAllIntervals() {
-    for (let i = 0; i < allIntervals.length; i++) {
-        clearInterval(allIntervals[i]);
-    }
+    for (let i = 0; i < allIntervals.length; i++) clearInterval(allIntervals[i]);
     allIntervals = [];
 }
 
-// Admin panel functions
-function closeAdmin() { document.getElementById('adminOverlay').style.display = 'none'; }
+// ==================== MODE SWITCH ====================
+function switchMode(mode) {
+    currentMode = mode;
+    document.getElementById('tabCvScan').classList.toggle('active', mode === 'cvscan');
+    document.getElementById('tabJobMatch').classList.toggle('active', mode === 'jobmatch');
+    document.getElementById('panelCvScan').classList.toggle('active-panel', mode === 'cvscan');
+    document.getElementById('panelJobMatch').classList.toggle('active-panel', mode === 'jobmatch');
 
-function adminAddEducation() {
-    const container = document.getElementById('adminEduContainer');
-    const div = document.createElement('div');
-    div.className = 'form-group';
-    div.innerHTML = `<input type="text" class="admin-edu-input" placeholder="e.g., Diploma in IT - TUT (2023)"><button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>`;
-    container.appendChild(div);
-}
-function adminAddExperience() {
-    const container = document.getElementById('adminExpContainer');
-    const div = document.createElement('div');
-    div.className = 'admin-exp-item';
-    div.innerHTML = `<div class="form-group"><input type="text" class="admin-exp-company" placeholder="Company Name"></div>
-                     <div class="form-group"><input type="text" class="admin-exp-date" placeholder="Dates (e.g., 2021-2022)"></div>
-                     <div class="form-group"><input type="text" class="admin-exp-position" placeholder="Position"></div>
-                     <div class="form-group"><input type="text" class="admin-exp-duty1" placeholder="• Duty 1 (e.g., Managed cash register)"></div>
-                     <div class="form-group"><input type="text" class="admin-exp-duty2" placeholder="• Duty 2 (e.g., Assisted customers)"></div>
-                     <div class="form-group"><input type="text" class="admin-exp-duty3" placeholder="• Duty 3 (e.g., Stock replenishment)"></div>
-                     <button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>`;
-    container.appendChild(div);
-}
-function adminAddReference() {
-    const container = document.getElementById('adminRefContainer');
-    const div = document.createElement('div');
-    div.className = 'form-group';
-    div.innerHTML = `<input type="text" class="admin-ref-input" placeholder="e.g., Mrs. Jones, HR Manager - 0839876543"><button class="remove-btn" onclick="this.parentElement.remove()">✖ Remove</button>`;
-    container.appendChild(div);
+    document.getElementById('resultsBox').style.display = 'none';
+    document.getElementById('panicButtonContainer').style.display = 'none';
+    document.getElementById('liveScan').style.display = 'none';
+    clearAllIntervals();
+    startCountdown();
 }
 
-function adminShowTab(tab) {
-    document.querySelectorAll('#adminPreviewContainer .tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById('adminCvPreviewPane').classList.remove('active-pane');
-    document.getElementById('adminClPreviewPane').classList.remove('active-pane');
-    if (tab === 'cv') {
-        document.querySelector('#adminPreviewContainer .tab-btn:first-child').classList.add('active');
-        document.getElementById('adminCvPreviewPane').classList.add('active-pane');
+function triggerUpload() {
+    if (currentMode === 'cvscan') {
+        document.getElementById('cvFileScan').click();
     } else {
-        document.querySelector('#adminPreviewContainer .tab-btn:last-child').classList.add('active');
-        document.getElementById('adminClPreviewPane').classList.add('active-pane');
+        document.getElementById('cvFileMatch').click();
     }
 }
 
-function getCurrentDate() {
-    const today = new Date();
-    const day = today.getDate();
-    const month = today.toLocaleString('default', { month: 'long' });
-    const year = today.getFullYear();
-    return `${day} ${month} ${year}`;
-}
-
-function adminGenerateCoverLetter(data) {
-    const name = data.name;
-    const email = data.email;
-    const phone = data.phone;
-    const location = data.location;
-    const skills = data.skills;
-    const jobTitle = data.jobTitle;
-    const companyName = data.companyName;
-    const companyAddress = data.companyAddress;
-    const latestJob = data.experiences.length > 0 ? data.experiences[0] : null;
-    const currentDate = getCurrentDate();
-    
-    let experienceText = "";
-    if (latestJob && latestJob.position && latestJob.company) {
-        experienceText = `<p>With my experience as <strong>${escapeHtml(latestJob.position)}</strong> at <strong>${escapeHtml(latestJob.company)}</strong>, I have developed strong skills that align with this role.</p>`;
-    }
-    
-    let skillsText = "";
-    if (skills) {
-        const skillList = skills.split(',').slice(0, 4).map(s => s.trim());
-        if (skillList.length > 0) {
-            skillsText = `<p><strong>My key skills include:</strong> ${skillList.join(', ')}.</p>`;
-        }
-    }
-    
-    let openingLine = "";
-    if (companyName && jobTitle) {
-        openingLine = `I am writing this letter to apply for the <strong>${escapeHtml(jobTitle)}</strong> position at <strong>${escapeHtml(companyName)}</strong>.`;
-        if (companyAddress) {
-            openingLine += ` I understand that your company is located at ${escapeHtml(companyAddress)}.`;
-        }
-    } else if (jobTitle) {
-        openingLine = `I am writing this letter to apply for the <strong>${escapeHtml(jobTitle)}</strong> position at your company.`;
-    } else if (companyName) {
-        openingLine = `I am writing this letter to express my interest in joining <strong>${escapeHtml(companyName)}</strong>.`;
-    } else {
-        openingLine = `I am writing this letter to express my interest in the position at your company.`;
-    }
-    
-    let greeting = companyName ? `Dear Hiring Manager at ${escapeHtml(companyName)}` : `Dear Hiring Manager`;
-    
-    let userAddressHtml = "";
-    if (location || email || phone) {
-        userAddressHtml = `<div style="margin-bottom: 20px; text-align: right;">
-            <div><strong>${escapeHtml(name)}</strong></div>
-            ${location ? `<div>${escapeHtml(location)}</div>` : ''}
-            ${phone ? `<div>${escapeHtml(phone)}</div>` : ''}
-            ${email ? `<div>${escapeHtml(email)}</div>` : ''}
-            <div>${currentDate}</div>
-        </div>`;
-    }
-    
-    let companyAddressHtml = "";
-    if (companyName || companyAddress) {
-        companyAddressHtml = `<div style="margin-bottom: 20px;">
-            ${companyName ? `<div><strong>${escapeHtml(companyName)}</strong></div>` : ''}
-            ${companyAddress ? `<div>${escapeHtml(companyAddress)}</div>` : ''}
-        </div>`;
-    }
-    
-    return `
-        ${userAddressHtml}
-        ${companyAddressHtml}
-        <div style="margin-bottom: 15px;">${greeting},</div>
-        <div style="font-size:13px; line-height:1.4; color:#222; margin-bottom:12px;">${openingLine}</div>
-        ${experienceText}
-        ${skillsText}
-        <div style="font-size:13px; line-height:1.4; color:#222; margin-bottom:12px;">I am confident that my skills and experience make me a strong candidate for this role. I look forward to the opportunity to discuss how I can contribute to your team.</div>
-        <div style="font-size:13px; line-height:1.4; color:#222; margin-top:20px;">Yours sincerely,<br>${escapeHtml(name)}</div>
-    `;
-}
-
-function adminGenerateCV() {
-    const name = document.getElementById('adminFullName').value;
-    const email = document.getElementById('adminEmail').value;
-    const phone = document.getElementById('adminPhone').value;
-    const dob = document.getElementById('adminDob').value;
-    const gender = document.getElementById('adminGender').value;
-    const race = document.getElementById('adminRace').value;
-    const location = document.getElementById('adminLocation').value;
-    const driversLicense = document.getElementById('adminDriversLicense').value;
-    const summary = document.getElementById('adminSummary').value;
-    const languagesForm = document.getElementById('adminLanguages').value;
-    const jobTitle = document.getElementById('adminJobTitle').value;
-    const companyName = document.getElementById('adminCompanyName').value;
-    const companyAddress = document.getElementById('adminCompanyAddress').value;
-    
-    if (!name || !email || !phone || !summary) { alert("Please fill in all required fields (*)"); return; }
-    
-    const eduInputs = document.querySelectorAll('#adminEduContainer .admin-edu-input');
-    const education = Array.from(eduInputs).map(i => i.value).filter(e => e);
-    const skills = document.getElementById('adminSkills').value;
-    const refInputs = document.querySelectorAll('#adminRefContainer .admin-ref-input');
-    const references = Array.from(refInputs).map(r => r.value).filter(r => r);
-    
-    const experiences = [];
-    const expItems = document.querySelectorAll('#adminExpContainer .admin-exp-item');
-    expItems.forEach(item => {
-        const company = item.querySelector('.admin-exp-company')?.value || '';
-        const date = item.querySelector('.admin-exp-date')?.value || '';
-        const position = item.querySelector('.admin-exp-position')?.value || '';
-        const duty1 = item.querySelector('.admin-exp-duty1')?.value || '';
-        const duty2 = item.querySelector('.admin-exp-duty2')?.value || '';
-        const duty3 = item.querySelector('.admin-exp-duty3')?.value || '';
-        if (company || date || position || duty1 || duty2 || duty3) {
-            experiences.push({ company, date, position, duties: [duty1, duty2, duty3].filter(d => d) });
-        }
-    });
-    
-    // Build CV
-    let cvHtml = `<div class="cv-name-large">${escapeHtml(name)}</div>`;
-    cvHtml += `<div class="personal-details-section">
-        <div class="personal-details-title">PERSONAL DETAILS</div>
-        <div class="details-grid">
-            <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${escapeHtml(phone)}</span></div>
-            <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${escapeHtml(email)}</span></div>
-            ${gender ? `<div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${escapeHtml(gender)}</span></div>` : ''}
-            ${race ? `<div class="detail-item"><span class="detail-label">Race:</span><span class="detail-value">${escapeHtml(race)}</span></div>` : ''}
-            ${dob ? `<div class="detail-item"><span class="detail-label">DOB:</span><span class="detail-value">${escapeHtml(dob)}</span></div>` : ''}
-            ${location ? `<div class="detail-item"><span class="detail-label">Location:</span><span class="detail-value">${escapeHtml(location)}</span></div>` : ''}
-            ${driversLicense ? `<div class="detail-item"><span class="detail-label">Driver's License:</span><span class="detail-value">${escapeHtml(driversLicense)}</span></div>` : ''}
-            ${languagesForm ? `<div class="detail-item"><span class="detail-label">Languages:</span><span class="detail-value">${escapeHtml(languagesForm)}</span></div>` : ''}
-        </div>
-    </div>`;
-    cvHtml += `<div class="cv-section-title-new">PROFILE SUMMARY</div><div class="cv-item-desc-new">${escapeHtml(summary)}</div>`;
-    
-    if (education.length) {
-        cvHtml += `<div class="cv-section-title-new">EDUCATION</div>`;
-        education.forEach(e => { cvHtml += `<div class="cv-item-new">${escapeHtml(e)}</div>`; });
-    }
-    
-    if (experiences.length) {
-        cvHtml += `<div class="cv-section-title-new">WORK EXPERIENCE</div>`;
-        experiences.forEach(exp => {
-            cvHtml += `<div class="cv-item-new">
-                <div class="cv-item-title-new">${exp.position ? escapeHtml(exp.position) : ''}${exp.company ? ' at ' + escapeHtml(exp.company) : ''}</div>
-                <div class="cv-item-sub-new">${exp.date ? escapeHtml(exp.date) : ''}</div>
-                <ul class="bullet-list">`;
-            exp.duties.forEach(d => { if(d) cvHtml += `<li>${escapeHtml(d)}</li>`; });
-            cvHtml += `</ul></div>`;
-        });
-    }
-    
-    if (skills) {
-        cvHtml += `<div class="cv-section-title-new">SKILLS</div><div class="skills-container">`;
-        skills.split(',').forEach(s => {
-            const skill = s.trim();
-            if (skill) cvHtml += `<span class="skill-tag-new">${escapeHtml(skill)}</span>`;
-        });
-        cvHtml += `</div>`;
-    }
-    
-    if (references.length) {
-        cvHtml += `<div class="cv-section-title-new">REFERENCES</div>`;
-        references.forEach(r => cvHtml += `<div class="cv-item-new">${escapeHtml(r)}</div>`);
-    }
-    
-    const clHtml = adminGenerateCoverLetter({ name, email, phone, location, skills, experiences, jobTitle, companyName, companyAddress });
-    
-    adminGeneratedCVData = { html: cvHtml, name: name };
-    adminGeneratedCLData = { html: clHtml };
-    
-    document.getElementById('adminCvPreview').innerHTML = cvHtml + `<div class="center-watermark">DEON SIMA</div><div class="bottom-watermark">CV FIX PRO</div>`;
-    document.getElementById('adminClPreview').innerHTML = clHtml + `<div class="center-watermark">DEON SIMA</div><div class="bottom-watermark">CV FIX PRO</div>`;
-    
-    document.getElementById('adminPreviewContainer').style.display = 'block';
-    document.getElementById('adminDownloadBtn').style.display = 'block';
-    document.getElementById('adminPreviewContainer').scrollIntoView({ behavior: 'smooth' });
-}
-
-function adminDownloadCleanCV() {
-    const cleanHTML = adminGeneratedCVData.html;
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`<html><head><title>Clean CV - ${adminGeneratedCVData.name || 'Customer'}</title>
-        <style>body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .cv-name-large { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: #0a0a0a; }
-        .personal-details-section { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .personal-details-title { font-size: 14px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px; }
-        .details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 15px; font-size: 12px; }
-        .detail-item { display: flex; gap: 5px; }
-        .detail-label { font-weight: 700; color: #111; min-width: 70px; }
-        .detail-value { font-weight: 600; color: #111; }
-        .cv-section-title-new { font-size: 16px; font-weight: 700; color: #1E3A8A; border-bottom: 2px solid #D4AF37; padding-bottom: 5px; margin: 20px 0 12px; }
-        .cv-item-desc-new { font-size: 13px; line-height: 1.4; color: #222; margin-bottom: 10px; }
-        .cv-item-new { margin-bottom: 12px; }
-        .cv-item-title-new { font-weight: 700; font-size: 14px; color: #111; }
-        .cv-item-sub-new { font-size: 12px; color: #444; margin-bottom: 5px; }
-        .bullet-list { margin-left: 20px; padding-left: 0; }
-        .bullet-list li { font-size: 13px; color: #222; margin-bottom: 3px; }
-        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-        .skill-tag-new { background: white; color: #111; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; border: 1px solid #ccc; }
-        @media print { body { margin: 0; padding: 20px; } .personal-details-section { background: #f5f5f5; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }</style>
-        </head><body>${cleanHTML}</body></html>`);
-    printWindow.document.close();
-    printWindow.print();
-    alert("✅ Clean CV opened! Save as PDF or screenshot and send to customer.");
-}
-
-// SINGLE WHATSAPP FUNCTION
+// ==================== WHATSAPP ====================
 function sendWhatsApp() {
-    const message = `Hi Deon, my CV scored ${currentScore}%. PLEASE REVAMP MY CV for R60.`;
-    window.open(`https://wa.me/27605647937?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/27605647937?text=${encodeURIComponent(`Hi Deon, my CV scored ${currentScore}%. PLEASE REVAMP MY CV for R60.`)}`, '_blank');
 }
 
-// LIVE SCAN FUNCTION
-function runLiveScan(callback) {
+// ==================== LIVE SCAN ANIMATION ====================
+function runLiveScan(callback, mode) {
     const scanDiv = document.getElementById('liveScan');
     const progressFill = document.getElementById('scanProgressFill');
     const statusDiv = document.getElementById('scanStatus');
+    const scanTitle = document.getElementById('scanTitle');
     const steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
-    const stepMessages = [
-        "Extracting text from PDF...",
-        "Scanning personal details... ✓ Found name, email, phone",
-        "Checking work experience... ✓ Found experience entries",
-        "Analyzing skills & keywords... ✓ Matching ATS keywords",
-        "Calculating ATS score..."
-    ];
-    
-    // Reset all steps
-    steps.forEach(step => {
-        const el = document.getElementById(step);
-        el.classList.remove('active', 'completed');
-        el.style.color = '#888';
-    });
-    
+    steps.forEach(step => { const el = document.getElementById(step); el.classList.remove('active','completed'); el.style.color='#888'; });
+
+    if (mode === 'jobmatch') {
+        scanTitle.innerHTML = '🔍 ANALYSING CV AGAINST JOB...';
+        document.getElementById('step2').innerHTML = '📋 Parsing job requirements';
+        document.getElementById('step3').innerHTML = '💼 Checking experience & qualifications';
+        document.getElementById('step4').innerHTML = '🔧 Matching skills & keywords';
+        document.getElementById('step5').innerHTML = '📊 Calculating Job Match Score';
+    } else {
+        scanTitle.innerHTML = '🔍 ANALYSING YOUR CV...';
+        document.getElementById('step2').innerHTML = '👤 Scanning personal details';
+        document.getElementById('step3').innerHTML = '💼 Checking work experience';
+        document.getElementById('step4').innerHTML = '🔧 Analyzing skills & keywords';
+        document.getElementById('step5').innerHTML = '📊 Calculating ATS score';
+    }
+
+    const statuses = mode === 'jobmatch'
+        ? ["Extracting text...","Parsing job requirements...","Checking experience...","Matching skills...","Calculating Job Match Score..."]
+        : ["Extracting text...","Scanning personal...","Checking experience...","Analyzing skills...","Calculating ATS score..."];
+
     scanDiv.style.display = 'block';
-    let progress = 0;
-    let stepIndex = 0;
-    
-    // Animate progress bar
-    const progressInterval = setInterval(() => {
-        progress += 4;
-        if (progress > 100) {
-            clearInterval(progressInterval);
-            progress = 100;
-        }
-        progressFill.style.width = progress + '%';
-    }, 120);
-    
-    // Update steps one by one
-    const stepInterval = setInterval(() => {
-        if (stepIndex > 0) {
-            const prevStep = document.getElementById(steps[stepIndex - 1]);
-            prevStep.classList.remove('active');
-            prevStep.classList.add('completed');
-            prevStep.style.color = '#2ECC71';
-        }
-        
-        if (stepIndex < steps.length) {
-            const currentStep = document.getElementById(steps[stepIndex]);
-            currentStep.classList.add('active');
-            currentStep.style.color = '#D4AF37';
-            statusDiv.innerHTML = stepMessages[stepIndex];
-            stepIndex++;
-        }
-        
-        if (stepIndex === steps.length) {
-            clearInterval(stepInterval);
-            setTimeout(() => {
-                statusDiv.innerHTML = "✅ Scan complete! Your results are ready.";
-                setTimeout(() => {
-                    callback();
-                }, 500);
-            }, 800);
-        }
-    }, 700);
-    
-    // Store intervals to clear if needed
-    allIntervals.push(progressInterval);
-    allIntervals.push(stepInterval);
+    let progress = 0, stepIndex = 0;
+    const pInt = setInterval(() => { progress += 4; if(progress>100)clearInterval(pInt); else progressFill.style.width=progress+'%'; }, 120);
+    const sInt = setInterval(() => {
+        if(stepIndex>0){ const prev=document.getElementById(steps[stepIndex-1]); prev.classList.remove('active'); prev.classList.add('completed'); prev.style.color='#2ECC71'; }
+        if(stepIndex<steps.length){ const curr=document.getElementById(steps[stepIndex]); curr.classList.add('active'); curr.style.color='#D4AF37'; statusDiv.innerHTML=statuses[stepIndex]; stepIndex++; }
+        if(stepIndex===steps.length){ clearInterval(sInt); setTimeout(()=>{ statusDiv.innerHTML="✅ Scan complete!"; setTimeout(callback,500); },800); }
+    },700);
+    allIntervals.push(pInt, sInt);
 }
 
-function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;': m==='<'?'&lt;': '&gt;'); }
+function escapeHtml(str) { return str ? str.replace(/[&<>]/g, m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;') : ''; }
 
-// ATS Scan Functions
+// ==================== INTERVIEW CALCULATOR ====================
 function updateInterviewCalculator(score) {
     let current, after, savings;
-    if (score < 40) { current = "1 per 100+ apps"; after = "1 per 10-12 apps"; savings = "Save yourself 90+ wasted applications"; }
-    else if (score < 55) { current = "1 per 65 apps"; after = "1 per 10-12 apps"; savings = "Save yourself 50+ wasted applications"; }
-    else if (score < 70) { current = "1 per 40 apps"; after = "1 per 8-10 apps"; savings = "Save yourself 30+ wasted applications"; }
-    else if (score < 85) { current = "1 per 25 apps"; after = "1 per 6-8 apps"; savings = "Save yourself 15+ wasted applications"; }
-    else { current = "1 per 15 apps"; after = "1 per 5-6 apps"; savings = "Small investment for faster results"; }
+    if(score<40){ current="1 per 100+ apps"; after="1 per 10-12 apps"; savings="Save yourself 90+ wasted applications"; }
+    else if(score<55){ current="1 per 65 apps"; after="1 per 10-12 apps"; savings="Save yourself 50+ wasted applications"; }
+    else if(score<70){ current="1 per 40 apps"; after="1 per 8-10 apps"; savings="Save yourself 30+ wasted applications"; }
+    else if(score<85){ current="1 per 25 apps"; after="1 per 6-8 apps"; savings="Save yourself 15+ wasted applications"; }
+    else { current="1 per 15 apps"; after="1 per 5-6 apps"; savings="Small investment for faster results"; }
     document.getElementById('currentInterviews').innerText = current;
     document.getElementById('afterInterviews').innerText = after;
     document.getElementById('savingsMessage').innerHTML = `💰 R60 investment = ${savings}`;
 }
 
+// ==================== FILENAME CHECK ====================
 function checkFileName(fileName) {
     let nameWithoutExt = fileName.replace(/\.(pdf|docx|doc)$/i, '');
     let issues = [], suggestion = "", penalty = 0;
-    if (nameWithoutExt.includes(' ')) { issues.push("❌ Contains spaces"); penalty += 3; suggestion = "Use underscores or hyphens instead: CV_Your_Name.pdf"; }
-    if (!nameWithoutExt.match(/CV|Resume|Curriculum/i)) { issues.push("❌ Missing 'CV' or 'Resume' in file name"); penalty += 2; suggestion = suggestion || "Add 'CV' so recruiters know what it is: CV_YourName.pdf"; }
-    if (nameWithoutExt.match(/\(\d+\)/)) { issues.push("⚠️ Contains version numbers like '(1)'"); penalty += 2; suggestion = suggestion || "Remove version numbers: CV_YourName.pdf"; }
-    if (nameWithoutExt.match(/[^a-zA-Z0-9_\-]/)) { issues.push("❌ Contains special characters (@, #, $, etc.)"); penalty += 3; suggestion = suggestion || "Use only letters, numbers, underscores, and hyphens"; }
-    if (nameWithoutExt.length > 30) { issues.push("⚠️ File name too long (" + nameWithoutExt.length + " chars)"); penalty += 2; suggestion = suggestion || "Keep file name under 30 characters: CV_YourName.pdf"; }
-    let isGood = issues.filter(i => i.startsWith('❌')).length === 0;
+    if(nameWithoutExt.includes(' ')){ issues.push("❌ Contains spaces"); penalty+=3; suggestion="Use underscores or hyphens"; }
+    if(!nameWithoutExt.match(/CV|Resume|Curriculum/i)){ issues.push("❌ Missing 'CV' in file name"); penalty+=2; suggestion=suggestion||"Add 'CV'"; }
+    if(nameWithoutExt.match(/\(\d+\)/)){ issues.push("⚠️ Version numbers"); penalty+=2; suggestion=suggestion||"Remove version numbers"; }
+    if(nameWithoutExt.match(/[^a-zA-Z0-9_\-]/)){ issues.push("❌ Special characters"); penalty+=3; suggestion=suggestion||"Use only letters, numbers, underscores, hyphens"; }
+    if(nameWithoutExt.length>30){ issues.push("⚠️ Too long"); penalty+=2; suggestion=suggestion||"Keep under 30 chars"; }
+    let isGood = issues.filter(i=>i.startsWith('❌')).length===0;
     return { issues, suggestion, isGood, penalty };
 }
 
-function updateSpotsLeft() {
-    let hour = new Date().getHours();
-    let spots = hour < 12 ? Math.floor(Math.random() * 5) + 3 : (hour < 17 ? Math.floor(Math.random() * 3) + 1 : 0);
-    document.getElementById('spotsLeft').innerText = spots === 0 ? "⚠️ LAST SPOT TODAY! ⚠️" : `⚠️ ONLY ${spots} SPOTS LEFT TODAY ⚠️`;
-}
-function updateDayTimer() {
-    let now = new Date(), end = new Date(now); end.setHours(23,59,59,999);
-    let diff = end - now, hours = Math.floor(diff/3600000), minutes = Math.floor((diff%3600000)/60000);
-    document.getElementById('dayTimer').innerHTML = `⏰ Offer ends in ${hours.toString().padStart(2,'0')}h ${minutes.toString().padStart(2,'0')}m`;
-}
+// ==================== TIMERS ====================
+function updateSpotsLeft() { let hour=new Date().getHours(); let spots=hour<12?Math.floor(Math.random()*5)+3:(hour<17?Math.floor(Math.random()*3)+1:0); document.getElementById('spotsLeft').innerText=spots===0?"⚠️ LAST SPOT TODAY! ⚠️":`⚠️ ONLY ${spots} SPOTS LEFT TODAY ⚠️`; }
+function updateDayTimer() { let now=new Date(), end=new Date(now); end.setHours(23,59,59,999); let diff=end-now, hours=Math.floor(diff/3600000), minutes=Math.floor((diff%3600000)/60000); document.getElementById('dayTimer').innerHTML=`⏰ Offer ends in ${hours.toString().padStart(2,'0')}h ${minutes.toString().padStart(2,'0')}m`; }
+
 let dayTimerInterval = setInterval(updateDayTimer, 60000);
 allIntervals.push(dayTimerInterval);
 updateDayTimer();
 
-// Carousel - single image
-const track = document.getElementById('carouselTrack');
-const slides = Array.from(document.querySelectorAll('.carousel-slide'));
-const dotsContainer = document.getElementById('carouselDots');
-if (slides.length <= 1 && dotsContainer) dotsContainer.style.display = 'none';
-
-// Delivery timer
 let mins = 0;
-let deliveryInterval = setInterval(() => {
-    mins = Math.min(mins + 1, 120);
-    let h = Math.floor(mins / 60);
-    let m = mins % 60;
-    document.getElementById('deliveryTimer').innerText = `${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m`;
-}, 60000);
+let deliveryInterval = setInterval(()=>{ mins=Math.min(mins+1,120); let h=Math.floor(mins/60), m=mins%60; document.getElementById('deliveryTimer').innerText=`${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m`; },60000);
 allIntervals.push(deliveryInterval);
 
+let countdownIntervalHandle = null;
+function startCountdown() {
+    if (countdownIntervalHandle) clearInterval(countdownIntervalHandle);
+    let timeLeft = 15 * 60;
+    const minutesSpan = document.getElementById('countdownMinutes');
+    const secondsSpan = document.getElementById('countdownSeconds');
+    countdownIntervalHandle = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdownIntervalHandle);
+            minutesSpan.innerText = '00';
+            secondsSpan.innerText = '00';
+        } else {
+            timeLeft--;
+            minutesSpan.innerText = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            secondsSpan.innerText = (timeLeft % 60).toString().padStart(2, '0');
+        }
+    }, 1000);
+}
+startCountdown();
+
+// ==================== SOUTH AFRICAN DETECTION HELPERS ====================
+
+const SA_LANGUAGES = [
+    'english','afrikaans','zulu','isizulu','xhosa','isixhosa',
+    'sotho','sesotho','southern sotho','tswana','setswana',
+    'pedi','sepedi','northern sotho','venda','tshivenda',
+    'tsonga','xitsonga','ndebele','isindebele','southern ndebele',
+    'swati','siswati','swazi'
+];
+
+const SA_LANGUAGE_LABELS = {
+    'english':'English','afrikaans':'Afrikaans','zulu':'Zulu','isizulu':'Zulu',
+    'xhosa':'Xhosa','isixhosa':'Xhosa','sotho':'Sotho','sesotho':'Sotho',
+    'southern sotho':'Sotho','tswana':'Tswana','setswana':'Tswana',
+    'pedi':'Pedi','sepedi':'Pedi','northern sotho':'Pedi',
+    'venda':'Venda','tshivenda':'Venda','tsonga':'Tsonga','xitsonga':'Tsonga',
+    'ndebele':'Ndebele','isindebele':'Ndebele','southern ndebele':'Ndebele',
+    'swati':'Swati','siswati':'Swati','swazi':'Swati'
+};
+
+const SA_CITIES = [
+    'johannesburg','cape town','durban','pretoria','tshwane',
+    'port elizabeth','gqeberha','bloemfontein','east london',
+    'pietermaritzburg','polokwane','nelspruit','mbombela',
+    'soweto','sandton','randburg','centurion','midrand',
+    'benoni','boksburg','germiston','springs','vereeniging',
+    'kimberley','rustenburg','potchefstroom','welkom','krugersdorp',
+    'roodepoort','alberton','kempton park','edenvale','bryanston',
+    'umhlanga','pinetown','chatsworth','phoenix','ballito'
+];
+
+function detectEducation(text) {
+    const lower = text.toLowerCase();
+    const qualifiers = [
+        { key: 'phd', points: 10, label: 'PhD / Doctorate', patterns: [/\bphd\b/, /\bdoctorate\b/, /\bdoctoral\b/] },
+        { key: 'masters', points: 9, label: "Master's / Honours", patterns: [/\bmaster'?s?\b/, /\bmasters?\b/, /\bm\.?a\.?\b/, /\bm\.?sc\b/, /\bmba\b/, /\bhonours\b/, /\bhonors\b/] },
+        { key: 'bachelors', points: 8, label: "Bachelor's / Degree", patterns: [/\bbachelor'?s?\b/, /\bbachelors?\b/, /\bb\.?a\.?\b/, /\bb\.?sc\b/, /\bb\.?com\b/, /\bb\.?tech\b/, /\bdegree\b/] },
+        { key: 'diploma', points: 6, label: 'Diploma', patterns: [/\bdiploma\b/, /\bnational diploma\b/, /\badvanced diploma\b/] },
+        { key: 'certificate', points: 4, label: 'Certificate', patterns: [/\bcertificate\b/, /\bcert\.?\b/, /\bncv\b/, /\bnational certificate\b/] },
+        { key: 'matric', points: 3, label: 'Matric / NSC / Grade 12', patterns: [/\bmatric\b/, /\bnsc\b/, /\bnational senior certificate\b/, /\bgrade\s*12\b/, /\bsenior certificate\b/, /\bhigh school\b/, /\bsecondary school\b/] }
+    ];
+
+    let highestPoints = 0;
+    let highestLabel = null;
+    let matricFound = false;
+    const foundLabels = [];
+
+    qualifiers.forEach(q => {
+        const found = q.patterns.some(p => p.test(lower));
+        if (found) {
+            foundLabels.push(q.label);
+            if (q.key === 'matric') matricFound = true;
+            if (q.points > highestPoints) { highestPoints = q.points; highestLabel = q.label; }
+        }
+    });
+
+    // Hybrid bonus: matric listed alongside higher qualification (+1, cap 10)
+    let total = highestPoints;
+    if (matricFound && highestPoints > 3 && highestPoints < 10) total += 1;
+    total = Math.min(total, 10);
+
+    return { points: total, label: highestLabel, matricFound, allFound: foundLabels };
+}
+
+function detectDriversLicense(text) {
+    const lower = text.toLowerCase();
+    // Full license patterns
+    if (/\bcode\s*[8ec]?\s*1?\s*[04]?\b/.test(lower) && /\bcode\s*(8|10|14|eb|ec|c1|b)\b/.test(lower)) {
+        return { points: 5, label: 'Driver\'s License' };
+    }
+    if (/\bcode\s*8\b/.test(lower)) return { points: 5, label: 'Code 8' };
+    if (/\bcode\s*10\b/.test(lower)) return { points: 5, label: 'Code 10' };
+    if (/\bcode\s*14\b/.test(lower)) return { points: 5, label: 'Code 14' };
+    if (/\bcode\s*(eb|ec|c1)\b/.test(lower)) return { points: 5, label: 'Driver\'s License' };
+    if (/\b(driver'?s?\s*licen[cs]e|drivers\s*licen[cs]e)\b/.test(lower)) return { points: 5, label: 'Driver\'s License' };
+    if (/\blearner'?s?\s*(licen[cs]e|permit)?\b/.test(lower)) return { points: 2, label: 'Learner\'s License' };
+    if (/\bno\s+(driver'?s?\s*)?licen[cs]e\b/.test(lower)) return { points: 0, label: 'No license (declared)' };
+    return { points: 0, label: null };
+}
+
+function detectLanguages(text) {
+    const lower = text.toLowerCase();
+    const found = new Set();
+    SA_LANGUAGES.forEach(lang => {
+        // word-boundary-ish check
+        const regex = new RegExp('\\b' + lang.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+        if (regex.test(lower)) {
+            found.add(SA_LANGUAGE_LABELS[lang] || lang);
+        }
+    });
+    // Generic indicators
+    const genericIndicators = ['bilingual','multilingual','fluent in','native speaker'];
+    const hasGeneric = genericIndicators.some(g => lower.includes(g));
+
+    const count = found.size;
+    let points = 0;
+    if (count >= 3) points = 5;
+    else if (count === 2) points = 4;
+    else if (count === 1) points = 2;
+    else if (hasGeneric) points = 2;
+
+    return { points, count, list: Array.from(found) };
+}
+
+function detectReferences(text) {
+    const lower = text.toLowerCase();
+    if (/\b(references?|referees?)\b/.test(lower)) {
+        // Named references: check for "reference" followed by a capitalised name-ish pattern
+        // Fallback: if "references" section appears with more than just the word — assume named
+        if (/\bavailable\s+(up)?on\s+request\b/.test(lower)) {
+            return { points: 2, label: 'Available on request' };
+        }
+        return { points: 4, label: 'References section found' };
+    }
+    if (/\bavailable\s+(up)?on\s+request\b/.test(lower)) {
+        return { points: 2, label: 'Available on request' };
+    }
+    return { points: 0, label: null };
+}
+
+function detectPersonalDetails(text) {
+    const lower = text.toLowerCase();
+    const indicators = [
+        /\bdate of birth\b/, /\bdob\b/, /\bbirth date\b/,
+        /\bgender\b/, /\bsex\b/,
+        /\brace\b/, /\bethnicity\b/,
+        /\bnationality\b/, /\bcitizenship\b/,
+        /\bid\s*(number|no)\b/, /\bidentity\s*(number|no)\b/, /\bid\s*\d{6,}/,
+        /\bmarital status\b/, /\bmarried\b/, /\bsingle\b/,
+        /\bhome language\b/, /\bfirst language\b/
+    ];
+    let count = 0;
+    indicators.forEach(p => { if (p.test(lower)) count++; });
+    let points = 0;
+    if (count >= 3) points = 3;
+    else if (count >= 1) points = 2;
+    return { points, count };
+}
+
+function detectOwnTransport(text) {
+    const lower = text.toLowerCase();
+    if (/\bown\s+(transport|vehicle|car)\b/.test(lower)) return { points: 3, label: 'Own transport' };
+    if (/\breliable\s+transport\b/.test(lower)) return { points: 2, label: 'Reliable transport' };
+    if (/\btransport\s+available\b/.test(lower)) return { points: 2, label: 'Transport available' };
+    return { points: 0, label: null };
+}
+
+// ==================== CV SCAN LOGIC (UPDATED) ====================
 function runScan(text) {
-    let lower = text.toLowerCase();
-    let score = 20;
-    let good = [], critical = [], warnings = [];
-    if (lower.includes("experience")||lower.includes("work history")||lower.includes("employment")) { score += 15; good.push("✅ Work experience found"); } else { critical.push("🚨 CRITICAL: NO work experience section — 94% rejection rate"); }
-    let hasCert=lower.includes("certificate")||lower.includes("certified")||lower.includes("short course"), hasDip=lower.includes("diploma")||lower.includes("national diploma"), hasDeg=lower.includes("degree")||lower.includes("bachelor")||lower.includes("bcom"), hasEduSec=lower.includes("education")||lower.includes("qualifications");
-    if(hasCert){score+=4;good.push("✅ Certificate found");}
-    if(hasDip){score+=5;good.push("✅ Diploma found");}
-    if(hasDeg){score+=6;good.push("✅ Degree found");}
-    if(!hasCert&&!hasDip&&!hasDeg&&!hasEduSec){critical.push("🚨 CRITICAL: NO education found");}
-    if(lower.includes("skills")||lower.includes("core competencies")){score+=12;good.push("✅ Skills section found");}else{critical.push("⚠️ NO skills section — ATS cannot match keywords");}
-    let hasEmail=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text), hasPhone=/(\+27|0)[0-9\s\-]{9,12}/.test(text);
-    if(hasEmail&&hasPhone){score+=15;good.push("✅ Contact info complete");}else if(hasEmail||hasPhone){score+=8;warnings.push("⚠️ Missing phone OR email");}else{critical.push("🚨 NO phone or email — cannot reach you");}
-    let actionWords=['managed','developed','led','achieved','improved','created','implemented']; let found=actionWords.filter(w=>lower.includes(w));
-    if(found.length>=3){score+=10;good.push("✅ Strong action verbs");}else if(found.length>=1){score+=4;warnings.push("⚠️ Add more action verbs");}else{critical.push("⚠️ NO action verbs — CV sounds weak");}
-    if(lower.includes("summary")||lower.includes("profile")){score+=5;good.push("✅ Professional summary");}else{warnings.push("💡 Add a professional summary");}
-    let profCerts=['pmp','aws','microsoft','cisco']; let hasProf=profCerts.some(c=>lower.includes(c)); if(hasProf){score+=3;good.push("✅ Professional certs");}else{warnings.push("📜 Add relevant certifications");}
-    let saCities=['johannesburg','cape town','durban','pretoria']; let hasLoc=saCities.some(c=>lower.includes(c)); if(hasLoc){score+=8;good.push("✅ Location found");}else{critical.push("🚨 NO location — recruiters filter by city");}
-    let langs=['english','afrikaans','zulu','xhosa']; let foundLangs=langs.filter(l=>lower.includes(l)); if(foundLangs.length>=2){score+=5;good.push(`✅ ${foundLangs.length} languages`);}else if(foundLangs.length===1){score+=2;warnings.push(`🗣️ Only ${foundLangs[0]} listed`);}else{warnings.push("🗣️ Add languages — SA advantage");}
-    let words=text.split(/\s+/).length; if(words>=400&&words<=650){score+=5;good.push(`✅ Perfect length (${words} words)`);}else if(words>=300&&words<=800){score+=2;warnings.push(`📏 CV length: ${words} words`);}else if(words<300){warnings.push(`📏 CV too short (${words} words)`);}else{warnings.push(`📏 CV too long (${words} words)`);}
-    let hasBullets=/[•\-\*]\s/.test(text); if(hasBullets){score+=5;good.push("✅ Bullet points detected");}else{critical.push("⚠️ NO bullet points — use • or -");}
-    let fancyFonts=['script','cursive','comic']; let hasFancy=fancyFonts.some(f=>lower.includes(f)); if(hasFancy){score-=10;critical.push("🚨 Fancy fonts detected — ATS cannot read");}
-    let hasLicense=lower.includes("driver")&&(lower.includes("license")||lower.includes("licence")); if(hasLicense){score+=5;good.push("✅ Driver's license listed");}else{warnings.push("🚗 Add driver's license if you have one");}
-    if(uploadedFileName){let fc=checkFileName(uploadedFileName); if(!fc.isGood){score-=fc.penalty; critical.push(`📁 File name issue: ${fc.issues[0]}`);}}
-    score=Math.min(100,Math.max(0,Math.round(score))); currentScore=score; missingItems=[...critical,...warnings];
-    document.getElementById('scoreCircle').innerText=score+"%"; document.getElementById('scoreCircle').style.borderColor=score<60?"#e74c3c":score<75?"#F1C40F":"#2ECC71";
-    document.getElementById('scoreStatus').innerHTML=score<50?"❌ FAILING":score<60?"⚠️ CRITICAL":score<75?"📈 NEEDS WORK":"🎯 GOOD";
-    document.getElementById('scoreDesc').innerHTML=score<60?"Your CV is being REJECTED":score<75?"Fix these issues":"Small improvements";
+    const lower = text.toLowerCase();
+    let score = 12; // base (was 20)
+    const good = [], critical = [], warnings = [];
+
+    // --- Work experience (12) ---
+    if (lower.includes("experience") || lower.includes("work history") || lower.includes("employment")) {
+        score += 12; good.push("✅ Work experience section found");
+    } else {
+        critical.push("🚨 CRITICAL: NO work experience section");
+    }
+
+    // --- Education (hybrid, cap 10) ---
+    const edu = detectEducation(text);
+    if (edu.points > 0) {
+        score += edu.points;
+        good.push(`✅ Education: ${edu.label} (${edu.points} pts)`);
+        if (edu.matricFound && edu.points > 3) good.push("✅ Matric listed alongside higher qualification");
+    } else {
+        critical.push("🚨 CRITICAL: NO education found (add Matric/NSC at minimum)");
+    }
+
+    // --- Skills section (10) ---
+    if (lower.includes("skills") || lower.includes("competencies") || lower.includes("core competencies")) {
+        score += 10; good.push("✅ Skills section found");
+    } else {
+        critical.push("⚠️ NO skills section");
+    }
+
+    // --- Contact info (12) ---
+    const hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
+    const hasPhone = /(\+27|0)[0-9\s\-]{9,12}/.test(text);
+    if (hasEmail && hasPhone) { score += 12; good.push("✅ Contact info complete (email + phone)"); }
+    else if (hasEmail || hasPhone) { score += 6; warnings.push("⚠️ Missing phone OR email — add both"); }
+    else { critical.push("🚨 NO phone or email found"); }
+
+    // --- Action verbs (8) ---
+    const actionWords = ['managed','developed','led','achieved','implemented','coordinated','improved','delivered','supervised','trained'];
+    const foundVerbs = actionWords.filter(w => lower.includes(w));
+    if (foundVerbs.length >= 3) { score += 8; good.push("✅ Strong action verbs used"); }
+    else if (foundVerbs.length >= 1) { score += 4; warnings.push("⚠️ Add more action verbs (managed, led, achieved...)"); }
+    else { warnings.push("⚠️ NO action verbs — start bullet points with strong verbs"); }
+
+    // --- Summary section (5) ---
+    if (lower.includes("summary") || lower.includes("profile") || lower.includes("objective") || lower.includes("about me")) {
+        score += 5; good.push("✅ Professional summary found");
+    } else {
+        warnings.push("💡 Add a professional summary at the top");
+    }
+
+    // --- SA location (6, expanded list) ---
+    const hasLoc = SA_CITIES.some(c => lower.includes(c));
+    if (hasLoc) { score += 6; good.push("✅ SA location found"); }
+    else { warnings.push("🚨 NO South African location found — recruiters filter by location"); }
+
+    // --- Word count (5) ---
+    const words = text.split(/\s+/).filter(w => w.length > 0).length;
+    if (words >= 400 && words <= 650) { score += 5; good.push(`✅ Perfect CV length (${words} words)`); }
+    else if (words >= 300 && words <= 800) { score += 3; warnings.push(`📏 CV length: ${words} words (aim 400–650)`); }
+    else if (words < 300) { warnings.push(`📏 CV too short: ${words} words`); }
+    else { warnings.push(`📏 CV too long: ${words} words`); }
+
+    // --- Driver's License (5) ---
+    const lic = detectDriversLicense(text);
+    if (lic.points === 5) { score += 5; good.push(`✅ Driver's License: ${lic.label} found`); }
+    else if (lic.points === 2) { score += 2; warnings.push(`⚠️ Driver's License: ${lic.label} — mention code 8/10/14 if you have one`); }
+    else if (lic.label && lic.points === 0) { /* explicit "no license" — no penalty, no points */ }
+    else { warnings.push("💡 Driver's License not mentioned (add if you have one)"); }
+
+    // --- Languages (5, soft) ---
+    const langs = detectLanguages(text);
+    if (langs.points === 5) { score += 5; good.push(`✅ Languages: ${langs.list.join(', ')} (${langs.count})`); }
+    else if (langs.points === 4) { score += 4; good.push(`✅ Languages: ${langs.list.join(', ')} (2)`); }
+    else if (langs.points === 2) { score += 2; warnings.push(`⚠️ Only 1 language shown — add all you speak`); }
+    else { warnings.push("💡 Add a Languages section (English, Zulu, etc.)"); }
+
+    // --- References (4, soft) ---
+    const refs = detectReferences(text);
+    if (refs.points === 4) { score += 4; good.push("✅ References section found"); }
+    else if (refs.points === 2) { score += 2; warnings.push("⚠️ 'References available on request' — add at least 2 named refs"); }
+    else { warnings.push("💡 Add a References section (2 named contacts)"); }
+
+    // --- Personal details (3, soft) ---
+    const pd = detectPersonalDetails(text);
+    if (pd.points === 3) { score += 3; good.push(`✅ Personal details complete (${pd.count} items)`); }
+    else if (pd.points === 2) { score += 2; warnings.push(`⚠️ Only ${pd.count} personal detail item(s) — add more`); }
+
+    // --- Own transport (3, soft) ---
+    const transport = detectOwnTransport(text);
+    if (transport.points === 3) { score += 3; good.push(`✅ Own transport mentioned`); }
+    else if (transport.points === 2) { score += 2; good.push(`✅ ${transport.label}`); }
+
+    // --- Filename penalty (softer) ---
+    if (uploadedFileName) {
+        const fc = checkFileName(uploadedFileName);
+        if (!fc.isGood) {
+            score -= Math.min(fc.penalty, 8); // capped at -8
+            critical.push(`📁 File name: ${fc.issues[0]}`);
+        }
+    }
+
+    // Clamp 0–100
+    score = Math.min(100, Math.max(0, Math.round(score)));
+    currentScore = score;
+
+    // --- Display score ---
+    document.getElementById('scoreCircle').innerText = score + "%";
+    document.getElementById('scoreCircle').style.borderColor = score < 60 ? "#e74c3c" : score < 75 ? "#F1C40F" : "#2ECC71";
+    document.getElementById('scoreStatus').innerHTML = score < 50 ? "❌ FAILING" : score < 60 ? "⚠️ CRITICAL" : score < 75 ? "📈 NEEDS WORK" : "🎯 GOOD";
+    document.getElementById('scoreDesc').innerText = "ATS audit estimate";
+
     updateInterviewCalculator(score);
-    let missedJobsNum = Math.floor((100 - score) * 1.5);
-    document.getElementById('missedJobs').innerText = missedJobsNum;
+    document.getElementById('missedJobs').innerText = Math.floor((100 - score) * 1.5);
     document.getElementById('missedBox').style.display = 'block';
-    let html=`<div style="margin-top:10px;">`;
-    if(good.length){html+=`<div style="color:#2ECC71;">✅ WHAT'S RIGHT (${good.length})</div>`; good.forEach(g=>html+=`<div class="report-good">${g}</div>`);}
-    if(critical.length){html+=`<div style="color:#e74c3c;margin-top:10px;">🚨 CRITICAL (${critical.length})</div>`; critical.forEach(c=>html+=`<div class="report-critical">${c}</div>`);}
-    if(warnings.length){html+=`<div style="color:#F1C40F;margin-top:10px;">⚠️ IMPROVEMENTS (${warnings.length})</div>`; warnings.forEach(w=>html+=`<div class="report-warning">${w}</div>`);}
-    html+=`<div style="background:#e74c3c20; padding:10px; border-radius:10px; margin-top:12px; text-align:center;"><strong>🔴 CVs scoring below 60% are REJECTED 94% of the time</strong></div></div>`;
-    document.getElementById('detailedReport').innerHTML=html;
-    if(uploadedFileName){let fc=checkFileName(uploadedFileName); document.getElementById('filenameStatus').innerHTML=fc.isGood?'<div class="filename-good">✅ Professional file name</div>':'<div class="filename-bad">❌ '+fc.issues[0]+'</div>'; document.getElementById('filenameSuggestion').style.display=fc.isGood?'none':'block'; if(!fc.isGood)document.getElementById('filenameSuggestion').innerHTML=`💡 SUGGESTED: ${fc.suggestion}`; document.getElementById('filenameContainer').style.display='block';}
-    
+
+    // --- Build report ---
+    let html = '<div>';
+    if (good.length) {
+        html += `<div style="color:#2ECC71; font-weight:bold; margin-bottom:6px;">✅ WHAT'S RIGHT</div>`;
+        good.forEach(g => html += `<div class="report-good">${g}</div>`);
+    }
+    if (critical.length) {
+        html += `<div style="color:#e74c3c; font-weight:bold; margin-top:12px; margin-bottom:6px;">🚨 CRITICAL</div>`;
+        critical.forEach(c => html += `<div class="report-critical">${c}</div>`);
+    }
+    if (warnings.length) {
+        html += `<div style="color:#F1C40F; font-weight:bold; margin-top:12px; margin-bottom:6px;">⚠️ IMPROVEMENTS</div>`;
+        warnings.forEach(w => html += `<div class="report-warning">${w}</div>`);
+    }
+    html += `<div style="background:#e74c3c20; padding:10px; border-radius:10px; margin-top:12px; text-align:center;"><strong>🔴 CVs scoring below 60% are REJECTED 94% of the time</strong></div></div>`;
+    document.getElementById('detailedReport').innerHTML = html;
+
+    // --- Filename card ---
+    if (uploadedFileName) {
+        const fc = checkFileName(uploadedFileName);
+        document.getElementById('filenameStatus').innerHTML = fc.isGood ? '<div class="filename-good">✅ Professional file name</div>' : '<div class="filename-bad">❌ ' + fc.issues[0] + '</div>';
+        document.getElementById('filenameSuggestion').style.display = fc.isGood ? 'none' : 'block';
+        if (!fc.isGood) document.getElementById('filenameSuggestion').innerHTML = `💡 SUGGESTED: ${fc.suggestion}`;
+        document.getElementById('filenameContainer').style.display = 'block';
+    }
+
+    // --- Panic button ---
     const panicContainer = document.getElementById('panicButtonContainer');
     const panicBtn = document.getElementById('panicBtn');
     const warningMsg = document.getElementById('warningMessage');
-    
-    if(score < 80){
+    if (score < 80) {
         panicContainer.style.display = 'block';
         panicBtn.className = 'panic-btn red';
         panicBtn.innerHTML = '🔴 FIX MY CV NOW 🔴';
         warningMsg.innerHTML = '⚠️ THIS IS WHY YOU\'RE NOT GETTING INTERVIEWS ⚠️';
-        warningMsg.style.color = '#ffaa00';
     } else {
         panicContainer.style.display = 'block';
         panicBtn.className = 'panic-btn green';
         panicBtn.innerHTML = '🟢 PERFECT MY CV 🟢';
         warningMsg.innerHTML = '✅ Great foundation! Still room for improvement.';
-        warningMsg.style.color = '#2ECC71';
     }
-    document.getElementById('interviewCalculator').style.display='block'; document.getElementById('urgencyContainer').style.display='block'; document.getElementById('testimonialBox').style.display='block'; updateSpotsLeft();
+
+    document.getElementById('interviewCalculator').style.display = 'block';
+    document.getElementById('urgencyContainer').style.display = 'block';
+    document.getElementById('testimonialBox').style.display = 'block';
+    updateSpotsLeft();
 }
 
-// Admin panel access - triple click logo
-let clickCount = 0;
-document.getElementById('logoClick').onclick = () => { 
-    clickCount++; 
-    setTimeout(() => clickCount = 0, 1000); 
-    if (clickCount === 5) { 
-        document.getElementById('adminOverlay').style.display = 'flex'; 
-        clickCount = 0; 
-    } 
-};
+// ==================== JOB MATCH LOGIC (unchanged) ====================
+function normalise(str) { return (str || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
 
-document.getElementById('cvFile').addEventListener('change', async function(e) {
+function splitRequirements(text) {
+    if (!text) return [];
+    let unified = text.replace(/[•●○▪▫‣⁃·\-–—*]/g, ', ').replace(/\n+/g, ', ').replace(/;/g, ', ').replace(/\|/g, ', ');
+    let parts = unified.split(',').map(s => s.trim()).filter(s => s.length > 2);
+    let finalParts = [];
+    parts.forEach(p => {
+        let andParts = p.split(/\s+and\s+/i);
+        if (andParts.length > 1 && andParts.every(x => x.trim().length > 2)) {
+            andParts.forEach(ap => finalParts.push(ap.trim()));
+        } else {
+            finalParts.push(p);
+        }
+    });
+    const seen = new Set();
+    const unique = [];
+    finalParts.forEach(p => {
+        const norm = p.toLowerCase();
+        if (!seen.has(norm)) { seen.add(norm); unique.push(p); }
+    });
+    return unique;
+}
+
+function extractYearsOfExperience(text) {
+    const patterns = [
+        /(\d+)\+?\s*(?:years?|yrs?)\s*(?:of\s*)?(?:experience|exp)/i,
+        /experience\s*(?:of\s*)?(\d+)\+?\s*(?:years?|yrs?)/i,
+        /(\d+)\s*-\s*(\d+)\s*(?:years?|yrs?)/i
+    ];
+    for (const p of patterns) {
+        const m = text.match(p);
+        if (m) { if (m[2]) return parseInt(m[2]); return parseInt(m[1]); }
+    }
+    return null;
+}
+
+function isRequirementMatched(reqPhrase, cvText) {
+    const req = normalise(reqPhrase);
+    const cv = normalise(cvText);
+    if (!req || !cv) return false;
+    if (req.length < 30 && cv.includes(req)) return true;
+
+    const stopWords = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','by','from','as','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','must','shall','can','need','dare','ought','used','able','about','above','after','again','against','all','am','any','because','before','below','between','both','each','few','he','her','here','hers','herself','him','himself','his','how','i','if','into','it','its','itself','me','more','most','my','myself','no','nor','not','now','off','once','only','other','our','ours','ourselves','out','over','own','same','she','should','so','some','such','than','that','their','theirs','them','themselves','then','there','these','they','this','those','through','too','under','until','up','very','we','what','when','where','which','while','who','whom','why','you','your','yours','yourself','yourselves']);
+    const reqWords = req.split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+    if (reqWords.length === 0) return cv.includes(req);
+
+    let matchedCount = 0;
+    reqWords.forEach(word => {
+        const stem = word.replace(/(ing|ed|s)$/, '');
+        if (cv.includes(word) || cv.includes(stem)) matchedCount++;
+    });
+    if (matchedCount / reqWords.length >= 0.6) return true;
+
+    const equivalences = [
+        ['customer service', 'client support', 'customer support', 'client service'],
+        ['leadership', 'team lead', 'supervisory', 'managed team', 'led team'],
+        ['communication', 'interpersonal', 'verbal', 'written'],
+        ['problem solving', 'troubleshooting', 'analytical'],
+        ['microsoft office', 'ms office', 'excel', 'word', 'powerpoint'],
+        ['payroll', 'salary administration', 'wages'],
+        ['labour law', 'labor law', 'employment law', 'bcea'],
+        ['project management', 'project lead', 'project coordinator'],
+        ['sales', 'business development', 'revenue growth'],
+        ['time management', 'prioritisation', 'deadline']
+    ];
+    for (const group of equivalences) {
+        const reqHasGroup = group.some(term => req.includes(term));
+        if (reqHasGroup) {
+            const cvHasGroup = group.some(term => cv.includes(term));
+            if (cvHasGroup) return true;
+        }
+    }
+    return false;
+}
+
+function calculateJobMatch(cvText, jobDesc, jobReqs) {
+    const cvNorm = normalise(cvText);
+    const combinedJobText = normalise(jobDesc + ' ' + jobReqs);
+
+    const allReqPhrases = splitRequirements(jobReqs);
+    if (allReqPhrases.length < 3 && jobDesc) {
+        const descReqs = splitRequirements(jobDesc);
+        descReqs.forEach(r => {
+            if (!allReqPhrases.some(existing => existing.toLowerCase() === r.toLowerCase())) allReqPhrases.push(r);
+        });
+    }
+    if (allReqPhrases.length === 0) {
+        return { score: 0, status: 'WEAK MATCH', statusColor: '#e74c3c', statusDesc: 'No job requirements provided.', matched: [], missing: ['No job requirements provided'], weak: [], breakdown: {}, explanation: 'Please provide job requirements to analyse.' };
+    }
+
+    const mustHaveIndicators = ['must','required','essential','mandatory','minimum','need','necessary','non-negotiable','requirement'];
+    const preferredIndicators = ['preferred','advantageous','desirable','plus','nice to have','beneficial','bonus','ideal'];
+    const mustHave = [], preferred = [];
+    allReqPhrases.forEach(phrase => {
+        const lower = phrase.toLowerCase();
+        if (mustHaveIndicators.some(ind => lower.includes(ind))) mustHave.push(phrase);
+        else if (preferredIndicators.some(ind => lower.includes(ind))) preferred.push(phrase);
+        else mustHave.push(phrase);
+    });
+
+    const MUST_WEIGHT = 0.7, PREF_WEIGHT = 0.3;
+    const CATEGORY_WEIGHTS = { experience: 0.25, skills: 0.25, qualifications: 0.20, responsibilities: 0.15, certifications: 0.10, other: 0.05 };
+
+    function categoriseReq(phrase) {
+        const lower = phrase.toLowerCase();
+        if (/\b(years?|experience|exp)\b/.test(lower)) return 'experience';
+        if (/\b(degree|diploma|matric|bachelor|master|phd|qualification|certificate|education)\b/.test(lower)) return 'qualifications';
+        if (/\b(certif|certification|license|accredited)\b/.test(lower)) return 'certifications';
+        if (/\b(responsib|duties|task|role|manage|oversee|handle|coordinate)\b/.test(lower)) return 'responsibilities';
+        if (/\b(skill|proficient|knowledge|ability|competent|expert|familiar)\b/.test(lower)) return 'skills';
+        return 'other';
+    }
+
+    const categoryMatches = { experience:{matched:0,total:0}, skills:{matched:0,total:0}, qualifications:{matched:0,total:0}, responsibilities:{matched:0,total:0}, certifications:{matched:0,total:0}, other:{matched:0,total:0} };
+    const matchedList = [], missingList = [], weakList = [];
+
+    function processPhrase(phrase) {
+        const cat = categoriseReq(phrase);
+        categoryMatches[cat].total += 1;
+        if (isRequirementMatched(phrase, cvNorm)) {
+            categoryMatches[cat].matched += 1;
+            matchedList.push(phrase);
+        } else {
+            const keywords = normalise(phrase).split(/\s+/).filter(w => w.length > 3);
+            let partial = false;
+            if (keywords.length > 0) {
+                let found = 0;
+                keywords.forEach(kw => { if (cvNorm.includes(kw.replace(/(ing|ed|s)$/, ''))) found++; });
+                if (found / keywords.length >= 0.4) partial = true;
+            }
+            if (partial) weakList.push(phrase); else missingList.push(phrase);
+        }
+    }
+    mustHave.forEach(processPhrase);
+    preferred.forEach(processPhrase);
+
+    const requiredYears = extractYearsOfExperience(combinedJobText);
+    let experienceYearsMatch = true;
+    if (requiredYears) {
+        const cvYears = extractYearsOfExperience(cvText);
+        if (cvYears !== null) {
+            experienceYearsMatch = cvYears >= requiredYears;
+            if (!experienceYearsMatch) missingList.push(`${requiredYears}+ years experience (CV shows ${cvYears} years)`);
+        } else if (!cvNorm.includes('experience')) {
+            missingList.push(`${requiredYears}+ years experience (not clearly shown)`);
+        }
+    }
+
+    const mustTotal = mustHave.length;
+    const mustMatched = mustHave.filter(p => isRequirementMatched(p, cvNorm)).length;
+    const mustScore = mustTotal > 0 ? mustMatched / mustTotal : 0;
+    const prefTotal = preferred.length;
+    const prefMatched = preferred.filter(p => isRequirementMatched(p, cvNorm)).length;
+    const prefScore = prefTotal > 0 ? prefMatched / prefTotal : 1;
+
+    const catScores = {};
+    let categoryWeightedSum = 0;
+    Object.keys(categoryMatches).forEach(cat => {
+        const cm = categoryMatches[cat];
+        if (cm.total > 0) { catScores[cat] = cm.matched / cm.total; categoryWeightedSum += catScores[cat] * CATEGORY_WEIGHTS[cat]; }
+        else catScores[cat] = null;
+    });
+    if (categoryWeightedSum === 0) categoryWeightedSum = (mustScore * MUST_WEIGHT) + (prefScore * PREF_WEIGHT);
+
+    let experienceAdjustment = 0;
+    if (requiredYears && experienceYearsMatch) experienceAdjustment = 0.05;
+    if (requiredYears && !experienceYearsMatch) experienceAdjustment = -0.10;
+
+    let rawScore = (mustScore * MUST_WEIGHT + prefScore * PREF_WEIGHT) * 100;
+    rawScore = (rawScore * 0.5) + (categoryWeightedSum * 100 * 0.5);
+    rawScore += experienceAdjustment * 100;
+    let finalScore = Math.round(Math.max(0, Math.min(100, rawScore)));
+
+    let status, statusColor, statusDesc;
+    if (finalScore >= 80) { status = 'STRONG MATCH'; statusColor = '#2ECC71'; statusDesc = 'Your CV aligns very well with this job.'; }
+    else if (finalScore >= 60) { status = 'NEEDS IMPROVEMENT'; statusColor = '#F1C40F'; statusDesc = 'Good foundation, but some gaps may hold you back.'; }
+    else { status = 'WEAK MATCH'; statusColor = '#e74c3c'; statusDesc = 'Significant gaps between your CV and this job.'; }
+
+    const breakdown = {
+        'Must-have requirements': `${mustMatched}/${mustTotal} matched (${Math.round(mustScore*100)}%)`,
+        'Preferred requirements': prefTotal > 0 ? `${prefMatched}/${prefTotal} matched (${Math.round(prefScore*100)}%)` : 'None specified',
+        'Experience': catScores.experience !== null ? `${Math.round(catScores.experience*100)}%` : 'Not specified',
+        'Skills': catScores.skills !== null ? `${Math.round(catScores.skills*100)}%` : 'Not specified',
+        'Qualifications': catScores.qualifications !== null ? `${Math.round(catScores.qualifications*100)}%` : 'Not specified',
+        'Responsibilities': catScores.responsibilities !== null ? `${Math.round(catScores.responsibilities*100)}%` : 'Not specified',
+        'Certifications': catScores.certifications !== null ? `${Math.round(catScores.certifications*100)}%` : 'Not specified',
+        'Other requirements': catScores.other !== null ? `${Math.round(catScores.other*100)}%` : 'Not specified'
+    };
+
+    let explanation = `Your CV matches ${finalScore}% of the requirements for this specific job. `;
+    if (mustTotal > 0) explanation += `You meet ${mustMatched} out of ${mustTotal} must-have requirements. `;
+    if (missingList.length > 0) explanation += `Key gaps: ${missingList.slice(0, 3).join('; ')}. `;
+    explanation += `This is an estimate — not an employer's ATS score.`;
+
+    return { score: finalScore, status, statusColor, statusDesc, matched: matchedList, missing: missingList, weak: weakList, breakdown, explanation, requiredYears, cvYears: extractYearsOfExperience(cvText) };
+}
+
+function runJobMatchScan(cvText, jobDesc, jobReqs) {
+    const result = calculateJobMatch(cvText, jobDesc, jobReqs);
+    currentScore = result.score;
+
+    const scoreCircle = document.getElementById('scoreCircle');
+    scoreCircle.innerText = result.score + '%';
+    scoreCircle.style.borderColor = result.statusColor;
+
+    document.getElementById('scoreStatus').innerHTML = result.status;
+    document.getElementById('scoreStatus').style.color = result.statusColor;
+    document.getElementById('scoreDesc').innerText = result.statusDesc;
+
+    let html = '';
+    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; margin-bottom:12px; font-size:0.8rem; color:#ccc;">${escapeHtml(result.explanation)}</div>`;
+    html += `<div style="margin-bottom:12px;"><div style="color:var(--primary); font-size:0.8rem; font-weight:bold; margin-bottom:6px;">📊 SCORE BREAKDOWN</div>`;
+    for (const [key, val] of Object.entries(result.breakdown)) {
+        html += `<div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:3px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>${key}</span><span>${val}</span></div>`;
+    }
+    html += `</div>`;
+
+    if (result.matched.length > 0) {
+        html += `<div style="color:#2ECC71; font-size:0.8rem; font-weight:bold; margin-bottom:6px;">✅ MATCHED REQUIREMENTS</div>`;
+        result.matched.slice(0, 10).forEach(m => { html += `<div class="report-good">✓ ${escapeHtml(m)}</div>`; });
+        if (result.matched.length > 10) html += `<div style="font-size:0.7rem; color:#888; padding:4px;">...and ${result.matched.length - 10} more</div>`;
+    }
+    if (result.missing.length > 0) {
+        html += `<div style="color:#e74c3c; font-size:0.8rem; font-weight:bold; margin-top:12px; margin-bottom:6px;">✗ MISSING / WEAK</div>`;
+        result.missing.slice(0, 8).forEach(m => { html += `<div class="report-critical">✗ ${escapeHtml(m)}</div>`; });
+        if (result.missing.length > 8) html += `<div style="font-size:0.7rem; color:#888; padding:4px;">...and ${result.missing.length - 8} more</div>`;
+    }
+    if (result.weak.length > 0) {
+        html += `<div style="color:#F1C40F; font-size:0.8rem; font-weight:bold; margin-top:12px; margin-bottom:6px;">⚠️ PARTIALLY MATCHED</div>`;
+        result.weak.slice(0, 6).forEach(w => { html += `<div class="report-warning">⚠ ${escapeHtml(w)}</div>`; });
+    }
+    html += `<div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:8px; margin-top:12px; font-size:0.7rem; color:#888; text-align:center;">This is an estimate based on the job information you provided — not an employer's ATS score.</div>`;
+    document.getElementById('detailedReport').innerHTML = html;
+
+    updateInterviewCalculator(result.score);
+    document.getElementById('missedJobs').innerText = Math.floor((100 - result.score) * 1.2);
+    document.getElementById('missedBox').style.display = 'block';
+
+    if (uploadedFileName) {
+        let fc = checkFileName(uploadedFileName);
+        document.getElementById('filenameStatus').innerHTML = fc.isGood ? '<div class="filename-good">✅ Professional file name</div>' : '<div class="filename-bad">❌ ' + fc.issues[0] + '</div>';
+        document.getElementById('filenameSuggestion').style.display = fc.isGood ? 'none' : 'block';
+        if (!fc.isGood) document.getElementById('filenameSuggestion').innerHTML = `💡 SUGGESTED: ${fc.suggestion}`;
+        document.getElementById('filenameContainer').style.display = 'block';
+    }
+
+    const panicContainer = document.getElementById('panicButtonContainer');
+    const panicBtn = document.getElementById('panicBtn');
+    const warningMsg = document.getElementById('warningMessage');
+    if (result.score < 80) {
+        panicContainer.style.display = 'block';
+        panicBtn.className = 'panic-btn red';
+        panicBtn.innerHTML = '🔴 FIX MY CV NOW 🔴';
+        warningMsg.innerHTML = '⚠️ THIS IS WHY YOU\'RE NOT GETTING INTERVIEWS ⚠️';
+    } else {
+        panicContainer.style.display = 'block';
+        panicBtn.className = 'panic-btn green';
+        panicBtn.innerHTML = '🟢 PERFECT MY CV 🟢';
+        warningMsg.innerHTML = '✅ Great foundation! Still room for improvement.';
+    }
+    document.getElementById('interviewCalculator').style.display = 'block';
+    document.getElementById('urgencyContainer').style.display = 'block';
+    document.getElementById('testimonialBox').style.display = 'block';
+    updateSpotsLeft();
+}
+
+// ==================== UNIVERSAL PDF EXTRACTOR ====================
+async function extractPdfText(file) {
+    let text = "";
+    try {
+        let ab = await file.arrayBuffer();
+        let pdf = await pdfjsLib.getDocument(ab).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+            let page = await pdf.getPage(i);
+            let content = await page.getTextContent();
+            text += content.items.map(item => item.str).join(" ") + " ";
+        }
+    } catch (err) {
+        console.error("PDF parse error:", err);
+        text = "";
+    }
+    return text;
+}
+
+// ==================== CV SCAN FILE HANDLER ====================
+document.getElementById('cvFileScan').addEventListener('change', async function(e) {
     let file = e.target.files[0]; if (!file) return;
     uploadedFileName = file.name;
-    
-    // Show live scan
+
     runLiveScan(async () => {
-        // Actual PDF processing
-        document.getElementById('progressBar').style.display = 'block';
-        let prog=0, interval=setInterval(()=>{prog+=20; document.getElementById('progressFill').style.width=prog+'%'; if(prog>=100)clearInterval(interval);},150);
+        document.getElementById('progressBarScan').style.display = 'block';
+        let prog = 0, interval = setInterval(() => { prog += 20; document.getElementById('progressFillScan').style.width = prog + '%'; if (prog >= 100) clearInterval(interval); }, 150);
         allIntervals.push(interval);
-        document.querySelector('.drop-zone').style.display='none';
-        document.getElementById('loader').style.display='block';
-        let ab=await file.arrayBuffer();
-        let pdf=await pdfjsLib.getDocument(ab).promise;
-        let text="";
-        for(let i=1;i<=pdf.numPages;i++){
-            let page=await pdf.getPage(i);
-            let content=await page.getTextContent();
-            text+=content.items.map(item=>item.str).join(" ");
+
+        document.querySelector('#panelCvScan .drop-zone').style.display = 'none';
+
+        cvText = await extractPdfText(file);
+
+        if (!cvText || cvText.trim().length < 30) {
+            document.getElementById('liveScan').style.display = 'none';
+            document.getElementById('resultsBox').style.display = 'block';
+            document.getElementById('scoreCircle').innerText = '—';
+            document.getElementById('scoreCircle').style.borderColor = '#e74c3c';
+            document.getElementById('scoreStatus').innerHTML = '⚠️ CV COULD NOT BE READ';
+            document.getElementById('scoreStatus').style.color = '#e74c3c';
+            document.getElementById('scoreDesc').innerText = 'The PDF appears to be image-only or scanned.';
+            document.getElementById('detailedReport').innerHTML = `<div style="text-align:center; padding:20px; color:#ccc;">We could not extract readable text from this PDF.<br>Please upload a text-based PDF, or contact us on WhatsApp for a manual review.</div>`;
+            document.getElementById('interviewCalculator').style.display = 'none';
+            document.getElementById('missedBox').style.display = 'none';
+            document.getElementById('filenameContainer').style.display = 'none';
+            document.getElementById('urgencyContainer').style.display = 'none';
+            document.getElementById('testimonialBox').style.display = 'none';
+            document.getElementById('progressBarScan').style.display = 'none';
+            return;
         }
-        cvText=text;
+
         runScan(cvText);
-        document.getElementById('loader').style.display='none';
-        document.getElementById('resultsBox').style.display='block';
-        document.getElementById('progressBar').style.display='none';
+        document.getElementById('progressBarScan').style.display = 'none';
         document.getElementById('liveScan').style.display = 'none';
-        setTimeout(()=>document.getElementById('resultsBox').scrollIntoView({behavior:'smooth'}),100);
-    });
+        document.getElementById('resultsBox').style.display = 'block';
+        setTimeout(() => document.getElementById('resultsBox').scrollIntoView({ behavior: 'smooth' }), 100);
+    }, 'cvscan');
 });
 
-// Countdown timer (15 minutes)
-let timeLeft = 15 * 60;
-const minutesSpan = document.getElementById('countdownMinutes');
-const secondsSpan = document.getElementById('countdownSeconds');
-const countdownInterval = setInterval(() => {
-    if (timeLeft <= 0) {
-        clearInterval(countdownInterval);
-        minutesSpan.innerText = '00';
-        secondsSpan.innerText = '00';
-    } else {
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        minutesSpan.innerText = minutes.toString().padStart(2, '0');
-        secondsSpan.innerText = seconds.toString().padStart(2, '0');
+// ==================== JOB MATCH FILE HANDLER ====================
+document.getElementById('cvFileMatch').addEventListener('change', async function(e) {
+    let file = e.target.files[0]; if (!file) return;
+    uploadedFileName = file.name;
+
+    const jobDesc = document.getElementById('jobDescription').value.trim();
+    const jobReqs = document.getElementById('jobRequirements').value.trim();
+
+    if (!jobDesc && !jobReqs) {
+        alert('Please paste the Job Description and/or Job Requirements before uploading your CV.');
+        return;
     }
-}, 1000);
-allIntervals.push(countdownInterval);
+
+    document.getElementById('fileNameDisplayMatch').style.display = 'block';
+    document.getElementById('fileNameDisplayMatch').innerText = '📎 ' + file.name;
+
+    runLiveScan(async () => {
+        document.getElementById('progressBarMatch').style.display = 'block';
+        let prog = 0, interval = setInterval(() => { prog += 20; document.getElementById('progressFillMatch').style.width = prog + '%'; if (prog >= 100) clearInterval(interval); }, 150);
+        allIntervals.push(interval);
+
+        document.querySelector('#panelJobMatch .drop-zone').style.display = 'none';
+
+        cvText = await extractPdfText(file);
+
+        if (!cvText || cvText.trim().length < 30) {
+            document.getElementById('liveScan').style.display = 'none';
+            document.getElementById('resultsBox').style.display = 'block';
+            document.getElementById('scoreCircle').innerText = '—';
+            document.getElementById('scoreCircle').style.borderColor = '#e74c3c';
+            document.getElementById('scoreStatus').innerHTML = '⚠️ CV COULD NOT BE READ';
+            document.getElementById('scoreStatus').style.color = '#e74c3c';
+            document.getElementById('scoreDesc').innerText = 'The PDF appears to be image-only or scanned.';
+            document.getElementById('detailedReport').innerHTML = `<div style="text-align:center; padding:20px; color:#ccc;">We could not extract readable text from this PDF.<br>Please upload a text-based PDF, or contact us on WhatsApp for a manual review.</div>`;
+            document.getElementById('interviewCalculator').style.display = 'none';
+            document.getElementById('missedBox').style.display = 'none';
+            document.getElementById('filenameContainer').style.display = 'none';
+            document.getElementById('urgencyContainer').style.display = 'none';
+            document.getElementById('testimonialBox').style.display = 'none';
+            document.getElementById('progressBarMatch').style.display = 'none';
+            return;
+        }
+
+        runJobMatchScan(cvText, jobDesc, jobReqs);
+        document.getElementById('progressBarMatch').style.display = 'none';
+        document.getElementById('liveScan').style.display = 'none';
+        document.getElementById('resultsBox').style.display = 'block';
+        setTimeout(() => document.getElementById('resultsBox').scrollIntoView({ behavior: 'smooth' }), 100);
+    }, 'jobmatch');
+});
 </script>
 </body>
 </html>
