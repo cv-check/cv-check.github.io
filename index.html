@@ -1,12 +1,37 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>CV FIX PRO | Scan Your CV or Match It to a Job</title>
+
+    <!-- ==================== PRIMARY META ==================== -->
+    <meta name="description" content="Scan your CV, check your ATS score, or match your CV to a specific job before you apply.">
+    <link rel="canonical" href="https://cv-check.github.io/">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="robots" content="index, follow">
+
+    <!-- ==================== OPEN GRAPH (LinkedIn, Facebook, WhatsApp, Telegram, Discord, Slack, iMessage) ==================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CV FIX PRO">
+    <meta property="og:url" content="https://cv-check.github.io/">
+    <meta property="og:title" content="CV FIX PRO | Scan Your CV or Match It to a Job">
+    <meta property="og:description" content="Scan your CV, check your ATS score, or match your CV to a specific job before you apply.">
+    <meta property="og:image" content="https://i.postimg.cc/Z5R2gncs/Before-After.jpg">
+    <meta property="og:image:alt" content="CV FIX PRO - Before and After CV transformation">
+    <meta property="og:locale" content="en_ZA">
+
+    <!-- ==================== TWITTER / X CARD ==================== -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CV FIX PRO | Scan Your CV or Match It to a Job">
+    <meta name="twitter:description" content="Scan your CV, check your ATS score, or match your CV to a specific job before you apply.">
+    <meta name="twitter:image" content="https://i.postimg.cc/Z5R2gncs/Before-After.jpg">
+    <meta name="twitter:image:alt" content="CV FIX PRO - Before and After CV transformation">
+
+    <!-- ==================== VIEWPORT & FONTS ==================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZY7HTYJXC"></script>
     <script>
@@ -15,6 +40,7 @@
       gtag('js', new Date());
       gtag('config', 'G-2ZY7HTYJXC');
     </script>
+
     <style>
         :root {
             --primary: #D4AF37;
@@ -566,7 +592,6 @@ function detectEducation(text) {
         }
     });
 
-    // Hybrid bonus: matric listed alongside higher qualification (+1, cap 10)
     let total = highestPoints;
     if (matricFound && highestPoints > 3 && highestPoints < 10) total += 1;
     total = Math.min(total, 10);
@@ -576,10 +601,6 @@ function detectEducation(text) {
 
 function detectDriversLicense(text) {
     const lower = text.toLowerCase();
-    // Full license patterns
-    if (/\bcode\s*[8ec]?\s*1?\s*[04]?\b/.test(lower) && /\bcode\s*(8|10|14|eb|ec|c1|b)\b/.test(lower)) {
-        return { points: 5, label: 'Driver\'s License' };
-    }
     if (/\bcode\s*8\b/.test(lower)) return { points: 5, label: 'Code 8' };
     if (/\bcode\s*10\b/.test(lower)) return { points: 5, label: 'Code 10' };
     if (/\bcode\s*14\b/.test(lower)) return { points: 5, label: 'Code 14' };
@@ -594,13 +615,11 @@ function detectLanguages(text) {
     const lower = text.toLowerCase();
     const found = new Set();
     SA_LANGUAGES.forEach(lang => {
-        // word-boundary-ish check
         const regex = new RegExp('\\b' + lang.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
         if (regex.test(lower)) {
             found.add(SA_LANGUAGE_LABELS[lang] || lang);
         }
     });
-    // Generic indicators
     const genericIndicators = ['bilingual','multilingual','fluent in','native speaker'];
     const hasGeneric = genericIndicators.some(g => lower.includes(g));
 
@@ -617,8 +636,6 @@ function detectLanguages(text) {
 function detectReferences(text) {
     const lower = text.toLowerCase();
     if (/\b(references?|referees?)\b/.test(lower)) {
-        // Named references: check for "reference" followed by a capitalised name-ish pattern
-        // Fallback: if "references" section appears with more than just the word — assume named
         if (/\bavailable\s+(up)?on\s+request\b/.test(lower)) {
             return { points: 2, label: 'Available on request' };
         }
@@ -657,20 +674,20 @@ function detectOwnTransport(text) {
     return { points: 0, label: null };
 }
 
-// ==================== CV SCAN LOGIC (UPDATED) ====================
+// ==================== CV SCAN LOGIC ====================
 function runScan(text) {
     const lower = text.toLowerCase();
-    let score = 12; // base (was 20)
+    let score = 12;
     const good = [], critical = [], warnings = [];
 
-    // --- Work experience (12) ---
+    // Work experience (12)
     if (lower.includes("experience") || lower.includes("work history") || lower.includes("employment")) {
         score += 12; good.push("✅ Work experience section found");
     } else {
         critical.push("🚨 CRITICAL: NO work experience section");
     }
 
-    // --- Education (hybrid, cap 10) ---
+    // Education (hybrid, cap 10)
     const edu = detectEducation(text);
     if (edu.points > 0) {
         score += edu.points;
@@ -680,90 +697,88 @@ function runScan(text) {
         critical.push("🚨 CRITICAL: NO education found (add Matric/NSC at minimum)");
     }
 
-    // --- Skills section (10) ---
+    // Skills section (10)
     if (lower.includes("skills") || lower.includes("competencies") || lower.includes("core competencies")) {
         score += 10; good.push("✅ Skills section found");
     } else {
         critical.push("⚠️ NO skills section");
     }
 
-    // --- Contact info (12) ---
+    // Contact info (12)
     const hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
     const hasPhone = /(\+27|0)[0-9\s\-]{9,12}/.test(text);
     if (hasEmail && hasPhone) { score += 12; good.push("✅ Contact info complete (email + phone)"); }
     else if (hasEmail || hasPhone) { score += 6; warnings.push("⚠️ Missing phone OR email — add both"); }
     else { critical.push("🚨 NO phone or email found"); }
 
-    // --- Action verbs (8) ---
+    // Action verbs (8)
     const actionWords = ['managed','developed','led','achieved','implemented','coordinated','improved','delivered','supervised','trained'];
     const foundVerbs = actionWords.filter(w => lower.includes(w));
     if (foundVerbs.length >= 3) { score += 8; good.push("✅ Strong action verbs used"); }
     else if (foundVerbs.length >= 1) { score += 4; warnings.push("⚠️ Add more action verbs (managed, led, achieved...)"); }
     else { warnings.push("⚠️ NO action verbs — start bullet points with strong verbs"); }
 
-    // --- Summary section (5) ---
+    // Summary section (5)
     if (lower.includes("summary") || lower.includes("profile") || lower.includes("objective") || lower.includes("about me")) {
         score += 5; good.push("✅ Professional summary found");
     } else {
         warnings.push("💡 Add a professional summary at the top");
     }
 
-    // --- SA location (6, expanded list) ---
+    // SA location (6, expanded list)
     const hasLoc = SA_CITIES.some(c => lower.includes(c));
     if (hasLoc) { score += 6; good.push("✅ SA location found"); }
     else { warnings.push("🚨 NO South African location found — recruiters filter by location"); }
 
-    // --- Word count (5) ---
+    // Word count (5)
     const words = text.split(/\s+/).filter(w => w.length > 0).length;
     if (words >= 400 && words <= 650) { score += 5; good.push(`✅ Perfect CV length (${words} words)`); }
     else if (words >= 300 && words <= 800) { score += 3; warnings.push(`📏 CV length: ${words} words (aim 400–650)`); }
     else if (words < 300) { warnings.push(`📏 CV too short: ${words} words`); }
     else { warnings.push(`📏 CV too long: ${words} words`); }
 
-    // --- Driver's License (5) ---
+    // Driver's License (5)
     const lic = detectDriversLicense(text);
     if (lic.points === 5) { score += 5; good.push(`✅ Driver's License: ${lic.label} found`); }
     else if (lic.points === 2) { score += 2; warnings.push(`⚠️ Driver's License: ${lic.label} — mention code 8/10/14 if you have one`); }
     else if (lic.label && lic.points === 0) { /* explicit "no license" — no penalty, no points */ }
     else { warnings.push("💡 Driver's License not mentioned (add if you have one)"); }
 
-    // --- Languages (5, soft) ---
+    // Languages (5, soft)
     const langs = detectLanguages(text);
     if (langs.points === 5) { score += 5; good.push(`✅ Languages: ${langs.list.join(', ')} (${langs.count})`); }
     else if (langs.points === 4) { score += 4; good.push(`✅ Languages: ${langs.list.join(', ')} (2)`); }
     else if (langs.points === 2) { score += 2; warnings.push(`⚠️ Only 1 language shown — add all you speak`); }
     else { warnings.push("💡 Add a Languages section (English, Zulu, etc.)"); }
 
-    // --- References (4, soft) ---
+    // References (4, soft)
     const refs = detectReferences(text);
     if (refs.points === 4) { score += 4; good.push("✅ References section found"); }
     else if (refs.points === 2) { score += 2; warnings.push("⚠️ 'References available on request' — add at least 2 named refs"); }
     else { warnings.push("💡 Add a References section (2 named contacts)"); }
 
-    // --- Personal details (3, soft) ---
+    // Personal details (3, soft)
     const pd = detectPersonalDetails(text);
     if (pd.points === 3) { score += 3; good.push(`✅ Personal details complete (${pd.count} items)`); }
     else if (pd.points === 2) { score += 2; warnings.push(`⚠️ Only ${pd.count} personal detail item(s) — add more`); }
 
-    // --- Own transport (3, soft) ---
+    // Own transport (3, soft)
     const transport = detectOwnTransport(text);
     if (transport.points === 3) { score += 3; good.push(`✅ Own transport mentioned`); }
     else if (transport.points === 2) { score += 2; good.push(`✅ ${transport.label}`); }
 
-    // --- Filename penalty (softer) ---
+    // Filename penalty (softer)
     if (uploadedFileName) {
         const fc = checkFileName(uploadedFileName);
         if (!fc.isGood) {
-            score -= Math.min(fc.penalty, 8); // capped at -8
+            score -= Math.min(fc.penalty, 8);
             critical.push(`📁 File name: ${fc.issues[0]}`);
         }
     }
 
-    // Clamp 0–100
     score = Math.min(100, Math.max(0, Math.round(score)));
     currentScore = score;
 
-    // --- Display score ---
     document.getElementById('scoreCircle').innerText = score + "%";
     document.getElementById('scoreCircle').style.borderColor = score < 60 ? "#e74c3c" : score < 75 ? "#F1C40F" : "#2ECC71";
     document.getElementById('scoreStatus').innerHTML = score < 50 ? "❌ FAILING" : score < 60 ? "⚠️ CRITICAL" : score < 75 ? "📈 NEEDS WORK" : "🎯 GOOD";
@@ -773,7 +788,6 @@ function runScan(text) {
     document.getElementById('missedJobs').innerText = Math.floor((100 - score) * 1.5);
     document.getElementById('missedBox').style.display = 'block';
 
-    // --- Build report ---
     let html = '<div>';
     if (good.length) {
         html += `<div style="color:#2ECC71; font-weight:bold; margin-bottom:6px;">✅ WHAT'S RIGHT</div>`;
@@ -790,7 +804,6 @@ function runScan(text) {
     html += `<div style="background:#e74c3c20; padding:10px; border-radius:10px; margin-top:12px; text-align:center;"><strong>🔴 CVs scoring below 60% are REJECTED 94% of the time</strong></div></div>`;
     document.getElementById('detailedReport').innerHTML = html;
 
-    // --- Filename card ---
     if (uploadedFileName) {
         const fc = checkFileName(uploadedFileName);
         document.getElementById('filenameStatus').innerHTML = fc.isGood ? '<div class="filename-good">✅ Professional file name</div>' : '<div class="filename-bad">❌ ' + fc.issues[0] + '</div>';
@@ -799,7 +812,6 @@ function runScan(text) {
         document.getElementById('filenameContainer').style.display = 'block';
     }
 
-    // --- Panic button ---
     const panicContainer = document.getElementById('panicButtonContainer');
     const panicBtn = document.getElementById('panicBtn');
     const warningMsg = document.getElementById('warningMessage');
@@ -821,7 +833,7 @@ function runScan(text) {
     updateSpotsLeft();
 }
 
-// ==================== JOB MATCH LOGIC (unchanged) ====================
+// ==================== JOB MATCH LOGIC ====================
 function normalise(str) { return (str || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
 
 function splitRequirements(text) {
